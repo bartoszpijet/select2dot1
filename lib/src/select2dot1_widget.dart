@@ -180,7 +180,7 @@ class Select2dot1 extends StatefulWidget {
   /// This is a builder that is used to build the category item of list data view in modal mode.
   final CategoryItemModalBuilder? categoryItemModalBuilder;
 
-  /// TODO:Comleate description.
+  /// TODO:Comleate description. (If null default controller will be used).
   final SearchControllerSelect2dot1? searchController;
 
   /// This is a class which contains all the settings of the title of the widget.
