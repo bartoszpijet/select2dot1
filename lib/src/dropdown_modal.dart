@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/components/modal/dropdown_content_modal.dart';
+import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/modal/category_item_modal_settings.dart';
@@ -18,6 +19,7 @@ class DropdownModal extends StatefulWidget {
   // Its okay.
   // ignore: prefer-correct-identifier-length
   final DraggableScrollableController? dropdownContentModalScrollController;
+  final SearchControllerSelect2dot1 searchController;
   final DropdownContentModalBuilder? dropdownContentModalBuilder;
   final DropdownModalSettings dropdownModalSettings;
   final TitleModalBuilder? titleModalBuilder;
@@ -43,6 +45,7 @@ class DropdownModal extends StatefulWidget {
     super.key,
     required this.selectDataController,
     required this.dropdownContentModalScrollController,
+    required this.searchController,
     required this.dropdownContentModalBuilder,
     required this.dropdownModalSettings,
     required this.titleModalBuilder,
@@ -89,6 +92,7 @@ class _DropdownModalState extends State<DropdownModal> {
           color: Colors.transparent,
           child: DropdownContentModal(
             selectDataController: widget.selectDataController,
+            searchController: widget.searchController,
             dropdownContentModalBuilder: widget.dropdownContentModalBuilder,
             dropdownModalSettings: widget.dropdownModalSettings,
             titleModalBuilder: widget.titleModalBuilder,

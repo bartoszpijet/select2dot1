@@ -20,6 +20,7 @@ import 'package:select2dot1/src/utils/event_args.dart';
 class DropdownContentModal extends StatefulWidget {
   final ScrollController scrollController;
   final SelectDataController selectDataController;
+  final SearchControllerSelect2dot1 searchController;
   final DropdownContentModalBuilder? dropdownContentModalBuilder;
   final DropdownModalSettings dropdownModalSettings;
   final TitleModalBuilder? titleModalBuilder;
@@ -45,6 +46,7 @@ class DropdownContentModal extends StatefulWidget {
     super.key,
     required this.scrollController,
     required this.selectDataController,
+    required this.searchController,
     required this.dropdownContentModalBuilder,
     required this.dropdownModalSettings,
     required this.titleModalBuilder,
@@ -74,18 +76,18 @@ class DropdownContentModal extends StatefulWidget {
 class _DropdownContentModalState extends State<DropdownContentModal> {
   // It's good :D.
   // ignore: avoid-late-keyword
-  late final SearchControllerSelect2dot1 searchController;
+  //late final SearchControllerSelect2dot1 searchController;
 
   @override
   void initState() {
     super.initState();
-    searchController =
-        SearchControllerSelect2dot1(widget.selectDataController.data);
+    //searchController =
+    //    SearchControllerSelect2dot1(widget.selectDataController.data);
   }
 
   @override
   void dispose() {
-    searchController.dispose();
+    //searchController.dispose();
     super.dispose();
   }
 
@@ -99,7 +101,7 @@ class _DropdownContentModalState extends State<DropdownContentModal> {
         DropdownContentModalDetails(
           scrollController: widget.scrollController,
           selectDataController: widget.selectDataController,
-          searchController: searchController,
+          searchController: widget.searchController,
           titleModal: _titleModal,
           doneButtonModal: _doneButtonModal,
           searchBarModal: _searchBarModal,
@@ -131,7 +133,7 @@ class _DropdownContentModalState extends State<DropdownContentModal> {
             ],
           ),
           SearchBarModal(
-            searchController: searchController,
+            searchController: widget.searchController,
             isSearchable: widget.isSearchable,
             searchBarModalBuilder: widget.searchBarModalBuilder,
             searchBarModalSettings: widget.searchBarModalSettings,
@@ -144,7 +146,7 @@ class _DropdownContentModalState extends State<DropdownContentModal> {
               ),
               child: ListDataViewModal(
                 scrollController: widget.scrollController,
-                searchController: searchController,
+                searchController: widget.searchController,
                 selectDataController: widget.selectDataController,
                 loadingDataModalBuilder: widget.loadingDataModalBuilder,
                 loadingDataModalSettings: widget.loadingDataModalSettings,
@@ -179,7 +181,7 @@ class _DropdownContentModalState extends State<DropdownContentModal> {
       );
 
   Widget _searchBarModal() => SearchBarModal(
-        searchController: searchController,
+        searchController: widget.searchController,
         isSearchable: widget.isSearchable,
         searchBarModalBuilder: widget.searchBarModalBuilder,
         searchBarModalSettings: widget.searchBarModalSettings,
@@ -188,7 +190,7 @@ class _DropdownContentModalState extends State<DropdownContentModal> {
 
   Widget _listDataViewModal() => ListDataViewModal(
         scrollController: widget.scrollController,
-        searchController: searchController,
+        searchController: widget.searchController,
         selectDataController: widget.selectDataController,
         loadingDataModalBuilder: widget.loadingDataModalBuilder,
         loadingDataModalSettings: widget.loadingDataModalSettings,

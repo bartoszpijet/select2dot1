@@ -10,6 +10,12 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
   /// Old length memory of search results.
   int oldLength = 0;
 
+  /// Options for FuzzySearch default values are:
+  /// [FuzzyOptions.findAllMatches] = true,
+  /// [FuzzyOptions.tokenize] = true,
+  /// [FuzzyOptions.threshold] = 0.5.
+  final FuzzyOptions? fuzzyOptions;
+
   /// Data to search.
   /// It is required.
   final List<SingleCategoryModel> _data;
@@ -23,7 +29,7 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
 
   /// Creating an argument constructor of [SearchControllerSelect2dot1] class.
   /// [data] is data to search. [data] is required.
-  SearchControllerSelect2dot1(this._data)
+  SearchControllerSelect2dot1(this._data, {this.fuzzyOptions})
       : _results = _data.toList() // Fix pass by reference.
   {
     oldLength = countLength();
@@ -45,11 +51,12 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
           for (var singleItem in category.singleItemCategoryList)
             singleItem.nameSingleItem: singleItem,
         },
-        options: FuzzyOptions(
-          findAllMatches: true,
-          tokenize: true,
-          threshold: 0.5,
-        ),
+        options: fuzzyOptions ??
+            FuzzyOptions(
+              findAllMatches: true,
+              tokenize: true,
+              threshold: 0.5,
+            ),
       );
       List<Result<SingleItemCategoryModel>> results = await fuse.search(value);
       for (var element in results) {
