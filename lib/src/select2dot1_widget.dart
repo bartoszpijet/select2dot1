@@ -181,7 +181,7 @@ class Select2dot1 extends StatefulWidget {
   final CategoryItemModalBuilder? categoryItemModalBuilder;
 
   /// TODO:Comleate description. (If null default controller will be used).
-  final SearchControllerSelect2dot1? searchController;
+  final SearchControllerSelect2dot1 searchController;
 
   /// This is a class which contains all the settings of the title of the widget.
   final PillboxTitleSettings pillboxTitleSettings;
@@ -265,7 +265,7 @@ class Select2dot1 extends StatefulWidget {
   /// Set [isSearchable] to false to disable search bar
   /// Use builder to customize package by yourself.
   /// If you want you can also use the settings to customize the widget.
-  const Select2dot1({
+  Select2dot1({
     super.key,
     required this.selectDataController,
     this.onChanged,
@@ -298,7 +298,7 @@ class Select2dot1 extends StatefulWidget {
     this.listDataViewModalBuilder,
     this.categoryNameModalBuilder,
     this.categoryItemModalBuilder,
-    this.searchController,
+    SearchControllerSelect2dot1? mySearchController,
     this.pillboxTitleSettings = const PillboxTitleSettings(),
     this.pillboxSettings = const PillboxSettings(),
     this.pillboxContentMultiSettings = const PillboxContentMultiSettings(),
@@ -325,7 +325,10 @@ class Select2dot1 extends StatefulWidget {
     this.categoryNameModalSettings = const CategoryNameModalSettings(),
     this.categoryItemModalSettings = const CategoryItemModalSettings(),
     this.globalSettings = const GlobalSettings(),
-  });
+    // It's done like this bc other method dosen't work.
+  }) : searchController = mySearchController ??
+            SearchControllerSelect2dot1(selectDataController.data);
+
   @override
   State<Select2dot1> createState() => _Select2dot1State();
 }
@@ -358,8 +361,7 @@ class _Select2dot1State extends AnimatedState
       setOverlyEntry = OverlayEntry(
         builder: (context) => DropdownOverlay(
           selectDataController: selectDataController,
-          searchController: widget.searchController ??
-              SearchControllerSelect2dot1(widget.selectDataController.data),
+          searchController: widget.searchController,
           overlayHide: hideOverlay,
           animationController: getAnimationController,
           layerLink: layerLink,
