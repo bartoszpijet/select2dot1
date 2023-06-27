@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/dropdown_modal.dart';
 import 'package:select2dot1/src/utils/animated_state.dart';
 
@@ -19,8 +18,7 @@ mixin ModalController on AnimatedState {
             selectDataController: widget.selectDataController,
             dropdownContentModalScrollController:
                 widget.dropdownContentModalScrollController,
-            searchController: widget.searchController ??
-                SearchControllerSelect2dot1(widget.selectDataController.data),
+            searchController: widget.searchController,
             dropdownContentModalBuilder: widget.dropdownContentModalBuilder,
             dropdownModalSettings: widget.dropdownModalSettings,
             titleModalBuilder: widget.titleModalBuilder,
