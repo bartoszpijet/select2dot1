@@ -74,23 +74,6 @@ class DropdownContentModal extends StatefulWidget {
 }
 
 class _DropdownContentModalState extends State<DropdownContentModal> {
-  // It's good :D.
-  // ignore: avoid-late-keyword
-  //late final SearchControllerSelect2dot1 searchController;
-
-  @override
-  void initState() {
-    super.initState();
-    //searchController =
-    //    SearchControllerSelect2dot1(widget.selectDataController.data);
-  }
-
-  @override
-  void dispose() {
-    //searchController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.dropdownContentModalBuilder != null) {
