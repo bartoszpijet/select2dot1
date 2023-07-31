@@ -298,7 +298,7 @@ class Select2dot1 extends StatefulWidget {
     this.listDataViewModalBuilder,
     this.categoryNameModalBuilder,
     this.categoryItemModalBuilder,
-    SearchControllerSelect2dot1? mySearchController,
+    SearchControllerSelect2dot1? searchController,
     this.pillboxTitleSettings = const PillboxTitleSettings(),
     this.pillboxSettings = const PillboxSettings(),
     this.pillboxContentMultiSettings = const PillboxContentMultiSettings(),
@@ -326,7 +326,7 @@ class Select2dot1 extends StatefulWidget {
     this.categoryItemModalSettings = const CategoryItemModalSettings(),
     this.globalSettings = const GlobalSettings(),
     // It's done like this bc other method dosen't work.
-  }) : searchController = mySearchController ??
+  }) : searchController = searchController ??
             SearchControllerSelect2dot1(selectDataController.data);
 
   @override
