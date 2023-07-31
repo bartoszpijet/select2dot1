@@ -1,3 +1,7 @@
+## 2.0.9
+
+* implement customizable search controller
+
 ## 2.0.8
 
 * implement fuzzy search in search controller
