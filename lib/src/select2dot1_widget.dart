@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:select2dot1/src/controllers/modal_controller.dart';
 import 'package:select2dot1/src/controllers/overlay_controller.dart';
+import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/dropdown_overlay.dart';
 import 'package:select2dot1/src/models/single_item_category_model.dart';
@@ -179,6 +180,9 @@ class Select2dot1 extends StatefulWidget {
   /// This is a builder that is used to build the category item of list data view in modal mode.
   final CategoryItemModalBuilder? categoryItemModalBuilder;
 
+  /// TODO:Comleate description. (If null default controller will be used).
+  final SearchControllerSelect2dot1 searchController;
+
   /// This is a class which contains all the settings of the title of the widget.
   final PillboxTitleSettings pillboxTitleSettings;
 
@@ -261,7 +265,7 @@ class Select2dot1 extends StatefulWidget {
   /// Set [isSearchable] to false to disable search bar
   /// Use builder to customize package by yourself.
   /// If you want you can also use the settings to customize the widget.
-  const Select2dot1({
+  Select2dot1({
     super.key,
     required this.selectDataController,
     this.onChanged,
@@ -294,6 +298,7 @@ class Select2dot1 extends StatefulWidget {
     this.listDataViewModalBuilder,
     this.categoryNameModalBuilder,
     this.categoryItemModalBuilder,
+    SearchControllerSelect2dot1? mySearchController,
     this.pillboxTitleSettings = const PillboxTitleSettings(),
     this.pillboxSettings = const PillboxSettings(),
     this.pillboxContentMultiSettings = const PillboxContentMultiSettings(),
@@ -320,7 +325,10 @@ class Select2dot1 extends StatefulWidget {
     this.categoryNameModalSettings = const CategoryNameModalSettings(),
     this.categoryItemModalSettings = const CategoryItemModalSettings(),
     this.globalSettings = const GlobalSettings(),
-  });
+    // It's done like this bc other method dosen't work.
+  }) : searchController = mySearchController ??
+            SearchControllerSelect2dot1(selectDataController.data);
+
   @override
   State<Select2dot1> createState() => _Select2dot1State();
 }
@@ -353,6 +361,7 @@ class _Select2dot1State extends AnimatedState
       setOverlyEntry = OverlayEntry(
         builder: (context) => DropdownOverlay(
           selectDataController: selectDataController,
+          searchController: widget.searchController,
           overlayHide: hideOverlay,
           animationController: getAnimationController,
           layerLink: layerLink,

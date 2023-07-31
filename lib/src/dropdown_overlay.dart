@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:select2dot1/src/components/overlay/dropdown_content_overlay.dart';
+import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/overlay/category_item_overlay_settings.dart';
@@ -15,6 +16,7 @@ import 'package:select2dot1/src/utils/event_args.dart';
 
 class DropdownOverlay extends StatefulWidget {
   final SelectDataController selectDataController;
+  final SearchControllerSelect2dot1 searchController;
   final void Function() overlayHide;
   final AnimationController animationController;
   final LayerLink layerLink;
@@ -44,6 +46,7 @@ class DropdownOverlay extends StatefulWidget {
   const DropdownOverlay({
     super.key,
     required this.selectDataController,
+    required this.searchController,
     required this.overlayHide,
     required this.animationController,
     required this.layerLink,
@@ -158,6 +161,7 @@ class _DropdownOverlayState extends State<DropdownOverlay> {
                   child: DropdownContentOverlay(
                     key: keyDropdownOverlayContent,
                     selectDataController: widget.selectDataController,
+                    searchController: widget.searchController,
                     overlayHide: widget.overlayHide,
                     layerLink: widget.layerLink,
                     scrollController: widget.scrollController,

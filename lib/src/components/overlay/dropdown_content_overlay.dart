@@ -16,6 +16,7 @@ import 'package:select2dot1/src/utils/event_args.dart';
 
 class DropdownContentOverlay extends StatefulWidget {
   final SelectDataController selectDataController;
+  final SearchControllerSelect2dot1 searchController;
   final void Function() overlayHide;
   final LayerLink layerLink;
   final ScrollController? scrollController;
@@ -43,6 +44,7 @@ class DropdownContentOverlay extends StatefulWidget {
   const DropdownContentOverlay({
     super.key,
     required this.selectDataController,
+    required this.searchController,
     required this.overlayHide,
     required this.layerLink,
     required this.scrollController,
@@ -77,13 +79,13 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
 
   // It's good :D.
   // ignore: avoid-late-keyword
-  late final SearchControllerSelect2dot1 searchController;
+  //late final SearchControllerSelect2dot1 searchController;
 
   @override
   void initState() {
     super.initState();
-    searchController =
-        SearchControllerSelect2dot1(widget.selectDataController.data);
+    //searchController =
+    //    SearchControllerSelect2dot1(widget.selectDataController.data);
     if (widget.dropdownContentOverlayBuilder == null) {
       _calculateSearchBarOverlaySize();
     }
@@ -91,7 +93,7 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
 
   @override
   void dispose() {
-    searchController.dispose();
+    //searchController.dispose();
 
     super.dispose();
   }
@@ -109,7 +111,7 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
           layerLink: widget.layerLink,
           scrollController: widget.scrollController,
           appBarMaxHeight: widget.appBarMaxHeight,
-          searchController: searchController,
+          searchController: widget.searchController,
           searchBarOverlay: _searchBarOverlay,
           listDataViewOverlay: _listDataViewOverlay,
           globalSettings: widget.globalSettings,
@@ -136,7 +138,7 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
             child: SizeChangedLayoutNotifier(
               child: SearchBarOverlay(
                 key: keySearchBarOverlay,
-                searchController: searchController,
+                searchController: widget.searchController,
                 isSearchable: widget.isSearchable,
                 searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
                 searchBarOverlaySettings: widget.searchBarOverlaySettings,
@@ -150,7 +152,7 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
               maxHeight: _calculateMaxHeight(),
             ),
             child: ListDataViewOverlay(
-              searchController: searchController,
+              searchController: widget.searchController,
               selectDataController: widget.selectDataController,
               overlayHide: widget.overlayHide,
               dropdownContentOverlayScrollController:
@@ -246,7 +248,7 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
   }
 
   Widget _searchBarOverlay() => SearchBarOverlay(
-        searchController: searchController,
+        searchController: widget.searchController,
         isSearchable: widget.isSearchable,
         searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
         searchBarOverlaySettings: widget.searchBarOverlaySettings,
@@ -254,7 +256,7 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
       );
 
   Widget _listDataViewOverlay() => ListDataViewOverlay(
-        searchController: searchController,
+        searchController: widget.searchController,
         selectDataController: widget.selectDataController,
         overlayHide: widget.overlayHide,
         dropdownContentOverlayScrollController:
