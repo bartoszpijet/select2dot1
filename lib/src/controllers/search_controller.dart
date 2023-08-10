@@ -41,6 +41,17 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
   Future<void> findSearchDataResults(String value) async {
     // Will be improve in next version.
     oldLength = countLength();
+    if (value == '') {
+      _results.clear();
+      _results.addAll(_data);
+      int newLength = countLength();
+      if (oldLength != newLength) {
+        notifyListeners();
+      }
+
+      return;
+    }
+
     _results.clear();
 
     for (var category in _data) {
@@ -59,6 +70,7 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
             ),
       );
       List<Result<SingleItemCategoryModel>> results = await fuse.search(value);
+
       for (var element in results) {
         if (element.identifier != null) {
           // Null check done above.
