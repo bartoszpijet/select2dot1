@@ -69,9 +69,9 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
               threshold: 0.5,
             ),
       );
-      List<Result<SingleItemCategoryModel>> results = await fuse.search(value);
-
-      for (var element in results) {
+      List<Result<SingleItemCategoryModel>> tmpResults =
+          await fuse.search(value);
+      for (var element in tmpResults) {
         if (element.identifier != null) {
           // Null check done above.
           // ignore: avoid-non-null-assertion
