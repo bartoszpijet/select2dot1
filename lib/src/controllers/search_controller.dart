@@ -19,23 +19,16 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
   /// Data to search.
   /// It is required.
   final List<SingleCategoryModel> data;
-  final List<SingleCategoryModel> data;
 
   /// Search results.
   /// First it will be same as [data].
   final List<SingleCategoryModel> results;
-  /// First it will be same as [data].
-  final List<SingleCategoryModel> results;
 
-  /// Getter for [results] find by [findSearchDataResults].
-  List<SingleCategoryModel> get getResults => results;
   /// Getter for [results] find by [findSearchDataResults].
   List<SingleCategoryModel> get getResults => results;
 
   /// Creating an argument constructor of [SearchControllerSelect2dot1] class.
   /// [data] is data to search. [data] is required.
-  SearchControllerSelect2dot1(this.data, {this.fuzzyOptions})
-      : results = data.toList() // Fix pass by reference.
   SearchControllerSelect2dot1(this.data, {this.fuzzyOptions})
       : results = data.toList() // Fix pass by reference.
   {
@@ -61,7 +54,6 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
 
     results.clear();
 
-    for (var category in data) {
     for (var category in data) {
       List<SingleItemCategoryModel> tempSingleItemCategoryList = [];
 
@@ -89,7 +81,6 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
 
       if (tempSingleItemCategoryList.isNotEmpty) {
         results.add(
-        results.add(
           SingleCategoryModel(
             nameCategory: category.nameCategory,
             singleItemCategoryList: tempSingleItemCategoryList,
@@ -107,7 +98,6 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
   /// Count length of search results function.
   int countLength() {
     int length = 0;
-    for (var category in results) {
     for (var category in results) {
       length += category.singleItemCategoryList.length;
     }
