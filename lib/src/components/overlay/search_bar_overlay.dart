@@ -226,9 +226,24 @@ class _SearchBarOverlayState extends State<SearchBarOverlay> {
     }
   }
 
+  String lastSnapshotSearchText = '';
   void _onChangedSearchBarOverlayController() {
+    String newValue = searchBarController.text;
+    if (newValue.trim() == '') {
+      newValue = '';
+    }
+
+    lastSnapshotSearchText = newValue.toString();
     unawaited(
-      widget.searchController.findSearchDataResults(searchBarController.text),
+      // Done on purpose.
+      // ignore: prefer-async-await
+      Future.delayed(const Duration(seconds: 1)).then((value) {
+        if (lastSnapshotSearchText == newValue) {
+          unawaited(
+            widget.searchController.findSearchDataResults(newValue),
+          );
+        }
+      }),
     );
   }
 }

@@ -206,10 +206,23 @@ class _SearchBarModalState extends State<SearchBarModal> {
     }
   }
 
+  String lastSnapshotSearchText = '';
   void _onChangedSearchBarModalController() {
+    String newValue = searchBarModalController.text;
+    if (newValue.trim() == '') {
+      newValue = '';
+    }
+    lastSnapshotSearchText = newValue.toString();
     unawaited(
-      widget.searchController
-          .findSearchDataResults(searchBarModalController.text),
+      // Done on purpose.
+      // ignore: prefer-async-await
+      Future.delayed(const Duration(seconds: 1)).then((value) {
+        if (lastSnapshotSearchText == newValue) {
+          unawaited(
+            widget.searchController.findSearchDataResults(newValue),
+          );
+        }
+      }),
     );
   }
 }
