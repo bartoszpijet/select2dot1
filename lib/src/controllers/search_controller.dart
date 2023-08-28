@@ -18,19 +18,19 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
 
   /// Data to search.
   /// It is required.
-  final List<SingleCategoryModel> _data;
+  final List<SingleCategoryModel> data;
 
   /// Search results.
-  /// First it will be same as [_data].
-  final List<SingleCategoryModel> _results;
+  /// First it will be same as [data].
+  final List<SingleCategoryModel> results;
 
-  /// Getter for [_results] find by [findSearchDataResults].
-  List<SingleCategoryModel> get getResults => _results;
+  /// Getter for [results] find by [findSearchDataResults].
+  List<SingleCategoryModel> get getResults => results;
 
   /// Creating an argument constructor of [SearchControllerSelect2dot1] class.
   /// [data] is data to search. [data] is required.
-  SearchControllerSelect2dot1(this._data, {this.fuzzyOptions})
-      : _results = _data.toList() // Fix pass by reference.
+  SearchControllerSelect2dot1(this.data, {this.fuzzyOptions})
+      : results = data.toList() // Fix pass by reference.
   {
     oldLength = countLength();
   }
@@ -42,8 +42,8 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
     // Will be improve in next version.
     oldLength = countLength();
     if (value == '') {
-      _results.clear();
-      _results.addAll(_data);
+      results.clear();
+      results.addAll(data);
       int newLength = countLength();
       if (oldLength != newLength) {
         notifyListeners();
@@ -52,9 +52,9 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
       return;
     }
 
-    _results.clear();
+    results.clear();
 
-    for (var category in _data) {
+    for (var category in data) {
       List<SingleItemCategoryModel> tempSingleItemCategoryList = [];
 
       Fuzzy<SingleItemCategoryModel> fuse = Fuzzy.withIdentifiers(
@@ -69,9 +69,9 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
               threshold: 0.5,
             ),
       );
-      List<Result<SingleItemCategoryModel>> results = await fuse.search(value);
-
-      for (var element in results) {
+      List<Result<SingleItemCategoryModel>> tmpResults =
+          await fuse.search(value);
+      for (var element in tmpResults) {
         if (element.identifier != null) {
           // Null check done above.
           // ignore: avoid-non-null-assertion
@@ -80,7 +80,7 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
       }
 
       if (tempSingleItemCategoryList.isNotEmpty) {
-        _results.add(
+        results.add(
           SingleCategoryModel(
             nameCategory: category.nameCategory,
             singleItemCategoryList: tempSingleItemCategoryList,
@@ -98,7 +98,7 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
   /// Count length of search results function.
   int countLength() {
     int length = 0;
-    for (var category in _results) {
+    for (var category in results) {
       length += category.singleItemCategoryList.length;
     }
 
