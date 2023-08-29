@@ -73,77 +73,70 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
         onExit: mounted ? (event) => setState(() => hover = false) : null,
         child: GestureDetector(
           onTap: _onTapSingleItemCategory,
-          child: Tooltip(
-            waitDuration: const Duration(seconds: 1),
-            message: widget.singleItemCategory.nameSingleItem,
-            child: Container(
-              decoration: _getDecoration(),
-              alignment: widget.categoryItemOverlaySettings.alignmentGeometry,
-              constraints: widget.categoryItemOverlaySettings.constraints,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: widget.categoryItemOverlaySettings.iconPadding,
-                    child: AnimatedOpacity(
-                      opacity: isSelected ? 1 : 0,
-                      duration: widget
-                          .categoryItemOverlaySettings.iconAnimationDuration,
-                      curve:
-                          widget.categoryItemOverlaySettings.iconAnimationCurve,
-                      child: Icon(
-                        widget.categoryItemOverlaySettings.iconData,
-                        size: widget.categoryItemOverlaySettings.iconSize,
-                        color: _getIconColor(),
-                      ),
+          child: Container(
+            decoration: _getDecoration(),
+            alignment: widget.categoryItemOverlaySettings.alignmentGeometry,
+            constraints: widget.categoryItemOverlaySettings.constraints,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: widget.categoryItemOverlaySettings.iconPadding,
+                  child: AnimatedOpacity(
+                    opacity: isSelected ? 1 : 0,
+                    duration: widget
+                        .categoryItemOverlaySettings.iconAnimationDuration,
+                    curve:
+                        widget.categoryItemOverlaySettings.iconAnimationCurve,
+                    child: Icon(
+                      widget.categoryItemOverlaySettings.iconData,
+                      size: widget.categoryItemOverlaySettings.iconSize,
+                      color: _getIconColor(),
                     ),
                   ),
-                  if (widget.singleItemCategory.avatarSingleItem != null &&
-                      widget.categoryItemOverlaySettings.showAvatar)
-                    Container(
-                      height:
-                          widget.categoryItemOverlaySettings.avatarMaxHeight,
-                      width: widget.categoryItemOverlaySettings.avatarMaxWidth,
-                      margin: widget.categoryItemOverlaySettings.avatarMargin,
-                      child: FittedBox(
-                        child: widget.singleItemCategory.avatarSingleItem,
-                      ),
+                ),
+                if (widget.singleItemCategory.avatarSingleItem != null &&
+                    widget.categoryItemOverlaySettings.showAvatar)
+                  Container(
+                    height: widget.categoryItemOverlaySettings.avatarMaxHeight,
+                    width: widget.categoryItemOverlaySettings.avatarMaxWidth,
+                    margin: widget.categoryItemOverlaySettings.avatarMargin,
+                    child: FittedBox(
+                      child: widget.singleItemCategory.avatarSingleItem,
                     ),
-                  Flexible(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                  ),
+                Flexible(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: widget.categoryItemOverlaySettings.textPadding,
+                        child: Text(
+                          widget.singleItemCategory.nameSingleItem,
+                          overflow:
+                              widget.categoryItemOverlaySettings.textOverflow,
+                          style: _getNameItemTextStyle(),
+                        ),
+                      ),
+                      if (widget.categoryItemOverlaySettings.showExtraInfo &&
+                          widget.singleItemCategory.extraInfoSingleItem != null)
                         Container(
-                          padding:
-                              widget.categoryItemOverlaySettings.textPadding,
+                          padding: widget
+                              .categoryItemOverlaySettings.extraInfoPadding,
                           child: Text(
-                            widget.singleItemCategory.nameSingleItem,
-                            overflow:
-                                widget.categoryItemOverlaySettings.textOverflow,
-                            style: _getNameItemTextStyle(),
+                            // This can't be null anyways.
+                            // ignore: avoid-non-null-assertion
+                            widget.singleItemCategory.extraInfoSingleItem!,
+                            overflow: widget.categoryItemOverlaySettings
+                                .extraInfoTextOverflow,
+                            style: _getExtraInfoTextStyle(),
                           ),
                         ),
-                        if (widget.categoryItemOverlaySettings.showExtraInfo &&
-                            widget.singleItemCategory.extraInfoSingleItem !=
-                                null)
-                          Container(
-                            padding: widget
-                                .categoryItemOverlaySettings.extraInfoPadding,
-                            child: Text(
-                              // This can't be null anyways.
-                              // ignore: avoid-non-null-assertion
-                              widget.singleItemCategory.extraInfoSingleItem!,
-                              overflow: widget.categoryItemOverlaySettings
-                                  .extraInfoTextOverflow,
-                              style: _getExtraInfoTextStyle(),
-                            ),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
