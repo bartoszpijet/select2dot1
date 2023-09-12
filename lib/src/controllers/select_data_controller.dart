@@ -60,7 +60,7 @@ class SelectDataController extends ChangeNotifier {
     }
 
     for (var singleItem in singleItemList) {
-      addSelectChip(singleItem);
+      addSelectChip(singleItem, false);
     }
     notifyListeners();
   }
@@ -73,27 +73,33 @@ class SelectDataController extends ChangeNotifier {
     }
 
     for (var singleItem in singleItemList) {
-      removeSingleSelectedChip(singleItem);
+      removeSingleSelectedChip(singleItem, false);
     }
     notifyListeners();
   }
 
   /// Add single [SingleItemCategoryModel] to the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
-  void addSelectChip(SingleItemCategoryModel? singleItem) {
+  void addSelectChip(
+    SingleItemCategoryModel? singleItem, [
+    bool notify = true,
+  ]) {
     if (singleItem == null) {
       return;
     }
 
     if (!_singleItemContainsInSelected(singleItem)) {
       selectedList.add(getSingleItemCategoryFromData(singleItem));
-      notifyListeners();
+      if (notify) notifyListeners();
     }
   }
 
   /// Remove single [SingleItemCategoryModel] from the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
-  void removeSingleSelectedChip(SingleItemCategoryModel? singleItem) {
+  void removeSingleSelectedChip(
+    SingleItemCategoryModel? singleItem, [
+    bool notify = true,
+  ]) {
     if (singleItem == null) {
       return;
     }
@@ -102,7 +108,7 @@ class SelectDataController extends ChangeNotifier {
       // Its ok.
       // ignore: avoid-ignoring-return-values
       selectedList.remove(singleItem);
-      notifyListeners();
+      if (notify) notifyListeners();
     }
   }
 
