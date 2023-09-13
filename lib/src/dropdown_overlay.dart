@@ -103,6 +103,7 @@ class _DropdownOverlayState extends State<DropdownOverlay> {
     return Positioned(
       width: widget.layerLink.leaderSize?.width,
       child: CompositedTransformFollower(
+        showWhenUnlinked: false,
         link: widget.layerLink,
         followerAnchor:
             isBottomDirectAnchor ? Alignment.topLeft : Alignment.bottomLeft,
@@ -158,42 +159,46 @@ class _DropdownOverlayState extends State<DropdownOverlay> {
                       ),
                     );
                   },
-                  child: DropdownContentOverlay(
-                    key: keyDropdownOverlayContent,
-                    selectDataController: widget.selectDataController,
-                    searchController: widget.searchController,
-                    overlayHide: widget.overlayHide,
-                    layerLink: widget.layerLink,
-                    scrollController: widget.scrollController,
-                    appBarMaxHeight: widget.appBarMaxHeight,
-                    dropdownContentOverlayScrollController:
-                        widget.dropdownContentOverlayScrollController,
-                    dropdownContentOverlayBuilder:
-                        widget.dropdownContentOverlayBuilder,
-                    dropdownOverlaySettings: widget.dropdownOverlaySettings,
-                    isSearchable: widget.isSearchable,
-                    searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
-                    searchBarOverlaySettings: widget.searchBarOverlaySettings,
-                    loadingDataOverlayBuilder: widget.loadingDataOverlayBuilder,
-                    loadingDataOverlaySettings:
-                        widget.loadingDataOverlaySettings,
-                    searchEmptyInfoOverlayBuilder:
-                        widget.searchEmptyInfoOverlayBuilder,
-                    searchEmptyInfoOverlaySettings:
-                        widget.searchEmptyInfoOverlaySettings,
-                    listDataViewOverlayBuilder:
-                        widget.listDataViewOverlayBuilder,
-                    listDataViewOverlaySettings:
-                        widget.listDataViewOverlaySettings,
-                    categoryNameOverlayBuilder:
-                        widget.categoryNameOverlayBuilder,
-                    categoryNameOverlaySettings:
-                        widget.categoryNameOverlaySettings,
-                    categoryItemOverlayBuilder:
-                        widget.categoryItemOverlayBuilder,
-                    categoryItemOverlaySettings:
-                        widget.categoryItemOverlaySettings,
-                    globalSettings: widget.globalSettings,
+                  child: TapRegion(
+                    onTapOutside: (_) => widget.overlayHide(),
+                    child: DropdownContentOverlay(
+                      key: keyDropdownOverlayContent,
+                      selectDataController: widget.selectDataController,
+                      searchController: widget.searchController,
+                      overlayHide: widget.overlayHide,
+                      layerLink: widget.layerLink,
+                      scrollController: widget.scrollController,
+                      appBarMaxHeight: widget.appBarMaxHeight,
+                      dropdownContentOverlayScrollController:
+                          widget.dropdownContentOverlayScrollController,
+                      dropdownContentOverlayBuilder:
+                          widget.dropdownContentOverlayBuilder,
+                      dropdownOverlaySettings: widget.dropdownOverlaySettings,
+                      isSearchable: widget.isSearchable,
+                      searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
+                      searchBarOverlaySettings: widget.searchBarOverlaySettings,
+                      loadingDataOverlayBuilder:
+                          widget.loadingDataOverlayBuilder,
+                      loadingDataOverlaySettings:
+                          widget.loadingDataOverlaySettings,
+                      searchEmptyInfoOverlayBuilder:
+                          widget.searchEmptyInfoOverlayBuilder,
+                      searchEmptyInfoOverlaySettings:
+                          widget.searchEmptyInfoOverlaySettings,
+                      listDataViewOverlayBuilder:
+                          widget.listDataViewOverlayBuilder,
+                      listDataViewOverlaySettings:
+                          widget.listDataViewOverlaySettings,
+                      categoryNameOverlayBuilder:
+                          widget.categoryNameOverlayBuilder,
+                      categoryNameOverlaySettings:
+                          widget.categoryNameOverlaySettings,
+                      categoryItemOverlayBuilder:
+                          widget.categoryItemOverlayBuilder,
+                      categoryItemOverlaySettings:
+                          widget.categoryItemOverlaySettings,
+                      globalSettings: widget.globalSettings,
+                    ),
                   ),
                 ),
               ),

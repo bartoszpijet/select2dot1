@@ -345,10 +345,12 @@ class _Select2dot1State extends AnimatedState
   // ignore: avoid-late-keyword
   late final LayerLink layerLink;
 
+  late final double? appBarMaxHeightTemp;
+
   @override
   void initState() {
     super.initState();
-    double? appBarMaxHeightTemp = Scaffold.maybeOf(context)?.appBarMaxHeight;
+    appBarMaxHeightTemp = Scaffold.maybeOf(context)?.appBarMaxHeight;
 
     selectDataController = widget.selectDataController;
     if (widget.onChanged != null) {
@@ -357,37 +359,6 @@ class _Select2dot1State extends AnimatedState
 
     if (!kIsMobile) {
       layerLink = LayerLink();
-
-      setOverlyEntry = OverlayEntry(
-        builder: (context) => DropdownOverlay(
-          selectDataController: selectDataController,
-          searchController: widget.searchController,
-          overlayHide: hideOverlay,
-          animationController: getAnimationController,
-          layerLink: layerLink,
-          appBarMaxHeight: appBarMaxHeightTemp,
-          scrollController: widget.scrollController,
-          pillboxLayout: widget.pillboxContentMultiSettings.pillboxLayout,
-          dropdownContentOverlayScrollController:
-              widget.dropdownContentOverlayScrollController,
-          dropdownContentOverlayBuilder: widget.dropdownContentOverlayBuilder,
-          dropdownOverlaySettings: widget.dropdownOverlaySettings,
-          isSearchable: widget.isSearchable,
-          searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
-          searchBarOverlaySettings: widget.searchBarOverlaySettings,
-          loadingDataOverlayBuilder: widget.loadingDataOverlayBuilder,
-          loadingDataOverlaySettings: widget.loadingDataOverlaySettings,
-          searchEmptyInfoOverlayBuilder: widget.searchEmptyInfoOverlayBuilder,
-          searchEmptyInfoOverlaySettings: widget.searchEmptyInfoOverlaySettings,
-          listDataViewOverlayBuilder: widget.listDataViewOverlayBuilder,
-          listDataViewOverlaySettings: widget.listDataViewOverlaySettings,
-          categoryNameOverlayBuilder: widget.categoryNameOverlayBuilder,
-          categoryNameOverlaySettings: widget.categoryNameOverlaySettings,
-          categoryItemOverlayBuilder: widget.categoryItemOverlayBuilder,
-          categoryItemOverlaySettings: widget.categoryItemOverlaySettings,
-          globalSettings: widget.globalSettings,
-        ),
-      );
     }
   }
 
@@ -451,29 +422,61 @@ class _Select2dot1State extends AnimatedState
         return true;
       },
       child: SizeChangedLayoutNotifier(
-        child: Pillbox.overlay(
-          selectDataController: selectDataController,
-          onTap: showOverlay,
-          isVisibleOverlay: getIsVisibleOvarlay,
-          pillboxLayerLink: layerLink,
-          pillboxTitleBuilder: widget.pillboxTitleBuilder,
-          pillboxTitleSettings: widget.pillboxTitleSettings,
-          pillboxBuilder: widget.pillboxBuilder,
-          pillboxSettings: widget.pillboxSettings,
-          pillboxContentSingleBuilder: widget.pillboxContentSingleBuilder,
-          pillboxContentMultiBuilder: widget.pillboxContentMultiBuilder,
-          pillboxContentMultiSettings: widget.pillboxContentMultiSettings,
-          pillboxIconBuilder: widget.pillboxIconBuilder,
-          pillboxIconSettings: widget.pillboxIconSettings,
-          selectChipBuilder: widget.selectChipBuilder,
-          selectChipSettings: widget.selectChipSettings,
-          selectSingleBuilder: widget.selectSingleBuilder,
-          selectSingleSettings: widget.selectSingleSettings,
-          selectEmptyInfoBuilder: widget.selectEmptyInfoBuilder,
-          selectEmptyInfoSettings: widget.selectEmptyInfoSettings,
-          selectOverloadInfoBuilder: widget.selectOverloadInfoBuilder,
-          selectOverloadInfoSettings: widget.selectOverloadInfoSettings,
-          globalSettings: widget.globalSettings,
+        child: OverlayPortal(
+          controller: overlayController,
+          overlayChildBuilder: (context) => DropdownOverlay(
+            selectDataController: selectDataController,
+            searchController: widget.searchController,
+            overlayHide: hideOverlay,
+            animationController: getAnimationController,
+            layerLink: layerLink,
+            appBarMaxHeight: appBarMaxHeightTemp,
+            scrollController: widget.scrollController,
+            pillboxLayout: widget.pillboxContentMultiSettings.pillboxLayout,
+            dropdownContentOverlayScrollController:
+                widget.dropdownContentOverlayScrollController,
+            dropdownContentOverlayBuilder: widget.dropdownContentOverlayBuilder,
+            dropdownOverlaySettings: widget.dropdownOverlaySettings,
+            isSearchable: widget.isSearchable,
+            searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
+            searchBarOverlaySettings: widget.searchBarOverlaySettings,
+            loadingDataOverlayBuilder: widget.loadingDataOverlayBuilder,
+            loadingDataOverlaySettings: widget.loadingDataOverlaySettings,
+            searchEmptyInfoOverlayBuilder: widget.searchEmptyInfoOverlayBuilder,
+            searchEmptyInfoOverlaySettings:
+                widget.searchEmptyInfoOverlaySettings,
+            listDataViewOverlayBuilder: widget.listDataViewOverlayBuilder,
+            listDataViewOverlaySettings: widget.listDataViewOverlaySettings,
+            categoryNameOverlayBuilder: widget.categoryNameOverlayBuilder,
+            categoryNameOverlaySettings: widget.categoryNameOverlaySettings,
+            categoryItemOverlayBuilder: widget.categoryItemOverlayBuilder,
+            categoryItemOverlaySettings: widget.categoryItemOverlaySettings,
+            globalSettings: widget.globalSettings,
+          ),
+          child: Pillbox.overlay(
+            selectDataController: selectDataController,
+            onTap: toogleOverlay,
+            isVisibleOverlay: getIsVisibleOvarlay,
+            pillboxLayerLink: layerLink,
+            pillboxTitleBuilder: widget.pillboxTitleBuilder,
+            pillboxTitleSettings: widget.pillboxTitleSettings,
+            pillboxBuilder: widget.pillboxBuilder,
+            pillboxSettings: widget.pillboxSettings,
+            pillboxContentSingleBuilder: widget.pillboxContentSingleBuilder,
+            pillboxContentMultiBuilder: widget.pillboxContentMultiBuilder,
+            pillboxContentMultiSettings: widget.pillboxContentMultiSettings,
+            pillboxIconBuilder: widget.pillboxIconBuilder,
+            pillboxIconSettings: widget.pillboxIconSettings,
+            selectChipBuilder: widget.selectChipBuilder,
+            selectChipSettings: widget.selectChipSettings,
+            selectSingleBuilder: widget.selectSingleBuilder,
+            selectSingleSettings: widget.selectSingleSettings,
+            selectEmptyInfoBuilder: widget.selectEmptyInfoBuilder,
+            selectEmptyInfoSettings: widget.selectEmptyInfoSettings,
+            selectOverloadInfoBuilder: widget.selectOverloadInfoBuilder,
+            selectOverloadInfoSettings: widget.selectOverloadInfoSettings,
+            globalSettings: widget.globalSettings,
+          ),
         ),
       ),
     );
