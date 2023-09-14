@@ -11,6 +11,12 @@ This is modified version of [Select2dot1](https://github.com/romanjrdykyj/select
 
 Select2dot2 gives you a customizable single/multiple select box with support for searching, group option, extra info and avatar. Select2dot2 utilizes overlays on (web, desktop) and modal for mobile. Its entirely customizable through settings and builder.
 
+## Screenshots
+
+| Desktop Example                             | Mobile Example                                |
+| :-----------------------------------------: | :-------------------------------------------: |
+| ![](https://github.com/romanjrdykyj/select2dot1/blob/main/img/desktop_example.webp) | ![](https://github.com/romanjrdykyj/select2dot1/blob/main/img/mobile_example.webp) |
+
 ## Table of Contents
 - [Introduction](#Introduction)
   - [Screenshots](#screenshots)
