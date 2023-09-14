@@ -1,25 +1,15 @@
 [![platform](https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter)](https://flutter.dev)
-[![build](https://img.shields.io/badge/build-passing-brightgreen)](https://pub.dev/packages/select2dot1)
-[![pub package](https://img.shields.io/pub/v/select2dot1.svg)](https://pub.dartlang.org/packages/select2dot1)
-[![pub points](https://img.shields.io/pub/points/select2dot1?color=2E8B57&label=pub%20points)](https://pub.dev/packages/select2dot1/score)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?color=red)](https://pub.dev/packages/select2dot1/license)
 
 
-# Select2dot1
+# Select2dot2
+
+This is modified version of [Select2dot1](https://github.com/romanjrdykyj/select2dot1).
+
 
 ## Introduction
 
-Select2dot1 gives you a customizable single/multiple select box with support for searching, group option, extra info and avatar. Select2dot1 utilizes overlays on (web, desktop) and modal for mobile. Its entirely customizable through settings and builder.
-
-Demo web example: https://select2dot1.site
-
-Author site: https://romanjrdykyj.site
-
-## Screenshots
-
-| Desktop Example                             | Mobile Example                                |
-| :-----------------------------------------: | :-------------------------------------------: |
-| ![](https://github.com/romanjrdykyj/select2dot1/blob/main/img/desktop_example.webp) | ![](https://github.com/romanjrdykyj/select2dot1/blob/main/img/mobile_example.webp) |
+Select2dot2 gives you a customizable single/multiple select box with support for searching, group option, extra info and avatar. Select2dot2 utilizes overlays on (web, desktop) and modal for mobile. Its entirely customizable through settings and builder.
 
 ## Table of Contents
 - [Introduction](#Introduction)
@@ -45,8 +35,8 @@ Author site: https://romanjrdykyj.site
   - [TreeView Components with Settings](#tree-view-components-with-settings)
 - [Customization](#customization)
   - [By Settings](#by-settings)
-    - [Use global settings to customize all components of Select2dot1 widget](#use-global-settings-to-customize-all-components-of-select2dot1-widget)
-    - [Use single component settings to customize only one component of Select2dot1 widget](#use-single-component-settings-to-customize-only-one-component-of-select2dot1-widget)
+    - [Use global settings to customize all components of Select2dot2 widget](#use-global-settings-to-customize-all-components-of-select2dot2-widget)
+    - [Use single component settings to customize only one component of Select2dot2 widget](#use-single-component-settings-to-customize-only-one-component-of-select2dot2-widget)
   - [By Builder](#by-builder)
     - [Create your completly own component](#create-your-own-component-completely)
     - [Use default components](#use-default-components)
@@ -76,12 +66,12 @@ Author site: https://romanjrdykyj.site
 1. Add the dependency below in pubspec.yaml
 
 ```bash
-flutter pub add select2dot1
+flutter pub add select2dot2
 ```
 2. Add this import to your file.
 
 ```bash
-import 'package:select2dot1/select2dot1.dart';
+import 'package:select2dot1/select2dot2.dart';
 ```
 
 3. Go to the [usage](#usage) section for further details on how to use it.
@@ -117,10 +107,10 @@ static const List<CategoryModel> exampleData = [
   ];
 ```
 
-2. Use the select2dot1 widget and insert your data. You can also pass [scrollController](#scroll-controller) if you want to use it.
+2. Use the select2dot2 widget and insert your data. You can also pass [scrollController](#scroll-controller) if you want to use it.
 
 ```dart
-Select2dot1(
+Select2dot2(
     selectDataController: SelectDataController(data: exampleData),
     scrollController: scrollController,
 ),
@@ -130,7 +120,7 @@ Select2dot1(
 
 ### Scroll Controller
 
-ScrollController is used to control anchor position of dropdown menu. You can pass your own ScrollController to Select2dot1 widget.
+ScrollController is used to control anchor position of dropdown menu. You can pass your own ScrollController to Select2dot2 widget.
 
 ![](https://github.com/romanjrdykyj/select2dot1/blob/main/img/scroll_controller.gif)
 
@@ -143,7 +133,7 @@ Check the [customization](#customization) section for more information.
 
 ### Components View
 
-In this section you can see how the components of Select2dot1 widget look like as well as their hierarchy. You can also see how to customize them by [settings](#by-settings) and [builder](#by-builder). For more details hierarchy of components , go to [Tree View Components with Settings](#tree-view-components-with-settings) section.
+In this section you can see how the components of Select2dot2 widget look like as well as their hierarchy. You can also see how to customize them by [settings](#by-settings) and [builder](#by-builder). For more details hierarchy of components , go to [Tree View Components with Settings](#tree-view-components-with-settings) section.
 
 #### **Component Pillbox Configuration 1**
 
@@ -275,23 +265,23 @@ ________________________________________________________________________________
 
 If you want to see treeview components with all settings you can access [here](https://miro.com/app/live-embed/uXjVP25lfEY=/?moveToViewport=-3198,-1103,6438,2600&embedId=52335582682). 
 
-[Miro](https://miro.com/) is an absolutely wonderful app that im familiar with, i would highly recommend you checking it outTree View was created by . **If you want to customize any of the components of Select2dot1 widget, you can use Tree View to see all the components and settings.**
+[Miro](https://miro.com/) is an absolutely wonderful app that im familiar with, i would highly recommend you checking it outTree View was created by . **If you want to customize any of the components of Select2dot2 widget, you can use Tree View to see all the components and settings.**
 
 ## Customization
 
-If you want to customize Select2dot1 widget you can do it through utilizing the settings and builder.
+If you want to customize Select2dot2 widget you can do it through utilizing the settings and builder.
 The first option you can try to use is to use settings to customize, if you have a hard time with that you can use builder.
 
 ### By Settings
 
-#### **Use global settings to customize all components of Select2dot1 widget**
+#### **Use global settings to customize all components of Select2dot2 widget**
 
-You can pass global settings to Select2dot1 widget. Global settings will be used by the components of Select2dot1 widget.
+You can pass global settings to Select2dot2 widget. Global settings will be used by the components of Select2dot2 widget.
 
-In the following example you will be shown how to customize mainColor and fontFamily for all the components of Select2dot1 widget.
+In the following example you will be shown how to customize mainColor and fontFamily for all the components of Select2dot2 widget.
 
 ```dart
-Select2dot1(
+Select2dot2(
   selectDataController: SelectDataController(data: exampleData),
   globalSettings: const GlobalSettings(
     fontFamily: 'Roboto',
@@ -300,14 +290,14 @@ Select2dot1(
 );
 ```
 
-#### **Use single component settings to customize only one component of Select2dot1 widget**
+#### **Use single component settings to customize only one component of Select2dot2 widget**
 
-You can pass the single component settings to Select2dot1 widget. Single component settings will be used only by one component of Select2dot1 widget.
+You can pass the single component settings to Select2dot2 widget. Single component settings will be used only by one component of Select2dot2 widget.
 
 In the following example you will be shown how to customize the OverlayCategoryWidget component and OverlayItemWidget component in Dropdown (modification of the design only be done through desktop overlay).
 
 ```dart
-Select2dot1(
+Select2dot2(
   selectDataController: SelectDataController(data: exampleData),
   overlayCategorySettings: OverlayCategorySettings(
     constraints: const BoxConstraints(minHeight: 27),
@@ -344,14 +334,14 @@ Select2dot1(
 
 ### By Builder
 
-Using builder you can customize all components of Select2dot1 widget. You can use your own components or you can use the default components that are available in Select2dot1 widget.
+Using builder you can customize all components of Select2dot2 widget. You can use your own components or you can use the default components that are available in Select2dot2 widget.
 
 #### **Create your own component completely**
 
-You can create your own component by using Select2dot1Builder class. You have to pass your own component to Select2dot1Builder class and then pass this class to Select2dot1 widget. When you are using builder you have access to all data that you need to create your own component.
+You can create your own component by using Select2dot2Builder class. You have to pass your own component to Select2dot2Builder class and then pass this class to Select2dot2 widget. When you are using builder you have access to all data that you need to create your own component.
 
 ```dart
-Select2dot1(
+Select2dot2(
     selectDataController: SelectDataController(data: exampleData),
     selectChipBuilder: (context, selectChipDetails) {
           return Container(
@@ -406,7 +396,7 @@ If you want to change the layout of your component you can utilize other compone
 **Remember that when using this builder, you must make sure that the code thats written is correct before you do anything else.**
 
 ```dart
-Select2dot1(
+Select2dot2(
   selectDataController: SelectDataController(data: exampleData),
   pillboxTitleSettings:
       const PillboxTitleSettings(title: 'Example use builder'),
@@ -437,7 +427,7 @@ Select2dot1(
 
 ## Model Structur Data
 
-To use Select2dot1 widget you have to pass data to SelectDataController. Data must be on the list of CategoryModel.
+To use Select2dot2 widget you have to pass data to SelectDataController. Data must be on the list of CategoryModel.
 
 The CategoryModel is a model which contains data about single category.
 Parameters:
@@ -531,14 +521,14 @@ class _BasicExample1State extends State<BasicExample1> {
     @override
   Widget build(BuildContext context) {
     // Do not create SelectDataController in build method!
-    // return Select2dot1(selectDataController: SelectDataController(data: ExampleData.exampleData1))
-    return Select2dot1(selectDataController: selectDataController);
+    // return Select2dot2(selectDataController: SelectDataController(data: ExampleData.exampleData1))
+    return Select2dot2(selectDataController: selectDataController);
   } 
 }
 ```
 ************
 
-SelectDataController is a controller that is used to manage the data in Select2dot1 widget. You can use it to add, remove, select and deselect data. All the data that you want to display in Select2dot1 widget must be added to SelectDataController
+SelectDataController is a controller that is used to manage the data in Select2dot2 widget. You can use it to add, remove, select and deselect data. All the data that you want to display in Select2dot2 widget must be added to SelectDataController
 **Remember that when isMultiple is false, you can add only one position to initialSelectedData**.
 
 In SelectDataController you can also set: 
@@ -546,7 +536,7 @@ In SelectDataController you can also set:
 * multiple select or single select
 
 ```dart
-Select2dot1(
+Select2dot2(
   selectDataController: 
     SelectDataController(
       data: exampleData, 
@@ -591,10 +581,10 @@ If you have any questions, feel free to ask them [here](https://github.com/roman
 
 Use 'onChanged' Callback Function
 
-You can pass callback function to Select2dot1 widget. This function will be called every time when user select an item.
+You can pass callback function to Select2dot2 widget. This function will be called every time when user select an item.
 
 ```dart
-Select2dot1(
+Select2dot2(
     selectDataController: SelectDataController(data: exampleData),
     onChanged: (value) {
         print(value); // value is a list of selected items
@@ -605,7 +595,7 @@ Select2dot1(
 ### How to init selected data?
 
 ```dart
-Select2dot1(
+Select2dot2(
     selectDataController: SelectDataController(data: exampleData, 
     initialSelectedData: [
         ItemModel(
