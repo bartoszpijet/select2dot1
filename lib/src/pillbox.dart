@@ -13,23 +13,23 @@ import 'package:select2dot1/src/settings/select_overload_info_settings.dart';
 import 'package:select2dot1/src/settings/select_single_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class Pillbox extends StatefulWidget {
-  final SelectDataController selectDataController;
+class Pillbox<T> extends StatefulWidget {
+  final SelectDataController<T> selectDataController;
   final void Function() onTap;
   final ValueNotifier<bool>? isVisibleOverlay;
   final LayerLink? pillboxLayerLink;
   final PillboxTitleBuilder? pillboxTitleBuilder;
   final PillboxTitleSettings pillboxTitleSettings;
-  final PillboxBuilder? pillboxBuilder;
+  final PillboxBuilder<T>? pillboxBuilder;
   final PillboxSettings pillboxSettings;
-  final PillboxContentSingleBuilder? pillboxContentSingleBuilder;
-  final PillboxContentMultiBuilder? pillboxContentMultiBuilder;
+  final PillboxContentSingleBuilder<T>? pillboxContentSingleBuilder;
+  final PillboxContentMultiBuilder<T>? pillboxContentMultiBuilder;
   final PillboxContentMultiSettings pillboxContentMultiSettings;
   final PillboxIconBuilder? pillboxIconBuilder;
   final PillboxIconSettings pillboxIconSettings;
-  final SelectChipBuilder? selectChipBuilder;
+  final SelectChipBuilder<T>? selectChipBuilder;
   final SelectChipSettings selectChipSettings;
-  final SelectSingleBuilder? selectSingleBuilder;
+  final SelectSingleBuilder<T>? selectSingleBuilder;
   final SelectSingleSettings selectSingleSettings;
   final SelectOverloadInfoBuilder? selectOverloadInfoBuilder;
   final SelectOverloadInfoSettings selectOverloadInfoSettings;
@@ -93,10 +93,10 @@ class Pillbox extends StatefulWidget {
   });
 
   @override
-  State<Pillbox> createState() => _PillboxState();
+  State<Pillbox<T>> createState() => _PillboxState<T>();
 }
 
-class _PillboxState extends State<Pillbox> {
+class _PillboxState<T> extends State<Pillbox<T>> {
   bool hover = false;
 
   @override

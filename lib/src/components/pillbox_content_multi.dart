@@ -5,7 +5,7 @@ import 'package:select2dot1/src/components/select_chip.dart';
 import 'package:select2dot1/src/components/select_empty_info.dart';
 import 'package:select2dot1/src/components/select_overload_info.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/pillbox_content_multi_settings.dart';
 import 'package:select2dot1/src/settings/pillbox_icon_settings.dart';
@@ -16,18 +16,18 @@ import 'package:select2dot1/src/settings/select_overload_info_settings.dart';
 import 'package:select2dot1/src/settings/select_single_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class PillboxContentMulti extends StatefulWidget {
-  final SelectDataController selectDataController;
+class PillboxContentMulti<T> extends StatefulWidget {
+  final SelectDataController<T> selectDataController;
   final bool hover;
   final ValueNotifier<bool>? isVisibleOvarlay;
   final PillboxSettings pillboxSettings;
-  final PillboxContentMultiBuilder? pillboxContentMultiBuilder;
+  final PillboxContentMultiBuilder<T>? pillboxContentMultiBuilder;
   final PillboxContentMultiSettings pillboxContentMultiSettings;
   final PillboxIconBuilder? pillboxIconBuilder;
   final PillboxIconSettings pillboxIconSettings;
-  final SelectChipBuilder? selectChipBuilder;
+  final SelectChipBuilder<T>? selectChipBuilder;
   final SelectChipSettings selectChipSettings;
-  final SelectSingleBuilder? selectSingleBuilder;
+  final SelectSingleBuilder<T>? selectSingleBuilder;
   final SelectSingleSettings selectSingleSettings;
   final SelectOverloadInfoBuilder? selectOverloadInfoBuilder;
   final SelectOverloadInfoSettings selectOverloadInfoSettings;
@@ -57,10 +57,10 @@ class PillboxContentMulti extends StatefulWidget {
   });
 
   @override
-  State<PillboxContentMulti> createState() => _PillboxContentMultiState();
+  State<PillboxContentMulti<T>> createState() => _PillboxContentMultiState<T>();
 }
 
-class _PillboxContentMultiState extends State<PillboxContentMulti> {
+class _PillboxContentMultiState<T> extends State<PillboxContentMulti<T>> {
   final ScrollController scrollController = ScrollController();
   bool isFocus = false;
 
@@ -154,7 +154,7 @@ class _PillboxContentMultiState extends State<PillboxContentMulti> {
                             : widget.selectDataController.selectedList.reversed
                                 .map(
                                   (i) => SelectChip(
-                                    singleItemCategory: i,
+                                    singleItem: i,
                                     selectDataController:
                                         widget.selectDataController,
                                     selectChipBuilder: widget.selectChipBuilder,
@@ -238,8 +238,8 @@ class _PillboxContentMultiState extends State<PillboxContentMulti> {
     }
   }
 
-  Widget _selectChip(SingleItemCategoryModel i) => SelectChip(
-        singleItemCategory: i,
+  Widget _selectChip(SelectModel<T> i) => SelectChip<T>(
+        singleItem: i,
         selectDataController: widget.selectDataController,
         selectChipBuilder: widget.selectChipBuilder,
         selectChipSettings: widget.selectChipSettings,

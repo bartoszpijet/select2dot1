@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/category_item_modal_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class CategoryItemModal extends StatefulWidget {
-  final SingleItemCategoryModel singleItemCategory;
-  final SelectDataController selectDataController;
-  final CategoryItemModalBuilder? categoryItemModalBuilder;
-  final CategoryItemModalSettings categoryItemModalSettings;
+class ModalItemWidget<T> extends StatefulWidget {
+  final int deepth;
+  final SelectModel<T> singleItem;
+  final SelectDataController<T> selectDataController;
+  final CategoryItemModalBuilder<T>? modalItemBuilder;
+  final ModalItemSettings modalItemSettings;
   final GlobalSettings globalSettings;
 
-  const CategoryItemModal({
+  const ModalItemWidget({
     super.key,
-    required this.singleItemCategory,
+    this.deepth = 0,
+    required this.singleItem,
     required this.selectDataController,
-    required this.categoryItemModalBuilder,
-    required this.categoryItemModalSettings,
+    required this.modalItemBuilder,
+    required this.modalItemSettings,
     required this.globalSettings,
   });
 
   @override
-  State<CategoryItemModal> createState() => _CategoryItemModalState();
+  State<ModalItemWidget<T>> createState() => _CategoryItemModalState<T>();
 }
 
-class _CategoryItemModalState extends State<CategoryItemModal> {
+class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
   bool isSelected = false;
 
   @override
@@ -47,13 +49,13 @@ class _CategoryItemModalState extends State<CategoryItemModal> {
   Widget build(BuildContext context) {
     isSelected = _isSelected();
 
-    if (widget.categoryItemModalBuilder != null) {
+    if (widget.modalItemBuilder != null) {
       // This can't be null anyways.
       // ignore: avoid-non-null-assertion
-      return widget.categoryItemModalBuilder!(
+      return widget.modalItemBuilder!(
         context,
         CategoryItemModalDetails(
-          singleItemCategory: widget.singleItemCategory,
+          singleItem: widget.singleItem,
           selectDataController: widget.selectDataController,
           isSelected: isSelected,
           onTapSingleItemCategory: _onTapSingleItemCategory,
@@ -63,40 +65,41 @@ class _CategoryItemModalState extends State<CategoryItemModal> {
     }
 
     return Container(
-      margin: widget.categoryItemModalSettings.margin,
+      margin: widget.modalItemSettings.margin,
       child: InkWell(
         onTap: _onTapSingleItemCategory,
-        borderRadius: widget.categoryItemModalSettings.inkWellBorderRadius,
-        splashColor: widget.categoryItemModalSettings.splashColor,
-        highlightColor: widget.categoryItemModalSettings.highlightColor,
+        borderRadius: widget.modalItemSettings.inkWellBorderRadius,
+        splashColor: widget.modalItemSettings.splashColor,
+        highlightColor: widget.modalItemSettings.highlightColor,
         child: Container(
-          decoration: widget.categoryItemModalSettings.decoration,
-          alignment: widget.categoryItemModalSettings.alignmentGeometry,
-          constraints: widget.categoryItemModalSettings.constraints,
+          decoration: widget.modalItemSettings.decoration,
+          alignment: widget.modalItemSettings.alignmentGeometry,
+          constraints: widget.modalItemSettings.constraints,
           child: Row(
             children: [
               Container(
-                padding: widget.categoryItemModalSettings.iconPadding,
+                padding: widget.modalItemSettings.iconPadding,
                 child: AnimatedOpacity(
                   opacity: isSelected ? 1 : 0,
-                  duration:
-                      widget.categoryItemModalSettings.iconAnimationDuration,
-                  curve: widget.categoryItemModalSettings.iconAnimationCurve,
+                  duration: widget.modalItemSettings.iconAnimationDuration,
+                  curve: widget.modalItemSettings.iconAnimationCurve,
                   child: Icon(
-                    widget.categoryItemModalSettings.iconData,
-                    size: widget.categoryItemModalSettings.iconSize,
+                    widget.modalItemSettings.iconData,
+                    size: widget.modalItemSettings.iconSize,
                     color: _getIconColor(),
                   ),
                 ),
               ),
-              if (widget.singleItemCategory.avatarSingleItem != null &&
-                  widget.categoryItemModalSettings.showAvatar)
+              for (int i = 0; i < widget.deepth; i++)
+                widget.modalItemSettings.indent,
+              if (widget.singleItem.avatarSingleItem != null &&
+                  widget.modalItemSettings.showAvatar)
                 Container(
-                  height: widget.categoryItemModalSettings.avatarMaxHeight,
-                  width: widget.categoryItemModalSettings.avatarMaxWidth,
-                  margin: widget.categoryItemModalSettings.avatarMargin,
+                  height: widget.modalItemSettings.avatarMaxHeight,
+                  width: widget.modalItemSettings.avatarMaxWidth,
+                  margin: widget.modalItemSettings.avatarMargin,
                   child: FittedBox(
-                    child: widget.singleItemCategory.avatarSingleItem,
+                    child: widget.singleItem.avatarSingleItem,
                   ),
                 ),
               Flexible(
@@ -105,24 +108,23 @@ class _CategoryItemModalState extends State<CategoryItemModal> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: widget.categoryItemModalSettings.textPadding,
+                      padding: widget.modalItemSettings.textPadding,
                       child: Text(
-                        widget.singleItemCategory.nameSingleItem,
-                        overflow: widget.categoryItemModalSettings.textOverflow,
+                        widget.singleItem.itemName,
+                        overflow: widget.modalItemSettings.textOverflow,
                         style: _getNameItemTextStyle(),
                       ),
                     ),
-                    if (widget.categoryItemModalSettings.showExtraInfo &&
-                        widget.singleItemCategory.extraInfoSingleItem != null)
+                    if (widget.modalItemSettings.showExtraInfo &&
+                        widget.singleItem.extraInfoSingleItem != null)
                       Container(
-                        padding:
-                            widget.categoryItemModalSettings.extraInfoPadding,
+                        padding: widget.modalItemSettings.extraInfoPadding,
                         child: Text(
                           // This can't be null anyways.
                           // ignore: avoid-non-null-assertion
-                          widget.singleItemCategory.extraInfoSingleItem!,
-                          overflow: widget
-                              .categoryItemModalSettings.extraInfoTextOverflow,
+                          widget.singleItem.extraInfoSingleItem!,
+                          overflow:
+                              widget.modalItemSettings.extraInfoTextOverflow,
                           style: _getExtraInfoTextStyle(),
                         ),
                       ),
@@ -138,14 +140,14 @@ class _CategoryItemModalState extends State<CategoryItemModal> {
 
   Color _getIconColor() {
     return isSelected
-        ? widget.categoryItemModalSettings.iconSelectedColor ??
+        ? widget.modalItemSettings.iconSelectedColor ??
             widget.globalSettings.mainColor
-        : widget.categoryItemModalSettings.iconDefaultColor ??
+        : widget.modalItemSettings.iconDefaultColor ??
             widget.globalSettings.textColor;
   }
 
   TextStyle _getExtraInfoTextStyle() {
-    TextStyle textStyle = widget.categoryItemModalSettings.extraInfoTextStyle;
+    TextStyle textStyle = widget.modalItemSettings.extraInfoTextStyle;
 
     if (textStyle.color == null) {
       return textStyle.copyWith(
@@ -164,8 +166,8 @@ class _CategoryItemModalState extends State<CategoryItemModal> {
 
   TextStyle _getNameItemTextStyle() {
     TextStyle textStyle = isSelected
-        ? widget.categoryItemModalSettings.selectedTextStyle
-        : widget.categoryItemModalSettings.defaultTextStyle;
+        ? widget.modalItemSettings.selectedTextStyle
+        : widget.modalItemSettings.defaultTextStyle;
 
     if (textStyle.color == null) {
       return textStyle.copyWith(
@@ -187,12 +189,10 @@ class _CategoryItemModalState extends State<CategoryItemModal> {
   void _onTapSingleItemCategory() {
     if (!isSelected) {
       widget.selectDataController.isMultiSelect
-          ? widget.selectDataController.addSelectChip(widget.singleItemCategory)
-          : widget.selectDataController
-              .setSingleSelect(widget.singleItemCategory);
+          ? widget.selectDataController.addSelectChip(widget.singleItem)
+          : widget.selectDataController.setSingleSelect(widget.singleItem);
     } else {
-      widget.selectDataController
-          .removeSingleSelectedChip(widget.singleItemCategory);
+      widget.selectDataController.removeSelectedChip(widget.singleItem);
     }
 
     if (!widget.selectDataController.isMultiSelect) {
@@ -201,8 +201,7 @@ class _CategoryItemModalState extends State<CategoryItemModal> {
   }
 
   bool _isSelected() {
-    if (widget.selectDataController.selectedList
-        .contains(widget.singleItemCategory)) {
+    if (widget.selectDataController.selectedList.contains(widget.singleItem)) {
       return true;
     }
 

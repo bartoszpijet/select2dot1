@@ -18,74 +18,97 @@ class BasicExample9 extends StatelessWidget {
             selectDataController: SelectDataController(
               data: ExampleData.exampleData2,
               initSelected: const [
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Alabama',
+                ItemModel(
+                  value: null,
+                  itemName: 'Alabama',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Arkansas',
+                ItemModel(
+                  value: null,
+                  itemName: 'Arkansas',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Illonois',
+                ItemModel(
+                  value: null,
+                  itemName: 'Illonois',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Iowa',
+                ItemModel(
+                  value: null,
+                  itemName: 'Iowa',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Kansas',
+                ItemModel(
+                  value: null,
+                  itemName: 'Kansas',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Kentucky',
+                ItemModel(
+                  value: null,
+                  itemName: 'Kentucky',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Louisiana',
+                ItemModel(
+                  value: null,
+                  itemName: 'Louisiana',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Minnesota',
+                ItemModel(
+                  value: null,
+                  itemName: 'Minnesota',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Mississippi',
+                ItemModel(
+                  value: null,
+                  itemName: 'Mississippi',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Missouri',
+                ItemModel(
+                  value: null,
+                  itemName: 'Missouri',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Oklahoma',
+                ItemModel(
+                  value: null,
+                  itemName: 'Oklahoma',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'South Dakota',
+                ItemModel(
+                  value: null,
+                  itemName: 'South Dakota',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Texas',
+                ItemModel(
+                  value: null,
+                  itemName: 'Texas',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Tennessee',
+                ItemModel(
+                  value: null,
+                  itemName: 'Tennessee',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Arizona',
+                ItemModel(
+                  value: null,
+                  itemName: 'Arizona',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Colorado',
+                ItemModel(
+                  value: null,
+                  itemName: 'Colorado',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Idaho',
+                ItemModel(
+                  value: null,
+                  itemName: 'Idaho',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Montana',
+                ItemModel(
+                  value: null,
+                  itemName: 'Montana',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Nebraska',
+                ItemModel(
+                  value: null,
+                  itemName: 'Nebraska',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'New Mexico',
+                ItemModel(
+                  value: null,
+                  itemName: 'New Mexico',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'North Dakota',
+                ItemModel(
+                  value: null,
+                  itemName: 'North Dakota',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Utah',
+                ItemModel(
+                  value: null,
+                  itemName: 'Utah',
                 ),
-                SingleItemCategoryModel(
-                  nameSingleItem: 'Wyoming',
+                ItemModel(
+                  value: null,
+                  itemName: 'Wyoming',
                 ),
               ],
             ),

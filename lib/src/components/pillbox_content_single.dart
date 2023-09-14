@@ -11,15 +11,15 @@ import 'package:select2dot1/src/settings/select_overload_info_settings.dart';
 import 'package:select2dot1/src/settings/select_single_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class PillboxContentSingle extends StatefulWidget {
-  final SelectDataController selectDataController;
+class PillboxContentSingle<T> extends StatefulWidget {
+  final SelectDataController<T> selectDataController;
   final bool hover;
   final ValueNotifier<bool>? isVisibleOvarlay;
-  final PillboxContentSingleBuilder? pillboxContentSingleBuilder;
+  final PillboxContentSingleBuilder<T>? pillboxContentSingleBuilder;
   final PillboxSettings pillboxSettings;
   final PillboxIconBuilder? pillboxIconBuilder;
   final PillboxIconSettings pillboxIconSettings;
-  final SelectSingleBuilder? selectSingleBuilder;
+  final SelectSingleBuilder<T>? selectSingleBuilder;
   final SelectSingleSettings selectSingleSettings;
   final SelectOverloadInfoBuilder? selectOverloadInfoBuilder;
   final SelectOverloadInfoSettings selectOverloadInfoSettings;
@@ -46,10 +46,11 @@ class PillboxContentSingle extends StatefulWidget {
   });
 
   @override
-  State<PillboxContentSingle> createState() => _PillboxContentSingleState();
+  State<PillboxContentSingle<T>> createState() =>
+      _PillboxContentSingleState<T>();
 }
 
-class _PillboxContentSingleState extends State<PillboxContentSingle> {
+class _PillboxContentSingleState<T> extends State<PillboxContentSingle<T>> {
   bool isFocus = false;
 
   @override
@@ -102,8 +103,7 @@ class _PillboxContentSingleState extends State<PillboxContentSingle> {
                     globalSettings: widget.globalSettings,
                   )
                 : SelectSingle(
-                    singleItemCategory:
-                        widget.selectDataController.selectedList.first,
+                    singleItem: widget.selectDataController.selectedList.first,
                     selectDataController: widget.selectDataController,
                     selectSingleBuilder: widget.selectSingleBuilder,
                     selectSingleSettings: widget.selectSingleSettings,
@@ -171,7 +171,7 @@ class _PillboxContentSingleState extends State<PillboxContentSingle> {
   }
 
   Widget _selectSingle() => SelectSingle(
-        singleItemCategory: widget.selectDataController.selectedList.first,
+        singleItem: widget.selectDataController.selectedList.first,
         selectDataController: widget.selectDataController,
         selectSingleBuilder: widget.selectSingleBuilder,
         selectSingleSettings: widget.selectSingleSettings,

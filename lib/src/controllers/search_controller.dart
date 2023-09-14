@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fuzzysearch/fuzzysearch.dart';
-import 'package:select2dot1/src/models/single_category_model.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/category_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 
 /// SearchController is a class that will be used to search data.
 // Its okay.
 // ignore: prefer-match-file-name
-class SearchControllerSelect2dot1 extends ChangeNotifier {
+class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   /// Old length memory of search results.
   int oldLength = 0;
 
@@ -18,14 +18,14 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
 
   /// Data to search.
   /// It is required.
-  final List<SingleCategoryModel> data;
+  final List<SelectModel<T>> data;
 
   /// Search results.
   /// First it will be same as [data].
-  final List<SingleCategoryModel> results;
+  final List<SelectModel<T>> results;
 
   /// Getter for [results] find by [findSearchDataResults].
-  List<SingleCategoryModel> get getResults => results;
+  List<SelectModel<T>> get getResults => results;
 
   /// Creating an argument constructor of [SearchControllerSelect2dot1] class.
   /// [data] is data to search. [data] is required.
@@ -55,12 +55,12 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
     results.clear();
 
     for (var category in data) {
-      List<SingleItemCategoryModel> tempSingleItemCategoryList = [];
+      List<SelectModel<T>> tempSingleItemCategoryList = [];
 
-      Fuzzy<SingleItemCategoryModel> fuse = Fuzzy.withIdentifiers(
+      Fuzzy<SelectModel<T>> fuse = Fuzzy.withIdentifiers(
         {
-          for (var singleItem in category.singleItemCategoryList)
-            singleItem.nameSingleItem: singleItem,
+          for (var singleItem in category.itemList)
+            singleItem.itemName: singleItem,
         },
         options: fuzzyOptions ??
             FuzzyOptions(
@@ -69,8 +69,7 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
               threshold: 0.5,
             ),
       );
-      List<Result<SingleItemCategoryModel>> tmpResults =
-          await fuse.search(value);
+      List<Result<SelectModel<T>>> tmpResults = await fuse.search(value);
       for (var element in tmpResults) {
         if (element.identifier != null) {
           // Null check done above.
@@ -81,9 +80,9 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
 
       if (tempSingleItemCategoryList.isNotEmpty) {
         results.add(
-          SingleCategoryModel(
-            nameCategory: category.nameCategory,
-            singleItemCategoryList: tempSingleItemCategoryList,
+          CategoryModel(
+            itemName: category.itemName,
+            itemList: tempSingleItemCategoryList,
           ),
         );
       }
@@ -99,7 +98,7 @@ class SearchControllerSelect2dot1 extends ChangeNotifier {
   int countLength() {
     int length = 0;
     for (var category in results) {
-      length += category.singleItemCategoryList.length;
+      length += category.itemList.length;
     }
 
     return length;

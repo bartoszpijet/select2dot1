@@ -13,20 +13,20 @@ import 'package:select2dot1/src/settings/select_overload_info_settings.dart';
 import 'package:select2dot1/src/settings/select_single_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class PillboxContent extends StatelessWidget {
-  final SelectDataController selectDataController;
+class PillboxContent<T> extends StatelessWidget {
+  final SelectDataController<T> selectDataController;
   final bool hover;
   final ValueNotifier<bool>? isVisibleOvarlay;
   final LayerLink? pillboxLayerLink;
-  final PillboxContentSingleBuilder? pillboxContentSingleBuilder;
+  final PillboxContentSingleBuilder<T>? pillboxContentSingleBuilder;
   final PillboxSettings pillboxSettings;
-  final PillboxContentMultiBuilder? pillboxContentMultiBuilder;
+  final PillboxContentMultiBuilder<T>? pillboxContentMultiBuilder;
   final PillboxContentMultiSettings pillboxContentMultiSettings;
   final PillboxIconBuilder? pillboxIconBuilder;
   final PillboxIconSettings pillboxIconSettings;
-  final SelectChipBuilder? selectChipBuilder;
+  final SelectChipBuilder<T>? selectChipBuilder;
   final SelectChipSettings selectChipSettings;
-  final SelectSingleBuilder? selectSingleBuilder;
+  final SelectSingleBuilder<T>? selectSingleBuilder;
   final SelectSingleSettings selectSingleSettings;
   final SelectOverloadInfoBuilder? selectOverloadInfoBuilder;
   final SelectOverloadInfoSettings selectOverloadInfoSettings;

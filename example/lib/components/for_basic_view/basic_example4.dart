@@ -18,16 +18,16 @@ class BasicExample4 extends StatelessWidget {
             selectDataController: SelectDataController(
               data: ExampleData.exampleData2,
               initSelected: const [
-                SingleItemCategoryModel(nameSingleItem: 'Alaska'),
-                SingleItemCategoryModel(nameSingleItem: 'California'),
+                ItemModel(value: null, itemName: 'Alaska'),
+                ItemModel(value: null, itemName: 'California'),
               ],
             ),
             selectSingleSettings:
                 const SelectSingleSettings(showExtraInfo: false),
-            categoryItemModalSettings: const CategoryItemModalSettings(
+            modalItemSettings: const ModalItemSettings(
               showExtraInfo: false,
             ),
-            categoryItemOverlaySettings: const CategoryItemOverlaySettings(
+            overlayItemSettings: const OverlayItemSettings(
               showExtraInfo: false,
             ),
             scrollController: scrollController,

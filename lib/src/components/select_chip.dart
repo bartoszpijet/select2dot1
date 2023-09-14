@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/select_chip_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class SelectChip extends StatelessWidget {
-  final SingleItemCategoryModel singleItemCategory;
-  final SelectDataController selectDataController;
-  final SelectChipBuilder? selectChipBuilder;
+class SelectChip<T> extends StatelessWidget {
+  final SelectModel<T> singleItem;
+  final SelectDataController<T> selectDataController;
+  final SelectChipBuilder<T>? selectChipBuilder;
   final SelectChipSettings selectChipSettings;
   final GlobalSettings globalSettings;
 
   const SelectChip({
     super.key,
-    required this.singleItemCategory,
+    required this.singleItem,
     required this.selectDataController,
     required this.selectChipBuilder,
     required this.selectChipSettings,
@@ -29,7 +29,7 @@ class SelectChip extends StatelessWidget {
       return selectChipBuilder!(
         context,
         SelectChipDetails(
-          singleItemCategory: singleItemCategory,
+          singleItem: singleItem,
           selectDataController: selectDataController,
           globalSettings: globalSettings,
         ),
@@ -43,12 +43,12 @@ class SelectChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (selectChipSettings.isAvatarVisible &&
-              singleItemCategory.avatarSingleItem != null)
+              singleItem.avatarSingleItem != null)
             Container(
               width: selectChipSettings.avatarMaxWidth,
               height: selectChipSettings.avatarMaxHeight,
               margin: selectChipSettings.avatarMargin,
-              child: FittedBox(child: singleItemCategory.avatarSingleItem),
+              child: FittedBox(child: singleItem.avatarSingleItem),
             ),
           Flexible(
             child: MouseRegion(
@@ -57,7 +57,7 @@ class SelectChip extends StatelessWidget {
                 constraints: selectChipSettings.textBoxConstraints,
                 padding: selectChipSettings.textPadding,
                 child: Text(
-                  singleItemCategory.nameSingleItem,
+                  singleItem.itemName,
                   overflow: selectChipSettings.textOverflow,
                   style: _getChipTextStyle(),
                 ),
@@ -71,8 +71,7 @@ class SelectChip extends StatelessWidget {
                 selectChipSettings.dividerColor ?? globalSettings.inActiveColor,
           ),
           GestureDetector(
-            onTap: () => selectDataController
-                .removeSingleSelectedChip(singleItemCategory),
+            onTap: () => selectDataController.removeSelectedChip(singleItem),
             child: MouseRegion(
               cursor: selectChipSettings.iconMouseCursor,
               child: Container(

@@ -1,26 +1,27 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:select2dot1/src/components/overlay/overlay_category_widget.dart';
 
-import 'package:select2dot1/src/components/overlay/category_item_overlay.dart';
-import 'package:select2dot1/src/components/overlay/category_name_overlay.dart';
+import 'package:select2dot1/src/components/overlay/overlay_item_widget.dart';
 import 'package:select2dot1/src/components/overlay/loading_data_overlay.dart';
 import 'package:select2dot1/src/components/overlay/search_empty_info_overlay.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/single_category_model.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/category_model.dart';
+import 'package:select2dot1/src/models/item_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/overlay/category_item_overlay_settings.dart';
-import 'package:select2dot1/src/settings/overlay/category_name_overlay_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
 import 'package:select2dot1/src/settings/overlay/list_data_view_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/loading_data_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/search_empty_info_overlay_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class ListDataViewOverlay extends StatefulWidget {
-  final SearchControllerSelect2dot1 searchController;
-  final SelectDataController selectDataController;
+class ListDataViewOverlay<T> extends StatefulWidget {
+  final SearchControllerSelect2dot1<T> searchController;
+  final SelectDataController<T> selectDataController;
   final void Function() overlayHide;
   // Its okay.
   // ignore: prefer-correct-identifier-length
@@ -29,12 +30,12 @@ class ListDataViewOverlay extends StatefulWidget {
   final LoadingDataOverlaySettings loadingDataOverlaySettings;
   final SearchEmptyInfoOverlayBuilder? searchEmptyInfoOverlayBuilder;
   final SearchEmptyInfoOverlaySettings searchEmptyInfoOverlaySettings;
-  final ListDataViewOverlayBuilder? listDataViewOverlayBuilder;
+  final ListDataViewOverlayBuilder<T>? listDataViewOverlayBuilder;
   final ListDataViewOverlaySettings listDataViewOverlaySettings;
-  final CategoryNameOverlayBuilder? categoryNameOverlayBuilder;
-  final CategoryNameOverlaySettings categoryNameOverlaySettings;
-  final CategoryItemOverlayBuilder? categoryItemOverlayBuilder;
-  final CategoryItemOverlaySettings categoryItemOverlaySettings;
+  final CategoryNameOverlayBuilder<T>? overlayCategoryBuilder;
+  final OverlayCategorySettings overlayCategorySettings;
+  final CategoryItemOverlayBuilder<T>? overlayItemBuilder;
+  final OverlayItemSettings overlayItemSettings;
   final GlobalSettings globalSettings;
 
   const ListDataViewOverlay({
@@ -49,18 +50,18 @@ class ListDataViewOverlay extends StatefulWidget {
     required this.searchEmptyInfoOverlaySettings,
     required this.listDataViewOverlayBuilder,
     required this.listDataViewOverlaySettings,
-    required this.categoryNameOverlayBuilder,
-    required this.categoryNameOverlaySettings,
-    required this.categoryItemOverlayBuilder,
-    required this.categoryItemOverlaySettings,
+    required this.overlayCategoryBuilder,
+    required this.overlayCategorySettings,
+    required this.overlayItemBuilder,
+    required this.overlayItemSettings,
     required this.globalSettings,
   });
 
   @override
-  State<ListDataViewOverlay> createState() => _ListDataViewOverlayState();
+  State<ListDataViewOverlay<T>> createState() => _ListDataViewOverlayState<T>();
 }
 
-class _ListDataViewOverlayState extends State<ListDataViewOverlay> {
+class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
   // Its okay, because its initialized in the same line.
   // ignore: avoid-late-keyword
   late final ScrollController scrollController =
@@ -190,54 +191,60 @@ class _ListDataViewOverlayState extends State<ListDataViewOverlay> {
   Future<List<Widget>> dataFuture() async {
     List<Widget> listDataViewChildren = [];
 
-    for (int indexCategory = 0;
-        indexCategory < widget.searchController.getResults.length;
-        indexCategory++) {
-      listDataViewChildren.add(
-        CategoryNameOverlay(
-          singleCategory: widget.searchController.getResults[indexCategory],
-          selectDataController: widget.selectDataController,
-          categoryNameOverlayBuilder: widget.categoryNameOverlayBuilder,
-          categoryNameOverlaySettings: widget.categoryNameOverlaySettings,
-          globalSettings: widget.globalSettings,
-        ),
-      );
-      for (int indexItem = 0;
-          indexItem <
-              widget.searchController.getResults[indexCategory]
-                  .singleItemCategoryList.length;
-          indexItem++) {
-        listDataViewChildren.add(
-          CategoryItemOverlay(
-            singleItemCategory: widget.searchController
-                .getResults[indexCategory].singleItemCategoryList[indexItem],
-            selectDataController: widget.selectDataController,
-            overlayHide: widget.overlayHide,
-            categoryItemOverlayBuilder: widget.categoryItemOverlayBuilder,
-            categoryItemOverlaySettings: widget.categoryItemOverlaySettings,
-            globalSettings: widget.globalSettings,
-          ),
-        );
-      }
+    for (SelectModel<T> item in widget.searchController.getResults) {
+      listDataViewChildren.addAll(categoryOverlay(item));
     }
 
     return listDataViewChildren;
   }
 
-  Widget _categoryNameOverlay(SingleCategoryModel i) => CategoryNameOverlay(
+  List<Widget> categoryOverlay(SelectModel<T> category, [int deepth = 0]) {
+    List<Widget> listDataViewChildren = [];
+    if (!category.isCategory) {
+      listDataViewChildren.add(
+        OverlayItemWidget(
+          deepth: deepth,
+          singleItem: category,
+          selectDataController: widget.selectDataController,
+          overlayHide: widget.overlayHide,
+          overlayItemBuilder: widget.overlayItemBuilder,
+          overlayItemSettings: widget.overlayItemSettings,
+          globalSettings: widget.globalSettings,
+        ),
+      );
+      return listDataViewChildren;
+    }
+    listDataViewChildren.add(
+      OverlayCategoryWidget(
+        deepth: deepth,
+        singleCategory: category,
+        selectDataController: widget.selectDataController,
+        overlayCategoryBuilder: widget.overlayCategoryBuilder,
+        overlayCategorySettings: widget.overlayCategorySettings,
+        globalSettings: widget.globalSettings,
+      ),
+    );
+    for (SelectModel<T> item in category.itemList) {
+      listDataViewChildren.addAll(categoryOverlay(item, deepth + 1));
+    }
+
+    return listDataViewChildren;
+  }
+
+  Widget _categoryNameOverlay(CategoryModel<T> i) => OverlayCategoryWidget<T>(
         singleCategory: i,
         selectDataController: widget.selectDataController,
-        categoryNameOverlayBuilder: widget.categoryNameOverlayBuilder,
-        categoryNameOverlaySettings: widget.categoryNameOverlaySettings,
+        overlayCategoryBuilder: widget.overlayCategoryBuilder,
+        overlayCategorySettings: widget.overlayCategorySettings,
         globalSettings: widget.globalSettings,
       );
 
-  Widget _categoryItemOverlay(SingleItemCategoryModel i) => CategoryItemOverlay(
-        singleItemCategory: i,
+  Widget _categoryItemOverlay(ItemModel<T> i) => OverlayItemWidget<T>(
+        singleItem: i,
         selectDataController: widget.selectDataController,
         overlayHide: widget.overlayHide,
-        categoryItemOverlayBuilder: widget.categoryItemOverlayBuilder,
-        categoryItemOverlaySettings: widget.categoryItemOverlaySettings,
+        overlayItemBuilder: widget.overlayItemBuilder,
+        overlayItemSettings: widget.overlayItemSettings,
         globalSettings: widget.globalSettings,
       );
 

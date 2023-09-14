@@ -6,10 +6,10 @@ import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/modal/search_bar_modal_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class SearchBarModal extends StatefulWidget {
-  final SearchControllerSelect2dot1 searchController;
+class SearchBarModal<T> extends StatefulWidget {
+  final SearchControllerSelect2dot1<T> searchController;
   final bool isSearchable;
-  final SearchBarModalBuilder? searchBarModalBuilder;
+  final SearchBarModalBuilder<T>? searchBarModalBuilder;
   final SearchBarModalSettings searchBarModalSettings;
   final GlobalSettings globalSettings;
 
@@ -23,10 +23,10 @@ class SearchBarModal extends StatefulWidget {
   });
 
   @override
-  State<SearchBarModal> createState() => _SearchBarModalState();
+  State<SearchBarModal<T>> createState() => _SearchBarModalState<T>();
 }
 
-class _SearchBarModalState extends State<SearchBarModal> {
+class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
   final FocusNode searchBarModalFocusNode = FocusNode();
   final TextEditingController searchBarModalController =
       TextEditingController();

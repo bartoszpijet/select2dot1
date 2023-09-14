@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// This is a class which contains all the settings of the category item of list data view in modal mode.
-class CategoryItemModalSettings {
+class ModalItemSettings {
   /// The alignment of the category item of list data view in modal mode.
   /// Default value is [Alignment.centerLeft].
   final AlignmentGeometry? alignmentGeometry;
@@ -61,6 +61,10 @@ class CategoryItemModalSettings {
   /// The curve of the icon animation of the category item of list data view in modal mode.
   /// Default value is [Curves.easeInOutQuart].
   final Curve iconAnimationCurve;
+
+  /// The indent that will be used for nested category.
+  /// Default is ``` const SizedBox(width:25) ```.
+  final Widget indent;
 
   /// The default text style of the category item of list data view in modal mode.
   /// Default value is [TextStyle(fontSize: 18, fontWeight: FontWeight.w400)].
@@ -124,8 +128,8 @@ class CategoryItemModalSettings {
     fontWeight: FontWeight.w300,
   );
 
-  /// Creating an argument constructor of [CategoryItemModalSettings] class.
-  const CategoryItemModalSettings({
+  /// Creating an argument constructor of [ModalItemSettings] class.
+  const ModalItemSettings({
     this.alignmentGeometry = Alignment.centerLeft,
     this.constraints = const BoxConstraints(minHeight: 50),
     this.margin,
@@ -146,6 +150,7 @@ class CategoryItemModalSettings {
     this.iconSize = 18.0,
     this.iconAnimationDuration = const Duration(milliseconds: 400),
     this.iconAnimationCurve = Curves.easeInOutQuart,
+    this.indent = const SizedBox(width: 25),
     this.defaultTextStyle = kDefaultTextStyle,
     this.selectedTextStyle = kDefaultTextStyle,
     this.textPadding = const EdgeInsets.only(

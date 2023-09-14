@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:select2dot1/src/dropdown_modal.dart';
 import 'package:select2dot1/src/utils/animated_state.dart';
 
-mixin ModalController on AnimatedState {
+mixin ModalController<T> on AnimatedState<T> {
   void showModal(context) {
     unawaited(
       showModalBottomSheet(
@@ -34,10 +34,10 @@ mixin ModalController on AnimatedState {
             searchEmptyInfoModalSettings: widget.searchEmptyInfoModalSettings,
             listDataViewModalBuilder: widget.listDataViewModalBuilder,
             listDataViewModalSettings: widget.listDataViewModalSettings,
-            categoryItemModalBuilder: widget.categoryItemModalBuilder,
-            categoryItemModalSettings: widget.categoryItemModalSettings,
-            categoryNameModalBuilder: widget.categoryNameModalBuilder,
-            categoryNameModalSettings: widget.categoryNameModalSettings,
+            modalItemBuilder: widget.modalItemBuilder,
+            modalItemSettings: widget.modalItemSettings,
+            modalCategoryBuilder: widget.modalCategoryBuilder,
+            modalCategorySettings: widget.modalCategorySettings,
             globalSettings: widget.globalSettings,
           );
         },
