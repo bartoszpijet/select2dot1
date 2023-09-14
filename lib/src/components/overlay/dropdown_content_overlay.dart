@@ -5,8 +5,8 @@ import 'package:select2dot1/src/components/overlay/search_bar_overlay.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/overlay/category_item_overlay_settings.dart';
-import 'package:select2dot1/src/settings/overlay/category_name_overlay_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
 import 'package:select2dot1/src/settings/overlay/dropdown_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/list_data_view_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/loading_data_overlay_settings.dart';
@@ -14,9 +14,9 @@ import 'package:select2dot1/src/settings/overlay/search_bar_overlay_settings.dar
 import 'package:select2dot1/src/settings/overlay/search_empty_info_overlay_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class DropdownContentOverlay extends StatefulWidget {
-  final SelectDataController selectDataController;
-  final SearchControllerSelect2dot1 searchController;
+class DropdownContentOverlay<T> extends StatefulWidget {
+  final SelectDataController<T> selectDataController;
+  final SearchControllerSelect2dot1<T> searchController;
   final void Function() overlayHide;
   final LayerLink layerLink;
   final ScrollController? scrollController;
@@ -24,21 +24,21 @@ class DropdownContentOverlay extends StatefulWidget {
   // Its okay.
   // ignore: prefer-correct-identifier-length
   final ScrollController? dropdownContentOverlayScrollController;
-  final DropdownContentOverlayBuilder? dropdownContentOverlayBuilder;
+  final DropdownContentOverlayBuilder<T>? dropdownContentOverlayBuilder;
   final DropdownOverlaySettings dropdownOverlaySettings;
   final bool isSearchable;
-  final SearchBarOverlayBuilder? searchBarOverlayBuilder;
+  final SearchBarOverlayBuilder<T>? searchBarOverlayBuilder;
   final SearchBarOverlaySettings searchBarOverlaySettings;
   final LoadingDataOverlayBuilder? loadingDataOverlayBuilder;
   final LoadingDataOverlaySettings loadingDataOverlaySettings;
   final SearchEmptyInfoOverlayBuilder? searchEmptyInfoOverlayBuilder;
   final SearchEmptyInfoOverlaySettings searchEmptyInfoOverlaySettings;
-  final ListDataViewOverlayBuilder? listDataViewOverlayBuilder;
+  final ListDataViewOverlayBuilder<T>? listDataViewOverlayBuilder;
   final ListDataViewOverlaySettings listDataViewOverlaySettings;
-  final CategoryNameOverlayBuilder? categoryNameOverlayBuilder;
-  final CategoryNameOverlaySettings categoryNameOverlaySettings;
-  final CategoryItemOverlayBuilder? categoryItemOverlayBuilder;
-  final CategoryItemOverlaySettings categoryItemOverlaySettings;
+  final CategoryNameOverlayBuilder<T>? overlayCategoryBuilder;
+  final OverlayCategorySettings overlayCategorySettings;
+  final CategoryItemOverlayBuilder<T>? overlayItemBuilder;
+  final OverlayItemSettings overlayItemSettings;
   final GlobalSettings globalSettings;
 
   const DropdownContentOverlay({
@@ -61,18 +61,19 @@ class DropdownContentOverlay extends StatefulWidget {
     required this.searchEmptyInfoOverlaySettings,
     required this.listDataViewOverlayBuilder,
     required this.listDataViewOverlaySettings,
-    required this.categoryNameOverlayBuilder,
-    required this.categoryNameOverlaySettings,
-    required this.categoryItemOverlayBuilder,
-    required this.categoryItemOverlaySettings,
+    required this.overlayCategoryBuilder,
+    required this.overlayCategorySettings,
+    required this.overlayItemBuilder,
+    required this.overlayItemSettings,
     required this.globalSettings,
   });
 
   @override
-  State<DropdownContentOverlay> createState() => _DropdownContentOverlayState();
+  State<DropdownContentOverlay<T>> createState() =>
+      _DropdownContentOverlayState<T>();
 }
 
-class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
+class _DropdownContentOverlayState<T> extends State<DropdownContentOverlay<T>> {
   static const dropdownOverlayPadding = 10;
   final keySearchBarOverlay = GlobalKey();
   Size sizeSearchBarOverlay = const Size(0, 0);
@@ -157,10 +158,10 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
                   widget.searchEmptyInfoOverlaySettings,
               listDataViewOverlayBuilder: widget.listDataViewOverlayBuilder,
               listDataViewOverlaySettings: widget.listDataViewOverlaySettings,
-              categoryNameOverlayBuilder: widget.categoryNameOverlayBuilder,
-              categoryNameOverlaySettings: widget.categoryNameOverlaySettings,
-              categoryItemOverlayBuilder: widget.categoryItemOverlayBuilder,
-              categoryItemOverlaySettings: widget.categoryItemOverlaySettings,
+              overlayCategoryBuilder: widget.overlayCategoryBuilder,
+              overlayCategorySettings: widget.overlayCategorySettings,
+              overlayItemBuilder: widget.overlayItemBuilder,
+              overlayItemSettings: widget.overlayItemSettings,
               globalSettings: widget.globalSettings,
             ),
           ),
@@ -259,10 +260,10 @@ class _DropdownContentOverlayState extends State<DropdownContentOverlay> {
         searchEmptyInfoOverlaySettings: widget.searchEmptyInfoOverlaySettings,
         listDataViewOverlayBuilder: widget.listDataViewOverlayBuilder,
         listDataViewOverlaySettings: widget.listDataViewOverlaySettings,
-        categoryNameOverlayBuilder: widget.categoryNameOverlayBuilder,
-        categoryNameOverlaySettings: widget.categoryNameOverlaySettings,
-        categoryItemOverlayBuilder: widget.categoryItemOverlayBuilder,
-        categoryItemOverlaySettings: widget.categoryItemOverlaySettings,
+        overlayCategoryBuilder: widget.overlayCategoryBuilder,
+        overlayCategorySettings: widget.overlayCategorySettings,
+        overlayItemBuilder: widget.overlayItemBuilder,
+        overlayItemSettings: widget.overlayItemSettings,
         globalSettings: widget.globalSettings,
       );
 }

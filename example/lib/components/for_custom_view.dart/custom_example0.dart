@@ -11,7 +11,7 @@ class CustomExample0 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: CustomSelect2dot1(
+      child: CustomSelect2dot1<String>(
         title: 'Example 0',
         data: ExampleData.exampleData1,
         isMultiSelect: true,

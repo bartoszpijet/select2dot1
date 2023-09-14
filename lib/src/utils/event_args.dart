@@ -2,8 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/single_category_model.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/category_model.dart';
+import 'package:select2dot1/src/models/item_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 
 /// This is a function that will be used to build your own title of the pillbox.
@@ -44,18 +45,18 @@ class PillboxTitleDetails {
 }
 
 /// This is a function that will be used to build your own pillbox.
-typedef PillboxBuilder = Widget Function(
+typedef PillboxBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own pillbox.
   BuildContext context,
 
   /// [pillboxDetails] is a [PillboxDetails] that will be used to build your own pillbox.
-  PillboxDetails pillboxDetails,
+  PillboxDetails<T> pillboxDetails,
 );
 
 /// This is a class which contains necessary details to build your own pillbox.
-class PillboxDetails {
+class PillboxDetails<T> {
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is embedded function services show the dropdown.
   final void Function() showDropdown;
@@ -93,18 +94,18 @@ class PillboxDetails {
 }
 
 /// This is a function that will be used to build your own multi content of the pillbox.
-typedef PillboxContentMultiBuilder = Widget Function(
+typedef PillboxContentMultiBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own multi content of the pillbox.
   BuildContext context,
 
   /// [pillboxContentMultiDetails] is a [PillboxContentMultiDetails] that will be used to build your own multi content of the pillbox.
-  PillboxContentMultiDetails pillboxContentMultiDetails,
+  PillboxContentMultiDetails<T> pillboxContentMultiDetails,
 );
 
 /// This is a class which contains necessary details to build your own multi content of the pillbox.
-class PillboxContentMultiDetails {
+class PillboxContentMultiDetails<T> {
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is a boolean representing if the pillbox is hovered.
   bool hover;
@@ -119,7 +120,7 @@ class PillboxContentMultiDetails {
   final void Function() onFocusChange;
 
   /// This is a function returning a [Widget] of the the chip of the pillbox.
-  final Widget Function(SingleItemCategoryModel singleItemCategory) selectChip;
+  final Widget Function(ItemModel<T> singleItem) selectChip;
 
   /// This is a function returning a [Widget] of the empty info of the pillbox.
   final Widget Function() selectEmptyInfo;
@@ -150,18 +151,18 @@ class PillboxContentMultiDetails {
 }
 
 /// This is a function that will be used to build your own single content of the pillbox.
-typedef PillboxContentSingleBuilder = Widget Function(
+typedef PillboxContentSingleBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own single content of the pillbox.
   BuildContext context,
 
   /// [pillboxContentSingleDetails] is a [PillboxContentSingleDetails] that will be used to build your own single content of the pillbox.
-  PillboxContentSingleDetails pillboxContentSingleDetails,
+  PillboxContentSingleDetails<T> pillboxContentSingleDetails,
 );
 
 /// This is a class which contains necessary details to build your own single content of the pillbox.
-class PillboxContentSingleDetails {
+class PillboxContentSingleDetails<T> {
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is a boolean representing if the pillbox is hovered.
   bool hover;
@@ -240,21 +241,21 @@ class PillboxIconDetails {
 }
 
 /// This is a function that will be used to build your own select chip of the pillbox.
-typedef SelectChipBuilder = Widget Function(
+typedef SelectChipBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own select chip of the pillbox.
   BuildContext context,
 
   /// [selectChipDetails] is a [SelectChipDetails] that will be used to build your own select chip of the pillbox.
-  SelectChipDetails selectChipDetails,
+  SelectChipDetails<T> selectChipDetails,
 );
 
 /// This is a class which contains necessary details to build your own select chip of the pillbox.
-class SelectChipDetails {
-  /// This is a [SingleItemCategoryModel] that will be used to build the select chip of the pillbox.
-  final SingleItemCategoryModel singleItemCategory;
+class SelectChipDetails<T> {
+  /// This is a [ItemModel] that will be used to build the select chip of the pillbox.
+  final SelectModel<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is a [GlobalSettings] that will be used to get the global settings.
   final GlobalSettings globalSettings;
@@ -262,28 +263,28 @@ class SelectChipDetails {
   /// Creating an argument constructor of [SelectChipDetails] class.
   /// Remember: You don't need use all of the parameters.
   const SelectChipDetails({
-    required this.singleItemCategory,
+    required this.singleItem,
     required this.selectDataController,
     required this.globalSettings,
   });
 }
 
 /// This is a function that will be used to build your own select single of the pillbox.
-typedef SelectSingleBuilder = Widget Function(
+typedef SelectSingleBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own select single of the pillbox.
   BuildContext context,
 
   /// [selectSingleDetails] is a [SelectSingleDetails] that will be used to build your own select single of the pillbox.
-  SelectSingleDetails selectSingleDetails,
+  SelectSingleDetails<T> selectSingleDetails,
 );
 
 /// This is a class which contains necessary details to build your own select single of the pillbox.
-class SelectSingleDetails {
-  /// This is a [SingleItemCategoryModel] that will be used to build the select single of the pillbox.
-  final SingleItemCategoryModel singleItemCategory;
+class SelectSingleDetails<T> {
+  /// This is a [SelectModel<T>] that will be used to build the select single of the pillbox.
+  final SelectModel<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is a [GlobalSettings] that will be used to get the global settings.
   final GlobalSettings globalSettings;
@@ -291,7 +292,7 @@ class SelectSingleDetails {
   /// Creating an argument constructor of [SelectSingleDetails] class.
   /// Remember: You don't need use all of the parameters.
   const SelectSingleDetails({
-    required this.singleItemCategory,
+    required this.singleItem,
     required this.selectDataController,
     required this.globalSettings,
   });
@@ -344,18 +345,18 @@ class SelectOverloadInfoDetails {
 }
 
 /// This is a function that will be used to build your own dropdown content (overlay).
-typedef DropdownContentOverlayBuilder = Widget Function(
+typedef DropdownContentOverlayBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own dropdown content (overlay).
   BuildContext context,
 
   /// [dropdownContentOverlayDetails] is a [DropdownContentOverlayDetails] that will be used to build your own dropdown content (overlay).
-  DropdownContentOverlayDetails dropdownContentOverlayDetails,
+  DropdownContentOverlayDetails<T> dropdownContentOverlayDetails,
 );
 
 /// This is a class which contains necessary details to build your own dropdown content (overlay).
-class DropdownContentOverlayDetails {
+class DropdownContentOverlayDetails<T> {
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is embedded function services hide the overlay of the pillbox.
   final void Function() overlayHide;
@@ -370,7 +371,7 @@ class DropdownContentOverlayDetails {
   final double? appBarMaxHeight;
 
   /// This is a [SearchControllerSelect2dot1] that will be used to search the data.
-  final SearchControllerSelect2dot1 searchController;
+  final SearchControllerSelect2dot1<T> searchController;
 
   /// This is a function returning a [Widget] of the searchBar.
   final Widget Function() searchBarOverlay;
@@ -397,18 +398,18 @@ class DropdownContentOverlayDetails {
 }
 
 /// This is a function that will be used to build your own search bar.
-typedef SearchBarOverlayBuilder = Widget Function(
+typedef SearchBarOverlayBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own search bar.
   BuildContext context,
 
   /// [searchBarOverlayDetails] is a [SearchBarOverlayDetails] that will be used to build your own search bar.
-  SearchBarOverlayDetails searchBarOverlayDetails,
+  SearchBarOverlayDetails<T> searchBarOverlayDetails,
 );
 
 /// This is a class which contains necessary details to build your own search bar.
-class SearchBarOverlayDetails {
+class SearchBarOverlayDetails<T> {
   /// This is a [SearchControllerSelect2dot1] that will be used to build the search bar.
-  final SearchControllerSelect2dot1 searchController;
+  final SearchControllerSelect2dot1<T> searchController;
 
   /// This is a [FocusNode] that will be used to build the search bar.
   final FocusNode searchBarFocusNode;
@@ -455,31 +456,30 @@ class SearchEmptyInfoOverlayDetails {
 }
 
 /// This is a function that will be used to build your own list data view.
-typedef ListDataViewOverlayBuilder = Widget Function(
+typedef ListDataViewOverlayBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own list data view.
   BuildContext context,
 
   /// [listDataViewOverlayDetails] is a [ListDataViewOverlayDetails] that will be used to build your own list data view.
-  ListDataViewOverlayDetails listDataViewOverlayDetails,
+  ListDataViewOverlayDetails<T> listDataViewOverlayDetails,
 );
 
 /// This is a class which contains necessary details to build your own list data view.
-class ListDataViewOverlayDetails {
+class ListDataViewOverlayDetails<T> {
   /// This is a [ScrollController] that will be used to control the scroll in list data view.
-  final SearchControllerSelect2dot1 searchController;
+  final SearchControllerSelect2dot1<T> searchController;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is emmbeded function services hide overlay.
   final void Function() overlayHide;
 
   /// This is a function returning a [Widget] of the categoryNameOverlay.
-  final Widget Function(SingleCategoryModel singleCategory) categoryNameOverlay;
+  final Widget Function(CategoryModel<T> singleCategory) categoryNameOverlay;
 
   /// This is a function returning a [Widget] of the categoryItemOverlay.
-  final Widget Function(SingleItemCategoryModel singleItemCategory)
-      categoryItemOverlay;
+  final Widget Function(ItemModel<T> singleItem) categoryItemOverlay;
 
   /// This is a function returning a [Widget] of the search empty info modal.
   final Widget Function() searchEmptyInfoOverlay;
@@ -505,21 +505,21 @@ class ListDataViewOverlayDetails {
 }
 
 /// This is a function that will be used to build your own category name.
-typedef CategoryItemOverlayBuilder = Widget Function(
+typedef CategoryItemOverlayBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own category name.
   BuildContext context,
 
   /// [categoryItemOverlayDetails] is a [CategoryItemOverlayDetails] that will be used to build your own category name.
-  CategoryItemOverlayDetails categoryItemOverlayDetails,
+  CategoryItemOverlayDetails<T> categoryItemOverlayDetails,
 );
 
 /// This is a class which contains necessary details to build your own category item.
-class CategoryItemOverlayDetails {
-  /// This is a [SingleItemCategoryModel] that will be used to build the category item.
-  final SingleItemCategoryModel singleItemCategory;
+class CategoryItemOverlayDetails<T> {
+  /// This is a [SelectModel<T>] that will be used to build the category item.
+  final SelectModel<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is emmbeded function services hide overlay.
   final void Function() overlayHide;
@@ -539,7 +539,7 @@ class CategoryItemOverlayDetails {
   /// Creating an argument constructor of [CategoryItemOverlayDetails] class.
   /// Remember: You don't need use all of the parameters.
   CategoryItemOverlayDetails({
-    required this.singleItemCategory,
+    required this.singleItem,
     required this.selectDataController,
     required this.overlayHide,
     required this.hover,
@@ -550,21 +550,21 @@ class CategoryItemOverlayDetails {
 }
 
 /// This is a function that will be used to build your own category name.
-typedef CategoryNameOverlayBuilder = Widget Function(
+typedef CategoryNameOverlayBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own category name.
   BuildContext context,
 
   /// [categoryNameOverlayDetails] is a [CategoryNameOverlayDetails] that will be used to build your own category name.
-  CategoryNameOverlayDetails categoryNameOverlayDetails,
+  CategoryNameOverlayDetails<T> categoryNameOverlayDetails,
 );
 
 /// This is a class which contains necessary details to build your own category name.
-class CategoryNameOverlayDetails {
-  /// This is a [SingleCategoryModel] that will be used to build the category name.
-  final SingleCategoryModel singleCategory;
+class CategoryNameOverlayDetails<T> {
+  /// This is a [CategoryModel] that will be used to build the category name.
+  final SelectModel<T> singleCategory;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is a boolean representing the hover state of the category.
   bool hover;
@@ -587,24 +587,24 @@ class CategoryNameOverlayDetails {
 }
 
 /// This is a function that will be used to build your own dropdown content modal.
-typedef DropdownContentModalBuilder = Widget Function(
+typedef DropdownContentModalBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own dropdown content modal.
   BuildContext context,
 
   /// [dropdownContentModalDetails] is a [DropdownContentModalDetails] that will be used to build your own dropdown content modal.
-  DropdownContentModalDetails dropdownContentModalDetails,
+  DropdownContentModalDetails<T> dropdownContentModalDetails,
 );
 
 /// This is a class which contains necessary details to build your own dropdown content modal.
-class DropdownContentModalDetails {
+class DropdownContentModalDetails<T> {
   /// This is a [ScrollController] that will be used to control the scroll in dropdown content modal.
   final ScrollController scrollController;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is a [SearchControllerSelect2dot1] that will be used to control the search.
-  final SearchControllerSelect2dot1 searchController;
+  final SearchControllerSelect2dot1<T> searchController;
 
   /// This is a function returning a [Widget] of the title modal.
   final Widget Function() titleModal;
@@ -682,18 +682,18 @@ class TittleModalDetails {
 }
 
 /// This is a function that will be used to build your own search bar modal.
-typedef SearchBarModalBuilder = Widget Function(
+typedef SearchBarModalBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own search bar modal.
   BuildContext context,
 
   /// [searchBarModalDetails] is a [SearchBarModalDetails] that will be used to build your own search bar modal.
-  SearchBarModalDetails searchBarModalDetails,
+  SearchBarModalDetails<T> searchBarModalDetails,
 );
 
 /// This is a class which contains necessary details to build your own search bar modal.
-class SearchBarModalDetails {
+class SearchBarModalDetails<T> {
   /// This is a [SearchControllerSelect2dot1] that will be used to control the search.
-  final SearchControllerSelect2dot1 searchController;
+  final SearchControllerSelect2dot1<T> searchController;
 
   /// This is a [FocusNode] that will be used to control focus of SearchBar.
   final FocusNode searchBarModalFocusNode;
@@ -748,31 +748,30 @@ class SearchEmptyInfoModalDetails {
 }
 
 /// This is a function that will be used to build your own list data view modal.
-typedef ListDataViewModalBuilder = Widget Function(
+typedef ListDataViewModalBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own list data view modal.
   BuildContext context,
 
   /// [listDataViewModalDetails] is a [ListDataViewModalDetails] that will be used to build your own list data view modal.
-  ListDataViewModalDetails listDataViewModalDetails,
+  ListDataViewModalDetails<T> listDataViewModalDetails,
 );
 
 /// This is a class which contains necessary details to build your own list data view modal.
-class ListDataViewModalDetails {
+class ListDataViewModalDetails<T> {
   /// This is a [ScrollController] that will be used to control the scroll in the list data view modal.
   final ScrollController scrollController;
 
   /// This is a [SearchControllerSelect2dot1] that will be used to control the search.
-  final SearchControllerSelect2dot1 searchController;
+  final SearchControllerSelect2dot1<T> searchController;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
-  /// This is a function returning a [Widget] of the CategoryNameModal.
-  final Widget Function(SingleCategoryModel singleCategory) categoryNameModal;
+  /// This is a function returning a [Widget] of the ModalCategoryWidget.
+  final Widget Function(CategoryModel<T> singleCategory) categoryNameModal;
 
-  /// This is a function returning a [Widget] of the CategoryItemModal.
-  final Widget Function(SingleItemCategoryModel singleItemCategory)
-      categoryItemModal;
+  /// This is a function returning a [Widget] of the ModalItemWidget.
+  final Widget Function(ItemModel<T> singleItem) categoryItemModal;
 
   /// This is a function returning a [Widget] of the search empty info modal.
   final Widget Function() searchEmptyInfoModal;
@@ -798,21 +797,21 @@ class ListDataViewModalDetails {
 }
 
 /// This is a function that will be used to build your own category name modal.
-typedef CategoryNameModalBuilder = Widget Function(
+typedef CategoryNameModalBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own category name modal.
   BuildContext context,
 
   /// [categoryNameModalDetails] is a [CategoryNameModalDetails] that will be used to build your own category name modal.
-  CategoryNameModalDetails categoryNameModalDetails,
+  CategoryNameModalDetails<T> categoryNameModalDetails,
 );
 
 /// This is a class which contains necessary details to build your own category name modal.
-class CategoryNameModalDetails {
-  /// This is a [SingleCategoryModel] that will be used to build the category name modal.
-  final SingleCategoryModel singleCategory;
+class CategoryNameModalDetails<T> {
+  /// This is a [CategoryModel] that will be used to build the category name modal.
+  final SelectModel<T> singleCategory;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is a emmbeded function service tap on CategoryName.
   final void Function() onTapCategory;
@@ -831,21 +830,21 @@ class CategoryNameModalDetails {
 }
 
 /// This is a function that will be used to build your own category item modal.
-typedef CategoryItemModalBuilder = Widget Function(
+typedef CategoryItemModalBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own category item modal.
   BuildContext context,
 
   /// [categoryItemModalDetails] is a [CategoryItemModalDetails] that will be used to build your own category item modal.
-  CategoryItemModalDetails categoryItemModalDetails,
+  CategoryItemModalDetails<T> categoryItemModalDetails,
 );
 
 /// This is a class which contains necessary details to build your own category item modal.
-class CategoryItemModalDetails {
-  /// This is a [SingleItemCategoryModel] that will be used to build the category item modal.
-  final SingleItemCategoryModel singleItemCategory;
+class CategoryItemModalDetails<T> {
+  /// This is a [ItemModel] that will be used to build the category item modal.
+  final SelectModel<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// This is a boolean representing whether the category item is selected or not.
   bool isSelected;
@@ -859,7 +858,7 @@ class CategoryItemModalDetails {
   /// Creating an argument constructor of [CategoryItemModalDetails] class.
   /// Remember: You don't need use all of the parameters.
   CategoryItemModalDetails({
-    required this.singleItemCategory,
+    required this.singleItem,
     required this.selectDataController,
     required this.isSelected,
     required this.onTapSingleItemCategory,

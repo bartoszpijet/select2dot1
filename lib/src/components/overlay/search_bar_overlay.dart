@@ -7,10 +7,10 @@ import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/overlay/search_bar_overlay_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class SearchBarOverlay extends StatefulWidget {
-  final SearchControllerSelect2dot1 searchController;
+class SearchBarOverlay<T> extends StatefulWidget {
+  final SearchControllerSelect2dot1<T> searchController;
   final bool isSearchable;
-  final SearchBarOverlayBuilder? searchBarOverlayBuilder;
+  final SearchBarOverlayBuilder<T>? searchBarOverlayBuilder;
   final SearchBarOverlaySettings searchBarOverlaySettings;
   final GlobalSettings globalSettings;
 
@@ -24,10 +24,10 @@ class SearchBarOverlay extends StatefulWidget {
   });
 
   @override
-  State<SearchBarOverlay> createState() => _SearchBarOverlayState();
+  State<SearchBarOverlay<T>> createState() => _SearchBarOverlayState<T>();
 }
 
-class _SearchBarOverlayState extends State<SearchBarOverlay> {
+class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
   final FocusNode searchBarFocusNode = FocusNode();
   final TextEditingController searchBarController = TextEditingController();
   bool isFocus = true;

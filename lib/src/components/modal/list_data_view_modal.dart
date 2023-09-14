@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/components/modal/category_item_modal.dart';
-import 'package:select2dot1/src/components/modal/category_name_modal.dart';
+import 'package:select2dot1/src/components/modal/modal_item_widget.dart';
+import 'package:select2dot1/src/components/modal/modal_category_widget.dart';
 import 'package:select2dot1/src/components/modal/loading_data_modal.dart';
 import 'package:select2dot1/src/components/modal/search_empty_info_modal.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/single_category_model.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/category_model.dart';
+import 'package:select2dot1/src/models/item_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/category_item_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/category_name_modal_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
 import 'package:select2dot1/src/settings/modal/list_data_view_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/loading_data_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/search_empty_info_modal_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class ListDataViewModal extends StatefulWidget {
+class ListDataViewModal<T> extends StatefulWidget {
   final ScrollController scrollController;
-  final SearchControllerSelect2dot1 searchController;
-  final SelectDataController selectDataController;
+  final SearchControllerSelect2dot1<T> searchController;
+  final SelectDataController<T> selectDataController;
   final LoadingDataModalBuilder? loadingDataModalBuilder;
   final LoadingDataModalSettings loadingDataModalSettings;
   final SearchEmptyInfoModalBuilder? searchEmptyInfoModalBuilder;
   final SearchEmptyInfoModalSettings searchEmptyInfoModalSettings;
-  final ListDataViewModalBuilder? listDataViewModalBuilder;
+  final ListDataViewModalBuilder<T>? listDataViewModalBuilder;
   final ListDataViewModalSettings listDataViewModalSettings;
-  final CategoryItemModalBuilder? categoryItemModalBuilder;
-  final CategoryItemModalSettings categoryItemModalSettings;
-  final CategoryNameModalBuilder? categoryNameModalBuilder;
-  final CategoryNameModalSettings categoryNameModalSettings;
+  final CategoryItemModalBuilder<T>? modalItemBuilder;
+  final ModalItemSettings modalItemSettings;
+  final CategoryNameModalBuilder<T>? modalCategoryBuilder;
+  final ModalCategorySettings modalCategorySettings;
   final GlobalSettings globalSettings;
 
   const ListDataViewModal({
@@ -42,18 +43,18 @@ class ListDataViewModal extends StatefulWidget {
     required this.searchEmptyInfoModalSettings,
     required this.listDataViewModalBuilder,
     required this.listDataViewModalSettings,
-    required this.categoryItemModalBuilder,
-    required this.categoryItemModalSettings,
-    required this.categoryNameModalBuilder,
-    required this.categoryNameModalSettings,
+    required this.modalItemBuilder,
+    required this.modalItemSettings,
+    required this.modalCategoryBuilder,
+    required this.modalCategorySettings,
     required this.globalSettings,
   });
 
   @override
-  State<ListDataViewModal> createState() => _ListDataViewModalState();
+  State<ListDataViewModal<T>> createState() => _ListDataViewModalState<T>();
 }
 
-class _ListDataViewModalState extends State<ListDataViewModal> {
+class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
   // It's okey.
   // ignore: avoid-late-keyword
   late Stream<List<Widget>> streamController = dataStreamFunc(isInit: true);
@@ -152,52 +153,58 @@ class _ListDataViewModalState extends State<ListDataViewModal> {
   Future<List<Widget>> dataFuture() async {
     List<Widget> listDataViewChildren = [];
 
-    for (int indexCategory = 0;
-        indexCategory < widget.searchController.getResults.length;
-        indexCategory++) {
-      listDataViewChildren.add(
-        CategoryNameModal(
-          singleCategory: widget.searchController.getResults[indexCategory],
-          selectDataController: widget.selectDataController,
-          categoryNameModalBuilder: widget.categoryNameModalBuilder,
-          categoryNameModalSettings: widget.categoryNameModalSettings,
-          globalSettings: widget.globalSettings,
-        ),
-      );
-      for (int indexItem = 0;
-          indexItem <
-              widget.searchController.getResults[indexCategory]
-                  .singleItemCategoryList.length;
-          indexItem++) {
-        listDataViewChildren.add(
-          CategoryItemModal(
-            singleItemCategory: widget.searchController
-                .getResults[indexCategory].singleItemCategoryList[indexItem],
-            selectDataController: widget.selectDataController,
-            categoryItemModalBuilder: widget.categoryItemModalBuilder,
-            categoryItemModalSettings: widget.categoryItemModalSettings,
-            globalSettings: widget.globalSettings,
-          ),
-        );
-      }
+    for (SelectModel<T> item in widget.searchController.getResults) {
+      listDataViewChildren.addAll(categoryModal(item));
     }
 
     return listDataViewChildren;
   }
 
-  Widget _categoryNameModal(SingleCategoryModel i) => CategoryNameModal(
+  List<Widget> categoryModal(SelectModel<T> category, [int deepth = 0]) {
+    List<Widget> listDataViewChildren = [];
+    if (!category.isCategory) {
+      listDataViewChildren.add(
+        ModalItemWidget(
+          deepth: deepth,
+          singleItem: category,
+          selectDataController: widget.selectDataController,
+          modalItemBuilder: widget.modalItemBuilder,
+          modalItemSettings: widget.modalItemSettings,
+          globalSettings: widget.globalSettings,
+        ),
+      );
+      return listDataViewChildren;
+    }
+    listDataViewChildren.add(
+      ModalCategoryWidget(
+        deepth: deepth,
+        singleCategory: category,
+        selectDataController: widget.selectDataController,
+        modalCategoryBuilder: widget.modalCategoryBuilder,
+        modalCategorySettings: widget.modalCategorySettings,
+        globalSettings: widget.globalSettings,
+      ),
+    );
+    for (SelectModel<T> item in category.itemList) {
+      listDataViewChildren.addAll(categoryModal(item, deepth + 1));
+    }
+
+    return listDataViewChildren;
+  }
+
+  Widget _categoryNameModal(CategoryModel<T> i) => ModalCategoryWidget<T>(
         singleCategory: i,
         selectDataController: widget.selectDataController,
-        categoryNameModalBuilder: widget.categoryNameModalBuilder,
-        categoryNameModalSettings: widget.categoryNameModalSettings,
+        modalCategoryBuilder: widget.modalCategoryBuilder,
+        modalCategorySettings: widget.modalCategorySettings,
         globalSettings: widget.globalSettings,
       );
 
-  Widget _categoryItemModal(SingleItemCategoryModel i) => CategoryItemModal(
-        singleItemCategory: i,
+  Widget _categoryItemModal(ItemModel<T> i) => ModalItemWidget<T>(
+        singleItem: i,
         selectDataController: widget.selectDataController,
-        categoryItemModalBuilder: widget.categoryItemModalBuilder,
-        categoryItemModalSettings: widget.categoryItemModalSettings,
+        modalItemBuilder: widget.modalItemBuilder,
+        modalItemSettings: widget.modalItemSettings,
         globalSettings: widget.globalSettings,
       );
 

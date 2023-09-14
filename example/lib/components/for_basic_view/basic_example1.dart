@@ -14,14 +14,15 @@ class BasicExample1 extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Select2dot1(
+          Select2dot1<String>(
             selectDataController: SelectDataController(
               data: ExampleData.exampleData1,
               initSelected: const [
-                SingleItemCategoryModel(
-                  nameSingleItem: 'David Eubanks',
+                ItemModel(
+                  value: null,
+                  itemName: 'David Eubanks',
                 ),
-                SingleItemCategoryModel(nameSingleItem: 'Robert Keller')
+                ItemModel(value: null, itemName: 'Robert Keller')
               ],
             ),
             scrollController: scrollController,

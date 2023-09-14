@@ -11,11 +11,11 @@ import 'package:select2dot1/src/controllers/overlay_controller.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/dropdown_overlay.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/pillbox.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/category_item_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/category_name_modal_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
 import 'package:select2dot1/src/settings/modal/done_button_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/dropdown_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/list_data_view_modal_settings.dart';
@@ -23,8 +23,8 @@ import 'package:select2dot1/src/settings/modal/loading_data_modal_settings.dart'
 import 'package:select2dot1/src/settings/modal/search_bar_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/search_empty_info_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/title_modal_settings.dart';
-import 'package:select2dot1/src/settings/overlay/category_item_overlay_settings.dart';
-import 'package:select2dot1/src/settings/overlay/category_name_overlay_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
 import 'package:select2dot1/src/settings/overlay/dropdown_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/list_data_view_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/loading_data_overlay_settings.dart';
@@ -47,12 +47,12 @@ import 'package:select2dot1/src/utils/event_args.dart';
 ///
 /// On the first step you need to create a list of data that you want to display in.
 /// ```dart
-/// static const List<SingleCategoryModel> exampleData = [
-///     SingleCategoryModel(
+/// static const List<CategoryModel> exampleData = [
+///     CategoryModel(
 ///       nameCategory: 'Team Leader',
-///       singleItemCategoryList: [
-///         SingleItemCategoryModel(
-///           nameSingleItem: 'David Eubanks',
+///       itemList: [
+///         ItemModel(
+///           itemName: 'David Eubanks',
 ///           extraInfoSingleItem: 'Full time',
 ///           avatarSingleItem: CircleAvatar(
 ///             backgroundColor: Colors.transparent,
@@ -60,8 +60,8 @@ import 'package:select2dot1/src/utils/event_args.dart';
 ///             backgroundImage: AssetImage('assets/images/avatar1.jpg'),
 ///           ),
 ///         ),
-///         SingleItemCategoryModel(
-///           nameSingleItem: 'Stuart Resch',
+///         ItemModel(
+///           itemName: 'Stuart Resch',
 ///           extraInfoSingleItem: 'Part time',
 ///           avatarSingleItem: CircleAvatar(
 ///             backgroundColor: Colors.blue,
@@ -79,16 +79,16 @@ import 'package:select2dot1/src/utils/event_args.dart';
 ///     scrollController: scrollController,
 ///     ),
 /// ```
-class Select2dot1 extends StatefulWidget {
+class Select2dot1<T> extends StatefulWidget {
   /// This is a controller which contains all the data that you want to display in the widget.
   /// You can also use this controller to get the value of the widget outside the widget.
   /// Also you can controller selected items.
   /// It is required.
-  final SelectDataController selectDataController;
+  final SelectDataController<T> selectDataController;
 
   /// Used this to get the value of the widget outside the widget.
   /// It is call every time when the value of the widget is changed.
-  final ValueChanged<List<SingleItemCategoryModel>>? onChanged;
+  final ValueChanged<List<SelectModel<T>>>? onChanged;
 
   /// Pass it if you want adjustable dropdown anchor.
   final ScrollController? scrollController;
@@ -109,22 +109,22 @@ class Select2dot1 extends StatefulWidget {
   final PillboxTitleBuilder? pillboxTitleBuilder;
 
   /// This is a builder that is used to build the pillbox of the widget.
-  final PillboxBuilder? pillboxBuilder;
+  final PillboxBuilder<T>? pillboxBuilder;
 
   /// This is a builder that is used to build the content of the pillbox in multi select mode.
-  final PillboxContentMultiBuilder? pillboxContentMultiBuilder;
+  final PillboxContentMultiBuilder<T>? pillboxContentMultiBuilder;
 
   /// This is a builder that is used to build the content of the pillbox in single select mode.
-  final PillboxContentSingleBuilder? pillboxContentSingleBuilder;
+  final PillboxContentSingleBuilder<T>? pillboxContentSingleBuilder;
 
   /// This is a builder that is used to build the icon of the pillbox.
   final PillboxIconBuilder? pillboxIconBuilder;
 
   /// This is a builder that is used to build the select chip of the widget.
-  final SelectChipBuilder? selectChipBuilder;
+  final SelectChipBuilder<T>? selectChipBuilder;
 
   /// This is a builder that is used to build the single select of the widget.
-  final SelectSingleBuilder? selectSingleBuilder;
+  final SelectSingleBuilder<T>? selectSingleBuilder;
 
   /// This is a builder that is used to build the empty info in pillbox.
   final SelectEmptyInfoBuilder? selectEmptyInfoBuilder;
@@ -133,10 +133,10 @@ class Select2dot1 extends StatefulWidget {
   final SelectOverloadInfoBuilder? selectOverloadInfoBuilder;
 
   /// This is a builder that is used to build the dropdown content (overlay) of the widget.
-  final DropdownContentOverlayBuilder? dropdownContentOverlayBuilder;
+  final DropdownContentOverlayBuilder<T>? dropdownContentOverlayBuilder;
 
   /// This is a builder that is used to build the search bar of the widget in overlay mode.
-  final SearchBarOverlayBuilder? searchBarOverlayBuilder;
+  final SearchBarOverlayBuilder<T>? searchBarOverlayBuilder;
 
   /// This is a builder that is used to build the loading data of dropdown content in overlay mode.
   final LoadingDataOverlayBuilder? loadingDataOverlayBuilder;
@@ -145,16 +145,16 @@ class Select2dot1 extends StatefulWidget {
   final SearchEmptyInfoOverlayBuilder? searchEmptyInfoOverlayBuilder;
 
   /// This is a builder that is used to build the list data view of dropdown content in overlay mode.
-  final ListDataViewOverlayBuilder? listDataViewOverlayBuilder;
+  final ListDataViewOverlayBuilder<T>? listDataViewOverlayBuilder;
 
   /// This is a builder that is used to build the category name of list data view in overlay mode.
-  final CategoryNameOverlayBuilder? categoryNameOverlayBuilder;
+  final CategoryNameOverlayBuilder<T>? overlayCategoryBuilder;
 
   /// This is a builder that is used to build the category item of list data view in overlay mode.
-  final CategoryItemOverlayBuilder? categoryItemOverlayBuilder;
+  final CategoryItemOverlayBuilder<T>? overlayItemBuilder;
 
   /// This is a builder that is used to build the dropdown content (modal) of the widget.
-  final DropdownContentModalBuilder? dropdownContentModalBuilder;
+  final DropdownContentModalBuilder<T>? dropdownContentModalBuilder;
 
   /// This is a builder that is used to build the title of dropdown content in modal mode.
   final TitleModalBuilder? titleModalBuilder;
@@ -163,7 +163,7 @@ class Select2dot1 extends StatefulWidget {
   final DoneButtonModalBuilder? doneButtonModalBuilder;
 
   /// This is a builder that is used to build the search bar of the widget in modal mode.
-  final SearchBarModalBuilder? searchBarModalBuilder;
+  final SearchBarModalBuilder<T>? searchBarModalBuilder;
 
   /// This is a builder that is used to build the loading data of dropdown content in modal mode.
   final LoadingDataModalBuilder? loadingDataModalBuilder;
@@ -172,16 +172,16 @@ class Select2dot1 extends StatefulWidget {
   final SearchEmptyInfoModalBuilder? searchEmptyInfoModalBuilder;
 
   /// This is a builder that is used to build the list data view of dropdown content in modal mode.
-  final ListDataViewModalBuilder? listDataViewModalBuilder;
+  final ListDataViewModalBuilder<T>? listDataViewModalBuilder;
 
   /// This is a builder that is used to build the category name of list data view in modal mode.
-  final CategoryNameModalBuilder? categoryNameModalBuilder;
+  final CategoryNameModalBuilder<T>? modalCategoryBuilder;
 
   /// This is a builder that is used to build the category item of list data view in modal mode.
-  final CategoryItemModalBuilder? categoryItemModalBuilder;
+  final CategoryItemModalBuilder<T>? modalItemBuilder;
 
   /// TODO:Comleate description. (If null default controller will be used).
-  final SearchControllerSelect2dot1 searchController;
+  final SearchControllerSelect2dot1<T> searchController;
 
   /// This is a class which contains all the settings of the title of the widget.
   final PillboxTitleSettings pillboxTitleSettings;
@@ -223,10 +223,10 @@ class Select2dot1 extends StatefulWidget {
   final ListDataViewOverlaySettings listDataViewOverlaySettings;
 
   /// This is a class which contains all the settings of the category name of list data view in overlay mode.
-  final CategoryNameOverlaySettings categoryNameOverlaySettings;
+  final OverlayCategorySettings overlayCategorySettings;
 
   /// This is a class which contains all the settings of the category item of list data view in overlay mode.
-  final CategoryItemOverlaySettings categoryItemOverlaySettings;
+  final OverlayItemSettings overlayItemSettings;
 
   /// This is a class which contains all the settings of the dropdown content (modal) of the widget.
   final DropdownModalSettings dropdownModalSettings;
@@ -250,10 +250,10 @@ class Select2dot1 extends StatefulWidget {
   final ListDataViewModalSettings listDataViewModalSettings;
 
   /// This is a class which contains all the settings of the category name of list data view in modal mode.
-  final CategoryNameModalSettings categoryNameModalSettings;
+  final ModalCategorySettings modalCategorySettings;
 
   /// This is a class which contains all the settings of the category item of list data view in modal mode.
-  final CategoryItemModalSettings categoryItemModalSettings;
+  final ModalItemSettings modalItemSettings;
 
   /// This is a class which contains all the global settings of the widget.
   final GlobalSettings globalSettings;
@@ -287,8 +287,8 @@ class Select2dot1 extends StatefulWidget {
     this.loadingDataOverlayBuilder,
     this.searchEmptyInfoOverlayBuilder,
     this.listDataViewOverlayBuilder,
-    this.categoryNameOverlayBuilder,
-    this.categoryItemOverlayBuilder,
+    this.overlayCategoryBuilder,
+    this.overlayItemBuilder,
     this.dropdownContentModalBuilder,
     this.titleModalBuilder,
     this.doneButtonModalBuilder,
@@ -296,9 +296,9 @@ class Select2dot1 extends StatefulWidget {
     this.loadingDataModalBuilder,
     this.searchEmptyInfoModalBuilder,
     this.listDataViewModalBuilder,
-    this.categoryNameModalBuilder,
-    this.categoryItemModalBuilder,
-    SearchControllerSelect2dot1? searchController,
+    this.modalCategoryBuilder,
+    this.modalItemBuilder,
+    SearchControllerSelect2dot1<T>? searchController,
     this.pillboxTitleSettings = const PillboxTitleSettings(),
     this.pillboxSettings = const PillboxSettings(),
     this.pillboxContentMultiSettings = const PillboxContentMultiSettings(),
@@ -313,8 +313,8 @@ class Select2dot1 extends StatefulWidget {
     this.searchEmptyInfoOverlaySettings =
         const SearchEmptyInfoOverlaySettings(),
     this.listDataViewOverlaySettings = const ListDataViewOverlaySettings(),
-    this.categoryNameOverlaySettings = const CategoryNameOverlaySettings(),
-    this.categoryItemOverlaySettings = const CategoryItemOverlaySettings(),
+    this.overlayCategorySettings = const OverlayCategorySettings(),
+    this.overlayItemSettings = const OverlayItemSettings(),
     this.dropdownModalSettings = const DropdownModalSettings(),
     this.titleModalSettings = const TitleModalSettings(),
     this.doneButtonModalSettings = const DoneButtonModalSettings(),
@@ -322,22 +322,22 @@ class Select2dot1 extends StatefulWidget {
     this.loadingDataModalSettings = const LoadingDataModalSettings(),
     this.searchEmptyInfoModalSettings = const SearchEmptyInfoModalSettings(),
     this.listDataViewModalSettings = const ListDataViewModalSettings(),
-    this.categoryNameModalSettings = const CategoryNameModalSettings(),
-    this.categoryItemModalSettings = const CategoryItemModalSettings(),
+    this.modalCategorySettings = const ModalCategorySettings(),
+    this.modalItemSettings = const ModalItemSettings(),
     this.globalSettings = const GlobalSettings(),
     // It's done like this bc other method dosen't work.
   }) : searchController = searchController ??
-            SearchControllerSelect2dot1(selectDataController.data);
+            SearchControllerSelect2dot1<T>(selectDataController.data);
 
   @override
-  State<Select2dot1> createState() => _Select2dot1State();
+  State<Select2dot1<T>> createState() => _Select2dot1State<T>();
 }
 
-class _Select2dot1State extends AnimatedState
-    with OverlayController, ModalController {
+class _Select2dot1State<T> extends AnimatedState<T>
+    with OverlayController<T>, ModalController<T> {
   // Its ok.
   //ignore: avoid-late-keyword
-  late final SelectDataController selectDataController;
+  late final SelectDataController<T> selectDataController;
   final bool kIsMobile = defaultTargetPlatform == TargetPlatform.iOS ||
       defaultTargetPlatform == TargetPlatform.android;
 
@@ -371,7 +371,7 @@ class _Select2dot1State extends AnimatedState
   }
 
   @override
-  void didUpdateWidget(covariant Select2dot1 oldWidget) {
+  void didUpdateWidget(covariant Select2dot1<T> oldWidget) {
     if (!identical(
       oldWidget.selectDataController,
       widget.selectDataController,
@@ -447,10 +447,10 @@ class _Select2dot1State extends AnimatedState
                 widget.searchEmptyInfoOverlaySettings,
             listDataViewOverlayBuilder: widget.listDataViewOverlayBuilder,
             listDataViewOverlaySettings: widget.listDataViewOverlaySettings,
-            categoryNameOverlayBuilder: widget.categoryNameOverlayBuilder,
-            categoryNameOverlaySettings: widget.categoryNameOverlaySettings,
-            categoryItemOverlayBuilder: widget.categoryItemOverlayBuilder,
-            categoryItemOverlaySettings: widget.categoryItemOverlaySettings,
+            overlayCategoryBuilder: widget.overlayCategoryBuilder,
+            overlayCategorySettings: widget.overlayCategorySettings,
+            overlayItemBuilder: widget.overlayItemBuilder,
+            overlayItemSettings: widget.overlayItemSettings,
             globalSettings: widget.globalSettings,
           ),
           child: Pillbox.overlay(

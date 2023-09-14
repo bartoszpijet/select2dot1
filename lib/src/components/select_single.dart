@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/select_single_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class SelectSingle extends StatelessWidget {
-  final SingleItemCategoryModel singleItemCategory;
-  final SelectDataController selectDataController;
-  final SelectSingleBuilder? selectSingleBuilder;
+class SelectSingle<T> extends StatelessWidget {
+  final SelectModel<T> singleItem;
+  final SelectDataController<T> selectDataController;
+  final SelectSingleBuilder<T>? selectSingleBuilder;
   final SelectSingleSettings selectSingleSettings;
   final GlobalSettings globalSettings;
 
   const SelectSingle({
     super.key,
-    required this.singleItemCategory,
+    required this.singleItem,
     required this.selectDataController,
     required this.selectSingleBuilder,
     required this.selectSingleSettings,
@@ -29,7 +29,7 @@ class SelectSingle extends StatelessWidget {
       return selectSingleBuilder!(
         context,
         SelectSingleDetails(
-          singleItemCategory: singleItemCategory,
+          singleItem: singleItem,
           selectDataController: selectDataController,
           globalSettings: globalSettings,
         ),
@@ -40,13 +40,13 @@ class SelectSingle extends StatelessWidget {
       padding: selectSingleSettings.padding,
       child: Row(
         children: [
-          if (singleItemCategory.avatarSingleItem != null &&
+          if (singleItem.avatarSingleItem != null &&
               selectSingleSettings.showAvatar)
             Container(
               width: selectSingleSettings.avatarMaxWidth,
               height: selectSingleSettings.avatarMaxHeight,
               margin: selectSingleSettings.avatarMargin,
-              child: FittedBox(child: singleItemCategory.avatarSingleItem),
+              child: FittedBox(child: singleItem.avatarSingleItem),
             ),
           Flexible(
             child: Column(
@@ -56,19 +56,19 @@ class SelectSingle extends StatelessWidget {
                 Container(
                   padding: selectSingleSettings.textPadding,
                   child: Text(
-                    singleItemCategory.nameSingleItem,
+                    singleItem.itemName,
                     overflow: selectSingleSettings.textOverflow,
                     style: _getTextStyle(),
                   ),
                 ),
-                if (singleItemCategory.extraInfoSingleItem != null &&
+                if (singleItem.extraInfoSingleItem != null &&
                     selectSingleSettings.showExtraInfo)
                   Container(
                     padding: selectSingleSettings.extraInfoPadding,
                     child: Text(
                       // This can't be null anyways.
                       // ignore: avoid-non-null-assertion
-                      singleItemCategory.extraInfoSingleItem!,
+                      singleItem.extraInfoSingleItem!,
                       overflow: selectSingleSettings.extraInfoTextOverflow,
                       style: _getExtraInfoTextStyle(),
                     ),

@@ -18,21 +18,21 @@ class BasicExample7 extends StatelessWidget {
             selectDataController: SelectDataController(
               data: ExampleData.exampleData2,
               initSelected: const [
-                SingleItemCategoryModel(nameSingleItem: 'Alaska'),
-                SingleItemCategoryModel(nameSingleItem: 'California'),
-                SingleItemCategoryModel(nameSingleItem: 'Hawaii'),
-                SingleItemCategoryModel(nameSingleItem: 'Arizona'),
-                SingleItemCategoryModel(nameSingleItem: 'Colorado'),
+                ItemModel(value: null, itemName: 'Alaska'),
+                ItemModel(value: null, itemName: 'California'),
+                ItemModel(value: null, itemName: 'Hawaii'),
+                ItemModel(value: null, itemName: 'Arizona'),
+                ItemModel(value: null, itemName: 'Colorado'),
               ],
             ),
             pillboxContentMultiSettings:
                 const PillboxContentMultiSettings(pillboxOverload: 5),
             selectSingleSettings:
                 const SelectSingleSettings(showExtraInfo: false),
-            categoryItemModalSettings: const CategoryItemModalSettings(
+            modalItemSettings: const ModalItemSettings(
               showExtraInfo: false,
             ),
-            categoryItemOverlaySettings: const CategoryItemOverlaySettings(
+            overlayItemSettings: const OverlayItemSettings(
               showExtraInfo: false,
             ),
             scrollController: scrollController,

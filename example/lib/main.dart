@@ -22,28 +22,29 @@ class SimpleExampleApp extends StatefulWidget {
 class _SimpleExampleAppState extends State<SimpleExampleApp> {
   ScrollController scrollController = ScrollController();
 
-  static const List<SingleCategoryModel> exampleData = [
-    SingleCategoryModel(
-      nameCategory: 'Central Time Zone',
-      singleItemCategoryList: [
-        SingleItemCategoryModel(
-          nameSingleItem: 'Alabama',
+  static const List<CategoryModel<String>> exampleData = [
+    CategoryModel(
+      itemName: 'Central Time Zone',
+      itemList: <ItemModel<String>>[
+        ItemModel<String>(
+          itemName: 'Alabama',
           extraInfoSingleItem: '1395 Lincoln Street',
+          value: 'Alabama',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.orange,
             child: Text('AL', style: TextStyle(color: Colors.white)),
           ),
         ),
-        SingleItemCategoryModel(nameSingleItem: 'Arkansas'),
-        SingleItemCategoryModel(nameSingleItem: 'Illonois'),
+        ItemModel(itemName: 'Arkansas', value: 'Arkansas'),
+        ItemModel(itemName: 'Illonois', value: 'Illonois'),
       ],
     ),
-    SingleCategoryModel(
-      nameCategory: 'Pacific Time Zone',
-      singleItemCategoryList: [
-        SingleItemCategoryModel(nameSingleItem: 'California'),
-        SingleItemCategoryModel(nameSingleItem: 'Nevada'),
-        SingleItemCategoryModel(nameSingleItem: 'Oregon'),
+    CategoryModel(
+      itemName: 'Pacific Time Zone',
+      itemList: <ItemModel<String>>[
+        ItemModel(itemName: 'California', value: 'California'),
+        ItemModel(itemName: 'Nevada', value: 'Nevada'),
+        ItemModel(itemName: 'Oregon', value: 'Oregon'),
       ],
     ),
   ];
@@ -72,7 +73,7 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
               children: [
                 SizedBox(
                   width: 300,
-                  child: Select2dot1(
+                  child: Select2dot1<String>(
                     selectDataController: SelectDataController(
                       data: exampleData,
                     ),
@@ -80,46 +81,46 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
                   ),
                 ),
                 const SizedBox(height: 250),
-                Select2dot1(
+                Select2dot1<String>(
                   selectDataController: SelectDataController(
                     data: exampleData,
                     initSelected: const [
-                      SingleItemCategoryModel(
-                        nameSingleItem: 'Oregon',
+                      ItemModel(
+                        itemName: 'Oregon',
+                        value: 'Oregon',
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 250),
-                Select2dot1(
+                Select2dot1<String>(
                   selectDataController: SelectDataController(
                     data: exampleData,
                     isMultiSelect: false,
                     initSelected: const [
-                      SingleItemCategoryModel(nameSingleItem: 'Arkansas')
+                      ItemModel(itemName: 'Arkansas', value: 'Arkansas')
                     ],
                   ),
                   scrollController: scrollController,
                 ),
                 const SizedBox(height: 250),
-                Select2dot1(
+                Select2dot1<String>(
                   selectDataController: SelectDataController(
                     data: exampleData,
                     initSelected: const [
-                      SingleItemCategoryModel(nameSingleItem: 'Illonois'),
-                      SingleItemCategoryModel(nameSingleItem: 'California'),
-                      SingleItemCategoryModel(nameSingleItem: 'Alabama'),
+                      ItemModel(itemName: 'Illonois', value: 'Illonois'),
+                      ItemModel(itemName: 'California', value: 'California'),
+                      ItemModel(itemName: 'Alabama', value: 'Alabama'),
                     ],
                   ),
                   pillboxContentMultiSettings:
                       const PillboxContentMultiSettings(pillboxOverload: 5),
                   selectSingleSettings:
                       const SelectSingleSettings(showExtraInfo: false),
-                  categoryItemModalSettings: const CategoryItemModalSettings(
+                  modalItemSettings: const ModalItemSettings(
                     showExtraInfo: false,
                   ),
-                  categoryItemOverlaySettings:
-                      const CategoryItemOverlaySettings(
+                  overlayItemSettings: const OverlayItemSettings(
                     showExtraInfo: false,
                   ),
                   scrollController: scrollController,

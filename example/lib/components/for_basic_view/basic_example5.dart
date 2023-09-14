@@ -19,7 +19,7 @@ class BasicExample5 extends StatelessWidget {
               data: ExampleData.exampleData2,
               isMultiSelect: false,
               initSelected: const [
-                SingleItemCategoryModel(nameSingleItem: 'Alaska'),
+                ItemModel(value: null, itemName: 'Alaska'),
               ],
             ),
             scrollController: scrollController,

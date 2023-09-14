@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// This is a class which contains all the settings of the category item of list data view in overlay mode.
-class CategoryItemOverlaySettings {
+class OverlayItemSettings {
   /// The mouse cursor when the mouse is hovering over the category item.
   /// Default value is [SystemMouseCursors.click].
   final MouseCursor mouseCursorSelect;
@@ -46,7 +46,7 @@ class CategoryItemOverlaySettings {
 
   /// The padding of the icon.
   /// Default value is [EdgeInsets.only(left: 4, right: 3)].
-  final EdgeInsetsGeometry? iconPadding;
+  final EdgeInsetsGeometry iconPadding;
 
   /// The duration of the icon animation.
   /// Default value is [Duration(milliseconds: 400)].
@@ -55,6 +55,10 @@ class CategoryItemOverlaySettings {
   /// The curve of the icon animation.
   /// Default value is [Curves.easeInOutQuart].
   final Curve iconAnimationCurve;
+
+  /// The indent that will be used for nested category.
+  /// Default is ``` const SizedBox(width:25) ```.
+  final Widget indent;
 
   /// Default text style of the category item.
   /// Default value is [TextStyle(fontSize: 16, fontWeight: FontWeight.w400)].
@@ -66,7 +70,7 @@ class CategoryItemOverlaySettings {
 
   /// The padding of the text.
   /// Default value is [EdgeInsets.only(right: 25)].
-  final EdgeInsetsGeometry? textPadding;
+  final EdgeInsetsGeometry textPadding;
 
   /// The text overflow of the text.
   /// Default value is [TextOverflow.ellipsis].
@@ -118,12 +122,12 @@ class CategoryItemOverlaySettings {
     fontWeight: FontWeight.w400,
   );
 
-  /// Creating an argument constructor of [CategoryItemOverlaySettings] class.
-  const CategoryItemOverlaySettings({
+  /// Creating an argument constructor of [OverlayItemSettings] class.
+  const OverlayItemSettings({
     this.mouseCursorSelect = SystemMouseCursors.click,
-    this.alignmentGeometry = Alignment.centerLeft,
-    this.constraints = const BoxConstraints(minHeight: 40),
     this.margin = const EdgeInsets.symmetric(horizontal: 4.0),
+    this.constraints = const BoxConstraints(minHeight: 40),
+    this.alignmentGeometry = Alignment.centerLeft,
     this.defaultDecoration = const BoxDecoration(
       borderRadius: BorderRadius.all(
         Radius.circular(5.0),
@@ -143,6 +147,7 @@ class CategoryItemOverlaySettings {
     this.iconSize = 16.0,
     this.iconAnimationDuration = const Duration(milliseconds: 400),
     this.iconAnimationCurve = Curves.easeInOutQuart,
+    this.indent = const SizedBox(width: 25),
     this.defaultTextStyle = kDefaultTextStyle,
     this.selectedTextStyle = kDefaultTextStyle,
     this.textPadding = const EdgeInsets.only(right: 25),

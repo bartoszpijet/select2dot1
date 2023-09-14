@@ -3,7 +3,7 @@
 [![pub package](https://img.shields.io/pub/v/select2dot1.svg)](https://pub.dartlang.org/packages/select2dot1)
 [![pub points](https://img.shields.io/pub/points/select2dot1?color=2E8B57&label=pub%20points)](https://pub.dev/packages/select2dot1/score)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?color=red)](https://pub.dev/packages/select2dot1/license)
-[![Buy Me A Coffee](https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg)](https://www.buymeacoffee.com/romanjrdykyj)
+
 
 # Select2dot1
 
@@ -91,12 +91,12 @@ import 'package:select2dot1/select2dot1.dart';
 1. The first step is you need to create a list of the data that you would like to display.
 
 ```dart
-static const List<SingleCategoryModel> exampleData = [
-    SingleCategoryModel(
+static const List<CategoryModel> exampleData = [
+    CategoryModel(
       nameCategory: 'Team Leader',
-      singleItemCategoryList: [
-        SingleItemCategoryModel(
-          nameSingleItem: 'David Eubanks',
+      itemList: [
+        ItemModel(
+          itemName: 'David Eubanks',
           extraInfoSingleItem: 'Full time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.transparent,
@@ -104,8 +104,8 @@ static const List<SingleCategoryModel> exampleData = [
             backgroundImage: AssetImage('assets/images/avatar1.jpg'),
           ),
         ),
-        SingleItemCategoryModel(
-          nameSingleItem: 'Stuart Resch',
+        ItemModel(
+          itemName: 'Stuart Resch',
           extraInfoSingleItem: 'Part time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.blue,
@@ -204,8 +204,8 @@ ________________________________________________________________________________
 1. DropdownOverlay, DropdownContentOverlay
 2. SearchBarOverlay
 3. ListDataViewOverlay
-4. CategoryNameOverlay
-5. CategoryItemOverlay
+4. OverlayCategoryWidget
+5. OverlayItemWidget
 
 ____________________________________________________________________________________________
 
@@ -240,8 +240,8 @@ ________________________________________________________________________________
 3. ButtonModal
 4. SearchBarModal
 5. ListDataViewModal
-6. CategoryNameModal
-7. CategoryItemModal
+6. ModalCategoryWidget
+7. ModalItemWidget
 
 ____________________________________________________________________________________________
 
@@ -304,12 +304,12 @@ Select2dot1(
 
 You can pass the single component settings to Select2dot1 widget. Single component settings will be used only by one component of Select2dot1 widget.
 
-In the following example you will be shown how to customize the CategoryNameOverlay component and CategoryItemOverlay component in Dropdown (modification of the design only be done through desktop overlay).
+In the following example you will be shown how to customize the OverlayCategoryWidget component and OverlayItemWidget component in Dropdown (modification of the design only be done through desktop overlay).
 
 ```dart
 Select2dot1(
   selectDataController: SelectDataController(data: exampleData),
-  categoryNameOverlaySettings: CategoryNameOverlaySettings(
+  overlayCategorySettings: OverlayCategorySettings(
     constraints: const BoxConstraints(minHeight: 27),
     textStyle: const TextStyle(
       color: Color(0xFF6B7893),
@@ -320,7 +320,7 @@ Select2dot1(
     hoverDecoration:
         BoxDecoration(color: const Color(0xFF00183D).withOpacity(0.5)),
   ),
-  categoryItemOverlaySettings: CategoryItemOverlaySettings(
+  overlayItemSettings: OverlayItemSettings(
     constraints: const BoxConstraints(minHeight: 35),
     defaultTextStyle: const TextStyle(
       color: Colors.white,
@@ -368,7 +368,7 @@ Select2dot1(
               children: [
                 Flexible(
                   child: Text(
-                    selectChipDetails.singleItemCategory.getNameSingleItem,
+                    selectChipDetails.singleItem.getNameSingleItem,
                     softWrap: false,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(color: Colors.white),
@@ -381,8 +381,8 @@ Select2dot1(
                     child: GestureDetector(
                       onTap: () {
                         selectChipDetails.selectDataController
-                            .removeSingleSelectedChip(
-                          selectChipDetails.singleItemCategory,
+                            .removeSelectedChip(
+                          selectChipDetails.singleItem,
                         );
                       },
                       child: const Icon(
@@ -437,33 +437,33 @@ Select2dot1(
 
 ## Model Structur Data
 
-To use Select2dot1 widget you have to pass data to SelectDataController. Data must be on the list of SingleCategoryModel.
+To use Select2dot1 widget you have to pass data to SelectDataController. Data must be on the list of CategoryModel.
 
-The SingleCategoryModel is a model which contains data about single category.
+The CategoryModel is a model which contains data about single category.
 Parameters:
 * nameCategory - name of category (It is optional if you don't want to show group select)
-* singleItemCategoryList - list of SingleItemCategoryModel (It is required)
+* itemList - list of ItemModel (It is required)
 
 
-SingleItemCategoryModel is a model which contains data about single item in category.
+ItemModel is a model which contains data about single item in category.
 Parameters:
-* nameSingleItem - visible name of single item (It is required)
+* itemName - visible name of single item (It is required)
 * [value](#value-parametr-in-singleitemcategorymodel) - value of single item (It is optional)
 * extraInfoSingleItem - extra info about single item (It is optional)
 * avatarSingleItem - avatar of single item (It is optional)
 
-### Value parametr in SingleItemCategoryModel
+### Value parametr in ItemModel
 
-It's used to get the specific id of a single item. It's necessary when you want to distinguish between single items with the same nameSingleItem.
+It's used to get the specific id of a single item. It's necessary when you want to distinguish between single items with the same itemName.
 
 ```dart
-static const List<SingleCategoryModel> exampleData = [
-  SingleCategoryModel(
-    singleItemCategoryList: [
-      SingleItemCategoryModel(nameSingleItem: 'Alabama', value: 'Alabama1'),
-      SingleItemCategoryModel(nameSingleItem: 'Alabama', value: 'Alabama2'),
-      SingleItemCategoryModel(nameSingleItem: 'Arkansas'),
-      SingleItemCategoryModel(nameSingleItem: 'Illonois'),
+static const List<CategoryModel> exampleData = [
+  CategoryModel(
+    itemList: [
+      ItemModel(itemName: 'Alabama', value: 'Alabama1'),
+      ItemModel(itemName: 'Alabama', value: 'Alabama2'),
+      ItemModel(itemName: 'Arkansas'),
+      ItemModel(itemName: 'Illonois'),
     ],
   ),
 ];
@@ -472,12 +472,12 @@ static const List<SingleCategoryModel> exampleData = [
 ### Example data
 
 ```dart
-static const List<SingleCategoryModel> exampleData = [
-    SingleCategoryModel(
+static const List<CategoryModel> exampleData = [
+    CategoryModel(
       nameCategory: 'Team Leader',
-      singleItemCategoryList: [
-        SingleItemCategoryModel(
-          nameSingleItem: 'David Eubanks',
+      itemList: [
+        ItemModel(
+          itemName: 'David Eubanks',
           extraInfoSingleItem: 'Full time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.transparent,
@@ -485,8 +485,8 @@ static const List<SingleCategoryModel> exampleData = [
             backgroundImage: AssetImage('assets/images/avatar1.jpg'),
           ),
         ),
-        SingleItemCategoryModel(
-          nameSingleItem: 'Stuart Resch',
+        ItemModel(
+          itemName: 'Stuart Resch',
           extraInfoSingleItem: 'Part time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.blue,
@@ -495,15 +495,15 @@ static const List<SingleCategoryModel> exampleData = [
         ),
       ],
     ),
-    SingleCategoryModel(
+    CategoryModel(
       nameCategory: 'UX Designer',
-      singleItemCategoryList: [
-        SingleItemCategoryModel(
-          nameSingleItem: 'Jan Foxstein',
+      itemList: [
+        ItemModel(
+          itemName: 'Jan Foxstein',
           extraInfoSingleItem: 'Full time',
         ),
-        SingleItemCategoryModel(
-          nameSingleItem: 'Jhony Steward',
+        ItemModel(
+          itemName: 'Jhony Steward',
           extraInfoSingleItem: 'Part time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.blue,
@@ -552,8 +552,8 @@ Select2dot1(
       data: exampleData, 
       isMultiple: false, 
       initialSelectedData: [ // Remember that when isMultiple is false, you can add only one position to initialSelectedData.
-        SingleItemCategoryModel(
-          nameSingleItem: 'Stuart Resch',
+        ItemModel(
+          itemName: 'Stuart Resch',
           value: 'Stuart Resch 1', 
         ),
       ],
@@ -608,11 +608,11 @@ Select2dot1(
 Select2dot1(
     selectDataController: SelectDataController(data: exampleData, 
     initialSelectedData: [
-        SingleItemCategoryModel(
-          nameSingleItem: 'Alabama',
+        ItemModel(
+          itemName: 'Alabama',
         ),
-        SingleItemCategoryModel(
-          nameSingleItem: 'California',
+        ItemModel(
+          itemName: 'California',
         ),
       ],
     ),
@@ -625,16 +625,16 @@ It is not possible to use only overlay or modal mode on all platforms. It is aut
 
 ### How to set NO group select?
 
-If you dont want to group select, you dont need to use name parameter in SingleCategoryModel.
+If you dont want to group select, you dont need to use name parameter in CategoryModel.
 
 ```dart
-static const List<SingleCategoryModel> exampleData3 = [
-  SingleCategoryModel(
-    nameCategory: null, // If you dont want to group select, you dont need to use name parameter in SingleCategoryModel or set it to null.
-    singleItemCategoryList: [
-      SingleItemCategoryModel(nameSingleItem: 'Alabama',),
-      SingleItemCategoryModel(nameSingleItem: 'Arkansas'),
-      SingleItemCategoryModel(nameSingleItem: 'Illonois'),
+static const List<CategoryModel> exampleData3 = [
+  CategoryModel(
+    nameCategory: null, // If you dont want to group select, you dont need to use name parameter in CategoryModel or set it to null.
+    itemList: [
+      ItemModel(itemName: 'Alabama',),
+      ItemModel(itemName: 'Arkansas'),
+      ItemModel(itemName: 'Illonois'),
     ],
   ),
 ];

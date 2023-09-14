@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/select2dot1.dart';
 
-class CustomSelect2dot1 extends StatelessWidget {
+class CustomSelect2dot1<T> extends StatelessWidget {
   final String title;
-  final List<SingleCategoryModel> data;
+  final List<CategoryModel<T>> data;
   final bool isMultiSelect;
   final bool avatarInSingleSelect;
   final bool extraInfoInSingleSelect;
@@ -28,8 +28,9 @@ class CustomSelect2dot1 extends StatelessWidget {
         maxWidth: 300,
       ),
       child: Select2dot1(
-        selectDataController: SelectDataController(
+        selectDataController: SelectDataController<T>(
           isMultiSelect: isMultiSelect,
+          isCategorySelectable: true,
           data: data,
         ),
         pillboxTitleSettings: PillboxTitleSettings(
@@ -107,7 +108,7 @@ class CustomSelect2dot1 extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    selectChipDetails.singleItemCategory.nameSingleItem,
+                    selectChipDetails.singleItem.itemName,
                     softWrap: false,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(color: Colors.white),
@@ -120,8 +121,8 @@ class CustomSelect2dot1 extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         selectChipDetails.selectDataController
-                            .removeSingleSelectedChip(
-                          selectChipDetails.singleItemCategory,
+                            .removeSelectedChip(
+                          selectChipDetails.singleItem,
                         );
                       },
                       child: const Icon(
@@ -209,18 +210,25 @@ class CustomSelect2dot1 extends StatelessWidget {
         ),
         listDataViewOverlaySettings:
             const ListDataViewOverlaySettings(thumbColor: Color(0xFF1DEDB2)),
-        categoryNameOverlaySettings: CategoryNameOverlaySettings(
+        overlayCategorySettings: OverlayCategorySettings(
           constraints: const BoxConstraints(minHeight: 27),
-          textStyle: const TextStyle(
+          defaultTextStyle: const TextStyle(
             color: Color(0xFF6B7893),
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
+          selectedTextStyle: const TextStyle(
+            color: Color(0xFF1DEDB2),
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+          iconSize: 14,
+          iconSelectedColor: const Color(0xFF1DEDB2),
           defaultDecoration: const BoxDecoration(color: Colors.transparent),
           hoverDecoration:
               BoxDecoration(color: const Color(0xFF00183D).withOpacity(0.5)),
         ),
-        categoryItemOverlaySettings: CategoryItemOverlaySettings(
+        overlayItemSettings: OverlayItemSettings(
           constraints: const BoxConstraints(minHeight: 35),
           defaultTextStyle: const TextStyle(
             color: Colors.white,
@@ -284,14 +292,14 @@ class CustomSelect2dot1 extends StatelessWidget {
         dropdownModalSettings: const DropdownModalSettings(
           backgroundColor: Color(0xff001029),
         ),
-        categoryNameModalSettings: const CategoryNameModalSettings(
-          textStyle: TextStyle(
+        modalCategorySettings: const ModalCategorySettings(
+          defaultTextStyle: TextStyle(
             color: Color(0xFF6B7893),
             fontSize: 18,
             fontWeight: FontWeight.w500,
           ),
         ),
-        categoryItemModalSettings: CategoryItemModalSettings(
+        modalItemSettings: ModalItemSettings(
           defaultTextStyle: const TextStyle(
             color: Colors.white,
             fontSize: 18,

@@ -6,8 +6,8 @@ import 'package:select2dot1/src/components/modal/title_modal.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/category_item_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/category_name_modal_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
 import 'package:select2dot1/src/settings/modal/done_button_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/dropdown_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/list_data_view_modal_settings.dart';
@@ -17,29 +17,29 @@ import 'package:select2dot1/src/settings/modal/search_empty_info_modal_settings.
 import 'package:select2dot1/src/settings/modal/title_modal_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class DropdownContentModal extends StatefulWidget {
+class DropdownContentModal<T> extends StatefulWidget {
   final ScrollController scrollController;
-  final SelectDataController selectDataController;
-  final SearchControllerSelect2dot1 searchController;
-  final DropdownContentModalBuilder? dropdownContentModalBuilder;
+  final SelectDataController<T> selectDataController;
+  final SearchControllerSelect2dot1<T> searchController;
+  final DropdownContentModalBuilder<T>? dropdownContentModalBuilder;
   final DropdownModalSettings dropdownModalSettings;
   final TitleModalBuilder? titleModalBuilder;
   final TitleModalSettings titleModalSettings;
   final DoneButtonModalBuilder? doneButtonModalBuilder;
   final DoneButtonModalSettings doneButtonModalSettings;
   final bool isSearchable;
-  final SearchBarModalBuilder? searchBarModalBuilder;
+  final SearchBarModalBuilder<T>? searchBarModalBuilder;
   final SearchBarModalSettings searchBarModalSettings;
   final LoadingDataModalBuilder? loadingDataModalBuilder;
   final LoadingDataModalSettings loadingDataModalSettings;
   final SearchEmptyInfoModalBuilder? searchEmptyInfoModalBuilder;
   final SearchEmptyInfoModalSettings searchEmptyInfoModalSettings;
-  final ListDataViewModalBuilder? listDataViewModalBuilder;
+  final ListDataViewModalBuilder<T>? listDataViewModalBuilder;
   final ListDataViewModalSettings listDataViewModalSettings;
-  final CategoryItemModalBuilder? categoryItemModalBuilder;
-  final CategoryItemModalSettings categoryItemModalSettings;
-  final CategoryNameModalBuilder? categoryNameModalBuilder;
-  final CategoryNameModalSettings categoryNameModalSettings;
+  final CategoryItemModalBuilder<T>? modalItemBuilder;
+  final ModalItemSettings modalItemSettings;
+  final CategoryNameModalBuilder<T>? modalCategoryBuilder;
+  final ModalCategorySettings modalCategorySettings;
   final GlobalSettings globalSettings;
 
   const DropdownContentModal({
@@ -62,18 +62,19 @@ class DropdownContentModal extends StatefulWidget {
     required this.searchEmptyInfoModalSettings,
     required this.listDataViewModalBuilder,
     required this.listDataViewModalSettings,
-    required this.categoryItemModalBuilder,
-    required this.categoryItemModalSettings,
-    required this.categoryNameModalBuilder,
-    required this.categoryNameModalSettings,
+    required this.modalItemBuilder,
+    required this.modalItemSettings,
+    required this.modalCategoryBuilder,
+    required this.modalCategorySettings,
     required this.globalSettings,
   });
 
   @override
-  State<DropdownContentModal> createState() => _DropdownContentModalState();
+  State<DropdownContentModal<T>> createState() =>
+      _DropdownContentModalState<T>();
 }
 
-class _DropdownContentModalState extends State<DropdownContentModal> {
+class _DropdownContentModalState<T> extends State<DropdownContentModal<T>> {
   @override
   Widget build(BuildContext context) {
     if (widget.dropdownContentModalBuilder != null) {
@@ -138,10 +139,10 @@ class _DropdownContentModalState extends State<DropdownContentModal> {
                     widget.searchEmptyInfoModalSettings,
                 listDataViewModalBuilder: widget.listDataViewModalBuilder,
                 listDataViewModalSettings: widget.listDataViewModalSettings,
-                categoryItemModalBuilder: widget.categoryItemModalBuilder,
-                categoryItemModalSettings: widget.categoryItemModalSettings,
-                categoryNameModalBuilder: widget.categoryNameModalBuilder,
-                categoryNameModalSettings: widget.categoryNameModalSettings,
+                modalItemBuilder: widget.modalItemBuilder,
+                modalItemSettings: widget.modalItemSettings,
+                modalCategoryBuilder: widget.modalCategoryBuilder,
+                modalCategorySettings: widget.modalCategorySettings,
                 globalSettings: widget.globalSettings,
               ),
             ),
@@ -181,10 +182,10 @@ class _DropdownContentModalState extends State<DropdownContentModal> {
         searchEmptyInfoModalSettings: widget.searchEmptyInfoModalSettings,
         listDataViewModalBuilder: widget.listDataViewModalBuilder,
         listDataViewModalSettings: widget.listDataViewModalSettings,
-        categoryItemModalBuilder: widget.categoryItemModalBuilder,
-        categoryItemModalSettings: widget.categoryItemModalSettings,
-        categoryNameModalBuilder: widget.categoryNameModalBuilder,
-        categoryNameModalSettings: widget.categoryNameModalSettings,
+        modalItemBuilder: widget.modalItemBuilder,
+        modalItemSettings: widget.modalItemSettings,
+        modalCategoryBuilder: widget.modalCategoryBuilder,
+        modalCategorySettings: widget.modalCategorySettings,
         globalSettings: widget.globalSettings,
       );
 }

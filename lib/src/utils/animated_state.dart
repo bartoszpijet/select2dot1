@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/select2dot1_widget.dart';
 
-abstract class AnimatedState extends State<Select2dot1>
+abstract class AnimatedState<T> extends State<Select2dot1<T>>
     with TickerProviderStateMixin {
   // Its good :D.
   // ignore: avoid-late-keyword

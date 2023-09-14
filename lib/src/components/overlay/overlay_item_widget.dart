@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/single_item_category_model.dart';
+import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/overlay/category_item_overlay_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
-class CategoryItemOverlay extends StatefulWidget {
-  final SingleItemCategoryModel singleItemCategory;
-  final SelectDataController selectDataController;
+class OverlayItemWidget<T> extends StatefulWidget {
+  final int deepth;
+  final SelectModel<T> singleItem;
+  final SelectDataController<T> selectDataController;
   final void Function() overlayHide;
-  final CategoryItemOverlayBuilder? categoryItemOverlayBuilder;
-  final CategoryItemOverlaySettings categoryItemOverlaySettings;
+  final CategoryItemOverlayBuilder<T>? overlayItemBuilder;
+  final OverlayItemSettings overlayItemSettings;
   final GlobalSettings globalSettings;
 
-  const CategoryItemOverlay({
+  const OverlayItemWidget({
     super.key,
-    required this.singleItemCategory,
+    this.deepth = 0,
+    required this.singleItem,
     required this.selectDataController,
     required this.overlayHide,
-    required this.categoryItemOverlayBuilder,
-    required this.categoryItemOverlaySettings,
+    required this.overlayItemBuilder,
+    required this.overlayItemSettings,
     required this.globalSettings,
   });
 
   @override
-  State<CategoryItemOverlay> createState() => _CategoryItemOverlayState();
+  State<OverlayItemWidget<T>> createState() => _CategoryItemOverlayState<T>();
 }
 
-class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
+class _CategoryItemOverlayState<T> extends State<OverlayItemWidget<T>> {
   bool hover = false;
   bool isSelected = false;
 
@@ -48,13 +50,13 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.categoryItemOverlayBuilder != null) {
+    if (widget.overlayItemBuilder != null) {
       // This can't be null anyways.
       // ignore: avoid-non-null-assertion
-      return widget.categoryItemOverlayBuilder!(
+      return widget.overlayItemBuilder!(
         context,
         CategoryItemOverlayDetails(
-          singleItemCategory: widget.singleItemCategory,
+          singleItem: widget.singleItem,
           selectDataController: widget.selectDataController,
           overlayHide: widget.overlayHide,
           hover: hover,
@@ -66,43 +68,43 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
     }
 
     return Container(
-      margin: widget.categoryItemOverlaySettings.margin,
+      margin: widget.overlayItemSettings.margin,
       child: MouseRegion(
-        cursor: widget.categoryItemOverlaySettings.mouseCursorSelect,
+        cursor: widget.overlayItemSettings.mouseCursorSelect,
         onHover: mounted ? (event) => setState(() => hover = true) : null,
         onExit: mounted ? (event) => setState(() => hover = false) : null,
         child: GestureDetector(
           onTap: _onTapSingleItemCategory,
           child: Container(
             decoration: _getDecoration(),
-            alignment: widget.categoryItemOverlaySettings.alignmentGeometry,
-            constraints: widget.categoryItemOverlaySettings.constraints,
+            alignment: widget.overlayItemSettings.alignmentGeometry,
+            constraints: widget.overlayItemSettings.constraints,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  padding: widget.categoryItemOverlaySettings.iconPadding,
+                Padding(
+                  padding: widget.overlayItemSettings.iconPadding,
                   child: AnimatedOpacity(
                     opacity: isSelected ? 1 : 0,
-                    duration: widget
-                        .categoryItemOverlaySettings.iconAnimationDuration,
-                    curve:
-                        widget.categoryItemOverlaySettings.iconAnimationCurve,
+                    duration: widget.overlayItemSettings.iconAnimationDuration,
+                    curve: widget.overlayItemSettings.iconAnimationCurve,
                     child: Icon(
-                      widget.categoryItemOverlaySettings.iconData,
-                      size: widget.categoryItemOverlaySettings.iconSize,
+                      widget.overlayItemSettings.iconData,
+                      size: widget.overlayItemSettings.iconSize,
                       color: _getIconColor(),
                     ),
                   ),
                 ),
-                if (widget.singleItemCategory.avatarSingleItem != null &&
-                    widget.categoryItemOverlaySettings.showAvatar)
+                for (int i = 0; i < widget.deepth; i++)
+                  widget.overlayItemSettings.indent,
+                if (widget.singleItem.avatarSingleItem != null &&
+                    widget.overlayItemSettings.showAvatar)
                   Container(
-                    height: widget.categoryItemOverlaySettings.avatarMaxHeight,
-                    width: widget.categoryItemOverlaySettings.avatarMaxWidth,
-                    margin: widget.categoryItemOverlaySettings.avatarMargin,
+                    height: widget.overlayItemSettings.avatarMaxHeight,
+                    width: widget.overlayItemSettings.avatarMaxWidth,
+                    margin: widget.overlayItemSettings.avatarMargin,
                     child: FittedBox(
-                      child: widget.singleItemCategory.avatarSingleItem,
+                      child: widget.singleItem.avatarSingleItem,
                     ),
                   ),
                 Flexible(
@@ -110,26 +112,24 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: widget.categoryItemOverlaySettings.textPadding,
+                      Padding(
+                        padding: widget.overlayItemSettings.textPadding,
                         child: Text(
-                          widget.singleItemCategory.nameSingleItem,
-                          overflow:
-                              widget.categoryItemOverlaySettings.textOverflow,
+                          widget.singleItem.itemName,
+                          overflow: widget.overlayItemSettings.textOverflow,
                           style: _getNameItemTextStyle(),
                         ),
                       ),
-                      if (widget.categoryItemOverlaySettings.showExtraInfo &&
-                          widget.singleItemCategory.extraInfoSingleItem != null)
+                      if (widget.overlayItemSettings.showExtraInfo &&
+                          widget.singleItem.extraInfoSingleItem != null)
                         Container(
-                          padding: widget
-                              .categoryItemOverlaySettings.extraInfoPadding,
+                          padding: widget.overlayItemSettings.extraInfoPadding,
                           child: Text(
                             // This can't be null anyways.
                             // ignore: avoid-non-null-assertion
-                            widget.singleItemCategory.extraInfoSingleItem!,
-                            overflow: widget.categoryItemOverlaySettings
-                                .extraInfoTextOverflow,
+                            widget.singleItem.extraInfoSingleItem!,
+                            overflow: widget
+                                .overlayItemSettings.extraInfoTextOverflow,
                             style: _getExtraInfoTextStyle(),
                           ),
                         ),
@@ -146,14 +146,14 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
 
   Color _getIconColor() {
     return isSelected
-        ? widget.categoryItemOverlaySettings.iconSelectedColor ??
+        ? widget.overlayItemSettings.iconSelectedColor ??
             widget.globalSettings.mainColor
-        : widget.categoryItemOverlaySettings.iconDefaultColor ??
+        : widget.overlayItemSettings.iconDefaultColor ??
             widget.globalSettings.textColor;
   }
 
   TextStyle _getExtraInfoTextStyle() {
-    TextStyle textStyle = widget.categoryItemOverlaySettings.extraInfoTextStyle;
+    TextStyle textStyle = widget.overlayItemSettings.extraInfoTextStyle;
 
     if (textStyle.color == null) {
       return textStyle.copyWith(
@@ -172,8 +172,8 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
 
   TextStyle _getNameItemTextStyle() {
     TextStyle textStyle = isSelected
-        ? widget.categoryItemOverlaySettings.selectedTextStyle
-        : widget.categoryItemOverlaySettings.defaultTextStyle;
+        ? widget.overlayItemSettings.selectedTextStyle
+        : widget.overlayItemSettings.defaultTextStyle;
 
     if (textStyle.color == null) {
       return textStyle.copyWith(
@@ -194,8 +194,8 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
 
   BoxDecoration _getDecoration() {
     BoxDecoration decoration = hover
-        ? widget.categoryItemOverlaySettings.hoverDecoration
-        : widget.categoryItemOverlaySettings.defaultDecoration;
+        ? widget.overlayItemSettings.hoverDecoration
+        : widget.overlayItemSettings.defaultDecoration;
 
     if (decoration.color == null) {
       decoration = decoration.copyWith(
@@ -211,12 +211,10 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
   void _onTapSingleItemCategory() {
     if (!isSelected) {
       widget.selectDataController.isMultiSelect
-          ? widget.selectDataController.addSelectChip(widget.singleItemCategory)
-          : widget.selectDataController
-              .setSingleSelect(widget.singleItemCategory);
+          ? widget.selectDataController.addSelectChip(widget.singleItem)
+          : widget.selectDataController.setSingleSelect(widget.singleItem);
     } else {
-      widget.selectDataController
-          .removeSingleSelectedChip(widget.singleItemCategory);
+      widget.selectDataController.removeSelectedChip(widget.singleItem);
     }
 
     if (!widget.selectDataController.isMultiSelect) {
@@ -225,8 +223,7 @@ class _CategoryItemOverlayState extends State<CategoryItemOverlay> {
   }
 
   bool _isSelected() {
-    if (widget.selectDataController.selectedList
-        .contains(widget.singleItemCategory)) {
+    if (widget.selectDataController.selectedList.contains(widget.singleItem)) {
       return true;
     }
 
