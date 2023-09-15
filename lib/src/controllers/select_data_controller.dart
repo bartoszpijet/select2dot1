@@ -17,7 +17,7 @@ class SelectDataController<T> extends ChangeNotifier {
   final bool isCategoryAddAllChildren;
 
   /// This is a boolean to select category.
-  /// Default is true.
+  /// Default is false.
   final bool isCategorySelectable;
 
   /// This is initial selected data.
