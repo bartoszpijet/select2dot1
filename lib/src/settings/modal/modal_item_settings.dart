@@ -52,7 +52,7 @@ class ModalItemSettings {
 
   /// The padding of the icon of the category item of list data view in modal mode.
   /// Default value is [EdgeInsets.only(left: 1, right: 3)].
-  final EdgeInsetsGeometry? iconPadding;
+  final EdgeInsetsGeometry iconPadding;
 
   /// The duration of the icon animation of the category item of list data view in modal mode.
   /// Default value is [Duration(milliseconds: 400)].
@@ -65,6 +65,10 @@ class ModalItemSettings {
   /// The indent that will be used for nested category.
   /// Default is ``` const SizedBox(width:25) ```.
   final Widget indent;
+
+  /// Will be showing tooltip.
+  /// Default it is true.
+  final bool showTooltip;
 
   /// The default text style of the category item of list data view in modal mode.
   /// Default value is [TextStyle(fontSize: 18, fontWeight: FontWeight.w400)].
@@ -151,6 +155,7 @@ class ModalItemSettings {
     this.iconAnimationDuration = const Duration(milliseconds: 400),
     this.iconAnimationCurve = Curves.easeInOutQuart,
     this.indent = const SizedBox(width: 25),
+    this.showTooltip = true,
     this.defaultTextStyle = kDefaultTextStyle,
     this.selectedTextStyle = kDefaultTextStyle,
     this.textPadding = const EdgeInsets.only(

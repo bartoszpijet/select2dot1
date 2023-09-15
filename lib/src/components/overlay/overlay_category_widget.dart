@@ -63,10 +63,21 @@ class _CategoryNameOverlayState<T> extends State<OverlayCategoryWidget<T>> {
         ),
       );
     }
+    Widget text = Text(
+      // This can't be null because of the if statement above.
+      // ignore: avoid-non-null-assertion
+      widget.singleCategory.itemName,
+      overflow: widget.overlayCategorySettings.textOverflow,
+      style: _getTextStyle(),
+    );
 
-    // if (widget.singleCategory.itemName == null) {
-    //   return const SizedBox();
-    // }
+    if (widget.overlayCategorySettings.showTooltip) {
+      text = Tooltip(
+        waitDuration: const Duration(seconds: 1),
+        message: widget.singleCategory.itemName,
+        child: text,
+      );
+    }
 
     return Container(
       margin: widget.overlayCategorySettings.margin,
@@ -107,13 +118,7 @@ class _CategoryNameOverlayState<T> extends State<OverlayCategoryWidget<T>> {
                 Flexible(
                   child: Padding(
                     padding: widget.overlayCategorySettings.textPadding,
-                    child: Text(
-                      // This can't be null because of the if statement above.
-                      // ignore: avoid-non-null-assertion
-                      widget.singleCategory.itemName,
-                      overflow: widget.overlayCategorySettings.textOverflow,
-                      style: _getTextStyle(),
-                    ),
+                    child: text,
                   ),
                 ),
               ],

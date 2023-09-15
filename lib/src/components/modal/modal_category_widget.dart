@@ -60,10 +60,21 @@ class _CategoryItemModalState<T> extends State<ModalCategoryWidget<T>> {
         ),
       );
     }
+    Widget text = Text(
+      // This can't be null because of the if statement above.
+      // ignore: avoid-non-null-assertion
+      widget.singleCategory.itemName,
+      overflow: widget.modalCategorySettings.textOverflow,
+      style: _getTextStyle(),
+    );
 
-    // if (singleCategory.itemName == null) {
-    //   return const SizedBox();
-    // }
+    if (widget.modalCategorySettings.showTooltip) {
+      text = Tooltip(
+        waitDuration: const Duration(seconds: 1),
+        message: widget.singleCategory.itemName,
+        child: text,
+      );
+    }
 
     return Container(
       margin: widget.modalCategorySettings.margin,
@@ -80,19 +91,32 @@ class _CategoryItemModalState<T> extends State<ModalCategoryWidget<T>> {
           decoration: widget.modalCategorySettings.decoration,
           alignment: widget.modalCategorySettings.alignmentGeometry,
           constraints: widget.modalCategorySettings.constraints,
-          padding: widget.modalCategorySettings.textPadding,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Visibility(
+                visible: widget.selectDataController.isCategorySelectable,
+                child: Padding(
+                  padding: widget.modalCategorySettings.iconPadding,
+                  child: AnimatedOpacity(
+                    opacity: isSelected ? 1 : 0,
+                    duration:
+                        widget.modalCategorySettings.iconAnimationDuration,
+                    curve: widget.modalCategorySettings.iconAnimationCurve,
+                    child: Icon(
+                      widget.modalCategorySettings.iconData,
+                      size: widget.modalCategorySettings.iconSize,
+                      color: _getIconColor(),
+                    ),
+                  ),
+                ),
+              ),
               for (int i = 0; i < widget.deepth; i++)
                 widget.modalCategorySettings.indent,
               Flexible(
-                child: Text(
-                  // This can't be null because of the if statement above.
-                  // ignore: avoid-non-null-assertion
-                  widget.singleCategory.itemName,
-                  overflow: widget.modalCategorySettings.textOverflow,
-                  style: _getTextStyle(),
+                child: Padding(
+                  padding: widget.modalCategorySettings.textPadding,
+                  child: text,
                 ),
               ),
             ],
@@ -122,6 +146,14 @@ class _CategoryItemModalState<T> extends State<ModalCategoryWidget<T>> {
     }
 
     return textStyle;
+  }
+
+  Color _getIconColor() {
+    return isSelected
+        ? widget.modalCategorySettings.iconSelectedColor ??
+            widget.globalSettings.mainColor
+        : widget.modalCategorySettings.iconDefaultColor ??
+            widget.globalSettings.textColor;
   }
 
   void _onTapCategory() {

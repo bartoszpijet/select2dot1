@@ -66,6 +66,18 @@ class _CategoryItemOverlayState<T> extends State<OverlayItemWidget<T>> {
         ),
       );
     }
+    Widget text = Text(
+      widget.singleItem.itemName,
+      overflow: widget.overlayItemSettings.textOverflow,
+      style: _getNameItemTextStyle(),
+    );
+    if (widget.overlayItemSettings.showTooltip) {
+      text = Tooltip(
+        waitDuration: const Duration(seconds: 1),
+        message: widget.singleItem.itemName,
+        child: text,
+      );
+    }
 
     return Container(
       margin: widget.overlayItemSettings.margin,
@@ -114,11 +126,7 @@ class _CategoryItemOverlayState<T> extends State<OverlayItemWidget<T>> {
                     children: [
                       Padding(
                         padding: widget.overlayItemSettings.textPadding,
-                        child: Text(
-                          widget.singleItem.itemName,
-                          overflow: widget.overlayItemSettings.textOverflow,
-                          style: _getNameItemTextStyle(),
-                        ),
+                        child: text,
                       ),
                       if (widget.overlayItemSettings.showExtraInfo &&
                           widget.singleItem.extraInfoSingleItem != null)

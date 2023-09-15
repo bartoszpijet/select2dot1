@@ -63,6 +63,19 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
         ),
       );
     }
+    Widget text = Text(
+      widget.singleItem.itemName,
+      overflow: widget.modalItemSettings.textOverflow,
+      style: _getNameItemTextStyle(),
+    );
+
+    if (widget.modalItemSettings.showTooltip) {
+      text = Tooltip(
+        waitDuration: const Duration(seconds: 1),
+        message: widget.singleItem.itemName,
+        child: text,
+      );
+    }
 
     return Container(
       margin: widget.modalItemSettings.margin,
@@ -77,7 +90,7 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
           constraints: widget.modalItemSettings.constraints,
           child: Row(
             children: [
-              Container(
+              Padding(
                 padding: widget.modalItemSettings.iconPadding,
                 child: AnimatedOpacity(
                   opacity: isSelected ? 1 : 0,
@@ -109,11 +122,7 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
                   children: [
                     Container(
                       padding: widget.modalItemSettings.textPadding,
-                      child: Text(
-                        widget.singleItem.itemName,
-                        overflow: widget.modalItemSettings.textOverflow,
-                        style: _getNameItemTextStyle(),
-                      ),
+                      child: text,
                     ),
                     if (widget.modalItemSettings.showExtraInfo &&
                         widget.singleItem.extraInfoSingleItem != null)

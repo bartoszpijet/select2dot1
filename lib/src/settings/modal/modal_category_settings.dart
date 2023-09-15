@@ -52,6 +52,10 @@ class ModalCategorySettings {
   /// Default is ``` const SizedBox(width:25) ```.
   final Widget indent;
 
+  /// Will be showing tooltip.
+  /// Default it is true.
+  final bool showTooltip;
+
   /// Default text style of the category item.
   /// Default value is [TextStyle(fontSize: 16, fontWeight: FontWeight.w400)].
   final TextStyle defaultTextStyle;
@@ -108,6 +112,7 @@ class ModalCategorySettings {
     this.iconAnimationDuration = const Duration(milliseconds: 400),
     this.iconAnimationCurve = Curves.easeInOutQuart,
     this.indent = const SizedBox(width: 25),
+    this.showTooltip = true,
     this.defaultTextStyle = kDefaultTextStyle,
     this.selectedTextStyle = kDefaultTextStyle,
     this.textPadding = const EdgeInsets.all(0),

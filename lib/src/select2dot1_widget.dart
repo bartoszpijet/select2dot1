@@ -14,20 +14,20 @@ import 'package:select2dot1/src/dropdown_overlay.dart';
 import 'package:select2dot1/src/models/select_model.dart';
 import 'package:select2dot1/src/pillbox.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
-import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
 import 'package:select2dot1/src/settings/modal/done_button_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/dropdown_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/list_data_view_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/loading_data_modal_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
 import 'package:select2dot1/src/settings/modal/search_bar_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/search_empty_info_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/title_modal_settings.dart';
-import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
-import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
 import 'package:select2dot1/src/settings/overlay/dropdown_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/list_data_view_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/loading_data_overlay_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
 import 'package:select2dot1/src/settings/overlay/search_bar_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/search_empty_info_overlay_settings.dart';
 import 'package:select2dot1/src/settings/pillbox_content_multi_settings.dart';
@@ -345,6 +345,8 @@ class _Select2dot1State<T> extends AnimatedState<T>
   // ignore: avoid-late-keyword
   late final LayerLink layerLink;
 
+  // Its ok.
+  // ignore: avoid-late-keyword
   late final double? appBarMaxHeightTemp;
 
   @override
