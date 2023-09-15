@@ -146,11 +146,13 @@ class SelectDataController<T> extends ChangeNotifier {
   SelectModel<T> getCategoryFromData(
     SelectModel<T> patternSingleItem,
   ) {
-    late SelectModel<T> returnedVal;
+    SelectModel<T>? returnedVal;
     for (SelectModel<T> item in data) {
-      returnedVal = deepContains(patternSingleItem, item) ?? patternSingleItem;
+      returnedVal = deepContains(patternSingleItem, item);
+      if (returnedVal != null) break;
     }
-    return returnedVal;
+
+    return returnedVal ?? patternSingleItem;
   }
 
   SelectModel<T>? deepContains(
@@ -168,6 +170,7 @@ class SelectDataController<T> extends ChangeNotifier {
         contain = deepContains(search, inner);
         if (contain != null) break;
       }
+
       return contain;
     }
   }

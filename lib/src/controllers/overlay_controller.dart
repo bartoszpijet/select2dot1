@@ -13,25 +13,22 @@ mixin OverlayController<T> on AnimatedState<T> {
 
   void toogleOverlay() {
     if (overlayController.isShowing) {
-      unawaited(
-        getAnimationController
-            .reverse()
-            .then((vak) => overlayController.hide()),
-      );
+      hideOverlay();
     } else {
-      overlayController.show();
-      getAnimationController.forward();
+      showOverlay();
     }
   }
 
   void showOverlay() {
     overlayController.show();
+    // Not needed.
+    // ignore:avoid-ignoring-return-values
     getAnimationController.forward();
   }
 
   void hideOverlay() {
     unawaited(
-      getAnimationController.reverse().then((vak) => overlayController.hide()),
+      getAnimationController.reverse().then((_) => overlayController.hide()),
     );
   }
 

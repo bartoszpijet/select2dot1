@@ -63,6 +63,76 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
         ),
       );
     }
+    Widget result = Container(
+      decoration: widget.modalItemSettings.decoration,
+      alignment: widget.modalItemSettings.alignmentGeometry,
+      constraints: widget.modalItemSettings.constraints,
+      child: Row(
+        children: [
+          Padding(
+            padding: widget.modalItemSettings.iconPadding,
+            child: AnimatedOpacity(
+              opacity: isSelected ? 1 : 0,
+              duration: widget.modalItemSettings.iconAnimationDuration,
+              curve: widget.modalItemSettings.iconAnimationCurve,
+              child: Icon(
+                widget.modalItemSettings.iconData,
+                size: widget.modalItemSettings.iconSize,
+                color: _getIconColor(),
+              ),
+            ),
+          ),
+          for (int i = 0; i < widget.deepth; i++)
+            widget.modalItemSettings.indent,
+          if (widget.singleItem.avatarSingleItem != null &&
+              widget.modalItemSettings.showAvatar)
+            Container(
+              height: widget.modalItemSettings.avatarMaxHeight,
+              width: widget.modalItemSettings.avatarMaxWidth,
+              margin: widget.modalItemSettings.avatarMargin,
+              child: FittedBox(
+                child: widget.singleItem.avatarSingleItem,
+              ),
+            ),
+          Flexible(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: widget.modalItemSettings.textPadding,
+                  child: Text(
+                    widget.singleItem.itemName,
+                    overflow: widget.modalItemSettings.textOverflow,
+                    style: _getNameItemTextStyle(),
+                  ),
+                ),
+                if (widget.modalItemSettings.showExtraInfo &&
+                    widget.singleItem.extraInfoSingleItem != null)
+                  Container(
+                    padding: widget.modalItemSettings.extraInfoPadding,
+                    child: Text(
+                      // This can't be null anyways.
+                      // ignore: avoid-non-null-assertion
+                      widget.singleItem.extraInfoSingleItem!,
+                      overflow: widget.modalItemSettings.extraInfoTextOverflow,
+                      style: _getExtraInfoTextStyle(),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (widget.modalItemSettings.showTooltip) {
+      result = Tooltip(
+        waitDuration: const Duration(seconds: 1),
+        message: widget.singleItem.itemName,
+        child: result,
+      );
+    }
 
     return Container(
       margin: widget.modalItemSettings.margin,
@@ -71,69 +141,7 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
         borderRadius: widget.modalItemSettings.inkWellBorderRadius,
         splashColor: widget.modalItemSettings.splashColor,
         highlightColor: widget.modalItemSettings.highlightColor,
-        child: Container(
-          decoration: widget.modalItemSettings.decoration,
-          alignment: widget.modalItemSettings.alignmentGeometry,
-          constraints: widget.modalItemSettings.constraints,
-          child: Row(
-            children: [
-              Container(
-                padding: widget.modalItemSettings.iconPadding,
-                child: AnimatedOpacity(
-                  opacity: isSelected ? 1 : 0,
-                  duration: widget.modalItemSettings.iconAnimationDuration,
-                  curve: widget.modalItemSettings.iconAnimationCurve,
-                  child: Icon(
-                    widget.modalItemSettings.iconData,
-                    size: widget.modalItemSettings.iconSize,
-                    color: _getIconColor(),
-                  ),
-                ),
-              ),
-              for (int i = 0; i < widget.deepth; i++)
-                widget.modalItemSettings.indent,
-              if (widget.singleItem.avatarSingleItem != null &&
-                  widget.modalItemSettings.showAvatar)
-                Container(
-                  height: widget.modalItemSettings.avatarMaxHeight,
-                  width: widget.modalItemSettings.avatarMaxWidth,
-                  margin: widget.modalItemSettings.avatarMargin,
-                  child: FittedBox(
-                    child: widget.singleItem.avatarSingleItem,
-                  ),
-                ),
-              Flexible(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: widget.modalItemSettings.textPadding,
-                      child: Text(
-                        widget.singleItem.itemName,
-                        overflow: widget.modalItemSettings.textOverflow,
-                        style: _getNameItemTextStyle(),
-                      ),
-                    ),
-                    if (widget.modalItemSettings.showExtraInfo &&
-                        widget.singleItem.extraInfoSingleItem != null)
-                      Container(
-                        padding: widget.modalItemSettings.extraInfoPadding,
-                        child: Text(
-                          // This can't be null anyways.
-                          // ignore: avoid-non-null-assertion
-                          widget.singleItem.extraInfoSingleItem!,
-                          overflow:
-                              widget.modalItemSettings.extraInfoTextOverflow,
-                          style: _getExtraInfoTextStyle(),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: result,
       ),
     );
   }
