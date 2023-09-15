@@ -66,75 +66,16 @@ class _CategoryItemOverlayState<T> extends State<OverlayItemWidget<T>> {
         ),
       );
     }
-    Widget result = Container(
-      decoration: _getDecoration(),
-      alignment: widget.overlayItemSettings.alignmentGeometry,
-      constraints: widget.overlayItemSettings.constraints,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: widget.overlayItemSettings.iconPadding,
-            child: AnimatedOpacity(
-              opacity: isSelected ? 1 : 0,
-              duration: widget.overlayItemSettings.iconAnimationDuration,
-              curve: widget.overlayItemSettings.iconAnimationCurve,
-              child: Icon(
-                widget.overlayItemSettings.iconData,
-                size: widget.overlayItemSettings.iconSize,
-                color: _getIconColor(),
-              ),
-            ),
-          ),
-          for (int i = 0; i < widget.deepth; i++)
-            widget.overlayItemSettings.indent,
-          if (widget.singleItem.avatarSingleItem != null &&
-              widget.overlayItemSettings.showAvatar)
-            Container(
-              height: widget.overlayItemSettings.avatarMaxHeight,
-              width: widget.overlayItemSettings.avatarMaxWidth,
-              margin: widget.overlayItemSettings.avatarMargin,
-              child: FittedBox(
-                child: widget.singleItem.avatarSingleItem,
-              ),
-            ),
-          Flexible(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: widget.overlayItemSettings.textPadding,
-                  child: Text(
-                    widget.singleItem.itemName,
-                    overflow: widget.overlayItemSettings.textOverflow,
-                    style: _getNameItemTextStyle(),
-                  ),
-                ),
-                if (widget.overlayItemSettings.showExtraInfo &&
-                    widget.singleItem.extraInfoSingleItem != null)
-                  Container(
-                    padding: widget.overlayItemSettings.extraInfoPadding,
-                    child: Text(
-                      // This can't be null anyways.
-                      // ignore: avoid-non-null-assertion
-                      widget.singleItem.extraInfoSingleItem!,
-                      overflow:
-                          widget.overlayItemSettings.extraInfoTextOverflow,
-                      style: _getExtraInfoTextStyle(),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    Widget text = Text(
+      widget.singleItem.itemName,
+      overflow: widget.overlayItemSettings.textOverflow,
+      style: _getNameItemTextStyle(),
     );
     if (widget.overlayItemSettings.showTooltip) {
-      result = Tooltip(
+      text = Tooltip(
         waitDuration: const Duration(seconds: 1),
         message: widget.singleItem.itemName,
-        child: result,
+        child: text,
       );
     }
 
@@ -146,7 +87,66 @@ class _CategoryItemOverlayState<T> extends State<OverlayItemWidget<T>> {
         onExit: mounted ? (event) => setState(() => hover = false) : null,
         child: GestureDetector(
           onTap: _onTapSingleItemCategory,
-          child: result,
+          child: Container(
+            decoration: _getDecoration(),
+            alignment: widget.overlayItemSettings.alignmentGeometry,
+            constraints: widget.overlayItemSettings.constraints,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: widget.overlayItemSettings.iconPadding,
+                  child: AnimatedOpacity(
+                    opacity: isSelected ? 1 : 0,
+                    duration: widget.overlayItemSettings.iconAnimationDuration,
+                    curve: widget.overlayItemSettings.iconAnimationCurve,
+                    child: Icon(
+                      widget.overlayItemSettings.iconData,
+                      size: widget.overlayItemSettings.iconSize,
+                      color: _getIconColor(),
+                    ),
+                  ),
+                ),
+                for (int i = 0; i < widget.deepth; i++)
+                  widget.overlayItemSettings.indent,
+                if (widget.singleItem.avatarSingleItem != null &&
+                    widget.overlayItemSettings.showAvatar)
+                  Container(
+                    height: widget.overlayItemSettings.avatarMaxHeight,
+                    width: widget.overlayItemSettings.avatarMaxWidth,
+                    margin: widget.overlayItemSettings.avatarMargin,
+                    child: FittedBox(
+                      child: widget.singleItem.avatarSingleItem,
+                    ),
+                  ),
+                Flexible(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: widget.overlayItemSettings.textPadding,
+                        child: text,
+                      ),
+                      if (widget.overlayItemSettings.showExtraInfo &&
+                          widget.singleItem.extraInfoSingleItem != null)
+                        Container(
+                          padding: widget.overlayItemSettings.extraInfoPadding,
+                          child: Text(
+                            // This can't be null anyways.
+                            // ignore: avoid-non-null-assertion
+                            widget.singleItem.extraInfoSingleItem!,
+                            overflow: widget
+                                .overlayItemSettings.extraInfoTextOverflow,
+                            style: _getExtraInfoTextStyle(),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

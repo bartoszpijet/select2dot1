@@ -63,52 +63,19 @@ class _CategoryNameOverlayState<T> extends State<OverlayCategoryWidget<T>> {
         ),
       );
     }
-    Widget result = Container(
-      decoration: _getDecoration(),
-      alignment: widget.overlayCategorySettings.alignmentGeometry,
-      constraints: widget.overlayCategorySettings.constraints,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Visibility(
-            visible: widget.selectDataController.isCategorySelectable,
-            child: Padding(
-              padding: widget.overlayCategorySettings.iconPadding,
-              child: AnimatedOpacity(
-                opacity: isSelected ? 1 : 0,
-                duration: widget.overlayCategorySettings.iconAnimationDuration,
-                curve: widget.overlayCategorySettings.iconAnimationCurve,
-                child: Icon(
-                  widget.overlayCategorySettings.iconData,
-                  size: widget.overlayCategorySettings.iconSize,
-                  color: _getIconColor(),
-                ),
-              ),
-            ),
-          ),
-          for (int i = 0; i < widget.deepth; i++)
-            widget.overlayCategorySettings.indent,
-          Flexible(
-            child: Padding(
-              padding: widget.overlayCategorySettings.textPadding,
-              child: Text(
-                // This can't be null because of the if statement above.
-                // ignore: avoid-non-null-assertion
-                widget.singleCategory.itemName,
-                overflow: widget.overlayCategorySettings.textOverflow,
-                style: _getTextStyle(),
-              ),
-            ),
-          ),
-        ],
-      ),
+    Widget text = Text(
+      // This can't be null because of the if statement above.
+      // ignore: avoid-non-null-assertion
+      widget.singleCategory.itemName,
+      overflow: widget.overlayCategorySettings.textOverflow,
+      style: _getTextStyle(),
     );
 
     if (widget.overlayCategorySettings.showTooltip) {
-      result = Tooltip(
+      text = Tooltip(
         waitDuration: const Duration(seconds: 1),
         message: widget.singleCategory.itemName,
-        child: result,
+        child: text,
       );
     }
 
@@ -122,7 +89,41 @@ class _CategoryNameOverlayState<T> extends State<OverlayCategoryWidget<T>> {
               : SystemMouseCursors.basic,
           onHover: widget.selectDataController.isMultiSelect ? _onHover : null,
           onExit: widget.selectDataController.isMultiSelect ? _onExit : null,
-          child: result,
+          child: Container(
+            decoration: _getDecoration(),
+            alignment: widget.overlayCategorySettings.alignmentGeometry,
+            constraints: widget.overlayCategorySettings.constraints,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Visibility(
+                  visible: widget.selectDataController.isCategorySelectable,
+                  child: Padding(
+                    padding: widget.overlayCategorySettings.iconPadding,
+                    child: AnimatedOpacity(
+                      opacity: isSelected ? 1 : 0,
+                      duration:
+                          widget.overlayCategorySettings.iconAnimationDuration,
+                      curve: widget.overlayCategorySettings.iconAnimationCurve,
+                      child: Icon(
+                        widget.overlayCategorySettings.iconData,
+                        size: widget.overlayCategorySettings.iconSize,
+                        color: _getIconColor(),
+                      ),
+                    ),
+                  ),
+                ),
+                for (int i = 0; i < widget.deepth; i++)
+                  widget.overlayCategorySettings.indent,
+                Flexible(
+                  child: Padding(
+                    padding: widget.overlayCategorySettings.textPadding,
+                    child: text,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
