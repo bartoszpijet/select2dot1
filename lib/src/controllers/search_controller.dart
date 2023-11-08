@@ -24,13 +24,20 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   /// First it will be same as [data].
   final List<SelectModel<T>> results;
 
+  /// Hide category if [SelectModel.itemList] is empty.
+  /// Default to [true].
+  final bool hideEmptyCategory;
+
   /// Getter for [results] find by [findSearchDataResults].
   List<SelectModel<T>> get getResults => results;
 
   /// Creating an argument constructor of [SearchControllerSelect2dot1] class.
   /// [data] is data to search. [data] is required.
-  SearchControllerSelect2dot1(this.data, {this.fuzzyOptions})
-      : results = data.toList() // Fix pass by reference.
+  SearchControllerSelect2dot1(
+    this.data, {
+    this.fuzzyOptions,
+    this.hideEmptyCategory = false,
+  }) : results = data.toList() // Fix pass by reference.
   {
     oldLength = countLength();
   }
@@ -97,8 +104,14 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   /// Count length of search results function.
   int countLength() {
     int length = 0;
-    for (var category in results) {
-      length += category.itemList.length;
+    for (SelectModel<T> element in results) {
+      if (element.isCategory) {
+        int toAdd = element.itemList.length;
+        if (toAdd == 0 && hideEmptyCategory) continue;
+        length += element.itemList.length + 1;
+      } else {
+        length++;
+      }
     }
 
     return length;
