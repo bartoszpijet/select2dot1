@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fuzzysearch/fuzzysearch.dart';
-import 'package:select2dot1/src/models/category_model.dart';
 import 'package:select2dot1/src/models/select_model.dart';
 
 /// SearchController is a class that will be used to search data.
@@ -95,7 +94,6 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
       //   }
       // }
     }
-    print(results);
 
     int newLength = countLength();
     if (oldLength != newLength) {
