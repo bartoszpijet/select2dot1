@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:select2dot1/select2dot1.dart';
 
 class ExampleData {
-  static const List<CategoryModel<String>> exampleData1 = [
+  static const List<SelectModel<String>> exampleData1 = [
     CategoryModel<String>(
       itemName: 'Team Leader',
       itemList: [
