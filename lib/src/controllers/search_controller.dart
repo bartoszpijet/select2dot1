@@ -60,14 +60,13 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     }
 
     results.clear();
-
-    for (var category in data) {
-      List<SelectModel<T>> tempSingleItemCategoryList = [];
-
+    for (SelectModel<T> element in flatData) {
       Fuzzy<SelectModel<T>> fuse = Fuzzy.withIdentifiers(
         {
-          for (var singleItem in category.itemList)
-            singleItem.itemName: singleItem,
+          element.itemName: element,
+          // if (element.isCategory)
+          //   for (SelectModel<T> singleItem in element.itemList)
+          //     singleItem.itemName: singleItem,
         },
         options: fuzzyOptions ??
             FuzzyOptions(
@@ -77,23 +76,26 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
             ),
       );
       List<Result<SelectModel<T>>> tmpResults = await fuse.search(value);
-      for (var element in tmpResults) {
-        if (element.identifier != null) {
+      for (Result<SelectModel<T>> searchResult in tmpResults) {
+        if (searchResult.identifier != null) {
           // Null check done above.
           // ignore: avoid-non-null-assertion
-          tempSingleItemCategoryList.add(element.identifier!);
+          results.add(searchResult.identifier!);
         }
       }
 
-      if (tempSingleItemCategoryList.isNotEmpty) {
-        results.add(
-          CategoryModel(
-            itemName: category.itemName,
-            itemList: tempSingleItemCategoryList,
-          ),
-        );
-      }
+      // if (tempSingleItemCategoryList.isNotEmpty) {
+      //   if (element.isCategory) {
+      //     results.add(
+      //       CategoryModel(
+      //         itemName: element.itemName,
+      //         itemList: tempSingleItemCategoryList,
+      //       ),
+      //     );
+      //   }
+      // }
     }
+    print(results);
 
     int newLength = countLength();
     if (oldLength != newLength) {
@@ -115,5 +117,19 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     }
 
     return length;
+  }
+
+  List<SelectModel<T>> get flatData => addChildrens(data);
+
+  List<SelectModel<T>> addChildrens(List<SelectModel<T>> list) {
+    List<SelectModel<T>> tempFlatData = [];
+    for (SelectModel<T> element in list) {
+      if (element.isCategory) {
+        tempFlatData.addAll(addChildrens(element.itemList));
+      } else {
+        tempFlatData.add(element);
+      }
+    }
+    return tempFlatData;
   }
 }

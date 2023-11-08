@@ -19,6 +19,7 @@ mixin ModalController<T> on AnimatedState<T> {
             dropdownContentModalScrollController:
                 widget.dropdownContentModalScrollController,
             searchController: widget.searchController,
+            searchDealey: widget.searchDealey,
             dropdownContentModalBuilder: widget.dropdownContentModalBuilder,
             dropdownModalSettings: widget.dropdownModalSettings,
             titleModalBuilder: widget.titleModalBuilder,

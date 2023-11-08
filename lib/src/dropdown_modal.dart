@@ -20,6 +20,7 @@ class DropdownModal<T> extends StatefulWidget {
   // ignore: prefer-correct-identifier-length
   final DraggableScrollableController? dropdownContentModalScrollController;
   final SearchControllerSelect2dot1<T> searchController;
+  final Duration searchDealey;
   final DropdownContentModalBuilder<T>? dropdownContentModalBuilder;
   final DropdownModalSettings dropdownModalSettings;
   final TitleModalBuilder? titleModalBuilder;
@@ -46,6 +47,7 @@ class DropdownModal<T> extends StatefulWidget {
     required this.selectDataController,
     required this.dropdownContentModalScrollController,
     required this.searchController,
+    required this.searchDealey,
     required this.dropdownContentModalBuilder,
     required this.dropdownModalSettings,
     required this.titleModalBuilder,
@@ -93,6 +95,7 @@ class _DropdownModalState<T> extends State<DropdownModal<T>> {
           child: DropdownContentModal(
             selectDataController: widget.selectDataController,
             searchController: widget.searchController,
+            searchDealey: widget.searchDealey,
             dropdownContentModalBuilder: widget.dropdownContentModalBuilder,
             dropdownModalSettings: widget.dropdownModalSettings,
             titleModalBuilder: widget.titleModalBuilder,

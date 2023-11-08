@@ -8,6 +8,7 @@ import 'package:select2dot1/src/settings/overlay/search_bar_overlay_settings.dar
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class SearchBarOverlay<T> extends StatefulWidget {
+  final Duration searchDealey;
   final SearchControllerSelect2dot1<T> searchController;
   final bool isSearchable;
   final SearchBarOverlayBuilder<T>? searchBarOverlayBuilder;
@@ -16,6 +17,7 @@ class SearchBarOverlay<T> extends StatefulWidget {
 
   const SearchBarOverlay({
     super.key,
+    required this.searchDealey,
     required this.searchController,
     required this.isSearchable,
     required this.searchBarOverlayBuilder,
@@ -237,7 +239,7 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
     unawaited(
       // Done on purpose.
       // ignore: prefer-async-await
-      Future.delayed(const Duration(seconds: 1)).then((value) {
+      Future.delayed(widget.searchDealey).then((value) {
         if (lastSnapshotSearchText == newValue) {
           unawaited(
             widget.searchController.findSearchDataResults(newValue),

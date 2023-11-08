@@ -21,6 +21,7 @@ class DropdownContentModal<T> extends StatefulWidget {
   final ScrollController scrollController;
   final SelectDataController<T> selectDataController;
   final SearchControllerSelect2dot1<T> searchController;
+  final Duration searchDealey;
   final DropdownContentModalBuilder<T>? dropdownContentModalBuilder;
   final DropdownModalSettings dropdownModalSettings;
   final TitleModalBuilder? titleModalBuilder;
@@ -47,6 +48,7 @@ class DropdownContentModal<T> extends StatefulWidget {
     required this.scrollController,
     required this.selectDataController,
     required this.searchController,
+    required this.searchDealey,
     required this.dropdownContentModalBuilder,
     required this.dropdownModalSettings,
     required this.titleModalBuilder,
@@ -117,6 +119,7 @@ class _DropdownContentModalState<T> extends State<DropdownContentModal<T>> {
             ],
           ),
           SearchBarModal(
+            searchDealey: widget.searchDealey,
             searchController: widget.searchController,
             isSearchable: widget.isSearchable,
             searchBarModalBuilder: widget.searchBarModalBuilder,
@@ -165,6 +168,7 @@ class _DropdownContentModalState<T> extends State<DropdownContentModal<T>> {
       );
 
   Widget _searchBarModal() => SearchBarModal(
+        searchDealey: widget.searchDealey,
         searchController: widget.searchController,
         isSearchable: widget.isSearchable,
         searchBarModalBuilder: widget.searchBarModalBuilder,

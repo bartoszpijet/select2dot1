@@ -17,6 +17,7 @@ import 'package:select2dot1/src/utils/event_args.dart';
 class DropdownOverlay<T> extends StatefulWidget {
   final SelectDataController<T> selectDataController;
   final SearchControllerSelect2dot1<T> searchController;
+  final Duration searchDealey;
   final void Function() overlayHide;
   final AnimationController animationController;
   final LayerLink layerLink;
@@ -47,6 +48,7 @@ class DropdownOverlay<T> extends StatefulWidget {
     super.key,
     required this.selectDataController,
     required this.searchController,
+    required this.searchDealey,
     required this.overlayHide,
     required this.animationController,
     required this.layerLink,
@@ -165,6 +167,7 @@ class _DropdownOverlayState<T> extends State<DropdownOverlay<T>> {
                       key: keyDropdownOverlayContent,
                       selectDataController: widget.selectDataController,
                       searchController: widget.searchController,
+                      searchDealey: widget.searchDealey,
                       overlayHide: widget.overlayHide,
                       layerLink: widget.layerLink,
                       scrollController: widget.scrollController,
