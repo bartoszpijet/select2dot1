@@ -258,6 +258,9 @@ class Select2dot1<T> extends StatefulWidget {
   /// This is a class which contains all the global settings of the widget.
   final GlobalSettings globalSettings;
 
+  /// This is a class which contains all the global settings of the widget.
+  final Duration searchDealey;
+
   /// Controller of the data of the widget [selectDataController].
   /// To callback the data of the widget, you can use [selectDataController] to get the data
   /// or use [onChanged] to get the data.
@@ -325,6 +328,7 @@ class Select2dot1<T> extends StatefulWidget {
     this.modalCategorySettings = const ModalCategorySettings(),
     this.modalItemSettings = const ModalItemSettings(),
     this.globalSettings = const GlobalSettings(),
+    this.searchDealey = const Duration(milliseconds: 500),
     // It's done like this bc other method dosen't work.
   }) : searchController = searchController ??
             SearchControllerSelect2dot1<T>(selectDataController.data);
@@ -429,6 +433,7 @@ class _Select2dot1State<T> extends AnimatedState<T>
           overlayChildBuilder: (context) => DropdownOverlay(
             selectDataController: selectDataController,
             searchController: widget.searchController,
+            searchDealey: widget.searchDealey,
             overlayHide: hideOverlay,
             animationController: getAnimationController,
             layerLink: layerLink,

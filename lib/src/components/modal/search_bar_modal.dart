@@ -7,6 +7,7 @@ import 'package:select2dot1/src/settings/modal/search_bar_modal_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class SearchBarModal<T> extends StatefulWidget {
+  final Duration searchDealey;
   final SearchControllerSelect2dot1<T> searchController;
   final bool isSearchable;
   final SearchBarModalBuilder<T>? searchBarModalBuilder;
@@ -15,6 +16,7 @@ class SearchBarModal<T> extends StatefulWidget {
 
   const SearchBarModal({
     super.key,
+    required this.searchDealey,
     required this.searchController,
     required this.isSearchable,
     required this.searchBarModalBuilder,
@@ -216,7 +218,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
     unawaited(
       // Done on purpose.
       // ignore: prefer-async-await
-      Future.delayed(const Duration(seconds: 1)).then((value) {
+      Future.delayed(widget.searchDealey).then((value) {
         if (lastSnapshotSearchText == newValue) {
           unawaited(
             widget.searchController.findSearchDataResults(newValue),

@@ -20,6 +20,7 @@ class DropdownContentOverlay<T> extends StatefulWidget {
   final void Function() overlayHide;
   final LayerLink layerLink;
   final ScrollController? scrollController;
+  final Duration searchDealey;
   final double? appBarMaxHeight;
   // Its okay.
   // ignore: prefer-correct-identifier-length
@@ -48,6 +49,7 @@ class DropdownContentOverlay<T> extends StatefulWidget {
     required this.overlayHide,
     required this.layerLink,
     required this.scrollController,
+    required this.searchDealey,
     required this.appBarMaxHeight,
     required this.dropdownContentOverlayScrollController,
     required this.dropdownContentOverlayBuilder,
@@ -130,6 +132,7 @@ class _DropdownContentOverlayState<T> extends State<DropdownContentOverlay<T>> {
             },
             child: SizeChangedLayoutNotifier(
               child: SearchBarOverlay(
+                searchDealey: widget.searchDealey,
                 key: keySearchBarOverlay,
                 searchController: widget.searchController,
                 isSearchable: widget.isSearchable,
@@ -241,6 +244,7 @@ class _DropdownContentOverlayState<T> extends State<DropdownContentOverlay<T>> {
   }
 
   Widget _searchBarOverlay() => SearchBarOverlay(
+        searchDealey: widget.searchDealey,
         searchController: widget.searchController,
         isSearchable: widget.isSearchable,
         searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
