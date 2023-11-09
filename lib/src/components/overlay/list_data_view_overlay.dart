@@ -106,7 +106,7 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
       duration:
           widget.listDataViewOverlaySettings.durationAnimationListDataView,
       curve: widget.listDataViewOverlaySettings.curveAnimationListDataView,
-      child: StreamBuilder<Object>(
+      child: StreamBuilder<List<Widget>>(
         stream: streamController,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -147,18 +147,13 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
               child: ScrollConfiguration(
                 behavior:
                     ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                child: CustomScrollView(
+                child: ListView.builder(
                   shrinkWrap: true,
+                  primary: false,
+                  itemExtent: widget.listDataViewOverlaySettings.itemExtents,
                   controller: scrollController,
-                  slivers: <SliverList>[
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) =>
-                            (snapshot.data as List<Widget>)[index],
-                        childCount: (snapshot.data as List<Widget>).length,
-                      ),
-                    ),
-                  ],
+                  itemBuilder: (context, index) => snapshot.data![index],
+                  itemCount: snapshot.data!.length,
                 ),
               ),
             ),
