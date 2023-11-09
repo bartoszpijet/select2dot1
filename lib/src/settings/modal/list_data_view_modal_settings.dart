@@ -14,10 +14,14 @@ class ListDataViewModalSettings {
   /// Default value is [500 milliseconds].
   final Duration minLoadDuration;
 
+  /// If non-null, forces the children to have the given extent in the scroll direction.
+  final double? itemExtents;
+
   /// Creating an argument constructor of [ListDataViewModalSettings] class.
   const ListDataViewModalSettings({
     this.margin,
     this.padding,
     this.minLoadDuration = const Duration(milliseconds: 500),
+    this.itemExtents,
   });
 }

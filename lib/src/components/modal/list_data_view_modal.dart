@@ -91,7 +91,7 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
       );
     }
 
-    return StreamBuilder<Object>(
+    return StreamBuilder<List<Widget>>(
       stream: streamController,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -113,17 +113,12 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
         return Container(
           margin: widget.listDataViewModalSettings.margin,
           padding: widget.listDataViewModalSettings.padding,
-          child: CustomScrollView(
+          child: ListView.builder(
             shrinkWrap: true,
+            itemExtent: widget.listDataViewModalSettings.itemExtents,
             controller: widget.scrollController,
-            slivers: <SliverList>[
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) => (snapshot.data as List<Widget>)[index],
-                  childCount: (snapshot.data as List<Widget>).length,
-                ),
-              ),
-            ],
+            itemBuilder: (context, index) => snapshot.data![index],
+            itemCount: snapshot.data!.length,
           ),
         );
       },

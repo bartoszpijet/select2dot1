@@ -57,6 +57,9 @@ class ListDataViewOverlaySettings {
   /// Default value is [Curves.easeInOutQuart].
   final Curve curveAnimationListDataView;
 
+  /// If non-null, forces the children to have the given extent in the scroll direction.
+  final double? itemExtents;
+
   /// Creating an argument constructor of [ListDataViewOverlaySettings] class.
   const ListDataViewOverlaySettings({
     this.margin,
@@ -72,5 +75,6 @@ class ListDataViewOverlaySettings {
     this.minLoadDuration = const Duration(milliseconds: 500),
     this.durationAnimationListDataView = const Duration(milliseconds: 300),
     this.curveAnimationListDataView = Curves.easeInOutQuart,
+    this.itemExtents,
   });
 }
