@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuzzysearch/fuzzysearch.dart';
+import 'package:select2dot1/src/models/scoreable_select_model.dart';
 import 'package:select2dot1/src/models/select_model.dart';
 
 /// SearchController is a class that will be used to search data.
@@ -29,7 +30,11 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
 
   /// Hide category after search.
   /// Default to [true].
-  final bool hideCategoryAfterSearch = false;
+  final bool hideCategoryAfterSearch;
+
+  /// If [true] search will include category names.
+  /// Default to [false].
+  final bool searchInCategories;
 
   /// Getter for [results] find by [findSearchDataResults].
   List<SelectModel<T>> get getResults => results;
@@ -39,10 +44,17 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   SearchControllerSelect2dot1(
     this.data, {
     this.fuzzyOptions,
-    this.hideEmptyCategory = false,
+    this.hideEmptyCategory = true,
+    this.hideCategoryAfterSearch = true,
+    this.searchInCategories = false,
   }) : results = data.toList() // Fix pass by reference.
   {
     oldLength = countLength();
+    if (searchInCategories && (hideCategoryAfterSearch || hideEmptyCategory)) {
+      debugPrint(
+        'WARNING!: searchInCategories won\'t work properly with hideCategoryAfterSearch or hideEmptyCategory setted to true.',
+      );
+    }
   }
 
   /// Find search data results function.
@@ -62,18 +74,10 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     }
 
     results.clear();
-    // for (SelectModel<T> element in flatData) {
+
     if (hideCategoryAfterSearch) {
-      Fuzzy<SelectModel<T>> fuse = Fuzzy.withIdentifiers(
-        {for (SelectModel<T> element in flatData) element.itemName: element},
-        options: fuzzyOptions ??
-            FuzzyOptions(
-              findAllMatches: true,
-              tokenize: true,
-              threshold: 0.5,
-            ),
-      );
-      List<Result<SelectModel<T>>> tmpResults = await fuse.search(searchText);
+      List<Result<SelectModel<T>>> tmpResults =
+          await fuzzySearch(flatData, searchText);
       for (Result<SelectModel<T>> searchResult in tmpResults) {
         if (searchResult.identifier != null) {
           // Null check done above.
@@ -124,6 +128,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
         tempFlatData.add(element);
       }
     }
+
     return tempFlatData;
   }
 
@@ -133,26 +138,26 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   ) async {
     List<ScoreableSelectModel<T>> resultsWithScore = [];
 
-    Fuzzy<SelectModel<T>> fuse = Fuzzy.withIdentifiers(
-      {for (SelectModel<T> element in dataToAdd) element.itemName: element},
-      options: fuzzyOptions ??
-          FuzzyOptions(
-            findAllMatches: true,
-            tokenize: true,
-            threshold: 0.5,
-          ),
-    );
-    List<Result<SelectModel<T>>> tmpResults = await fuse.search(searchText);
+    List<Result<SelectModel<T>>> tmpResults =
+        await fuzzySearch(dataToAdd, searchText);
     for (Result<SelectModel<T>> searchResult in tmpResults) {
-      if (searchResult.identifier != null) {
-        // Null check done above.
-        // ignore: avoid-non-null-assertion
-        resultsWithScore.add(
-          ScoreableSelectModel.fromModel(
-            searchResult.identifier!,
+      SelectModel<T>? resultItem = searchResult.identifier;
+
+      if (resultItem != null) {
+        ScoreableSelectModel<T> newItem;
+        if (resultItem.itemList.isEmpty) {
+          newItem = ScoreableSelectModel.fromModel(
+            resultItem,
             searchResult.score,
-          ),
-        );
+          );
+        } else {
+          newItem = ScoreableSelectModel.fromModelWithNewList(
+            resultItem,
+            searchResult.score,
+            [],
+          );
+        }
+        resultsWithScore.add(newItem);
       }
     }
 
@@ -165,8 +170,9 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   ) async {
     List<ScoreableSelectModel<T>> resultsWithScore = [];
 
-    List<SelectModel<T>> selectableData =
-        data.where((element) => !element.isCategory).toList();
+    List<SelectModel<T>> selectableData = searchInCategories
+        ? data
+        : data.where((element) => !element.isCategory).toList();
     resultsWithScore.addAll(await addToResults(selectableData, searchText));
 
     List<SelectModel<T>> categoryData =
@@ -178,64 +184,45 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
         searchText,
       );
       if (items.isNotEmpty) {
-        resultsWithScore.add(
-          ScoreableSelectModel.fromModelWithNewList(
-            category,
-            items.fold<double>(
-              1,
-              (value, element) => element.score < value ? element.score : value,
-            ),
-            items,
+        ScoreableSelectModel<T> newItem =
+            ScoreableSelectModel.fromModelWithNewList(
+          category,
+          items.fold<double>(
+            1,
+            (value, element) => element.score < value ? element.score : value,
           ),
+          items,
         );
+        int index = resultsWithScore.indexOf(newItem);
+        if (index == -1) {
+          resultsWithScore.add(newItem);
+        } else {
+          resultsWithScore.setAll(index, [newItem]);
+        }
       }
     }
     resultsWithScore.sort((a, b) => a.score.compareTo(b.score));
 
     return resultsWithScore;
   }
-}
 
-/// This is a model class which contains the name of the category and the list of items in the category.
-class ScoreableSelectModel<T> extends SelectModel<T> {
-  final double score;
+  Future<List<Result<SelectModel<T>>>> fuzzySearch(
+    List<SelectModel<T>> dataToSearchIn,
+    String searchText,
+  ) {
+    Fuzzy<SelectModel<T>> fuse = Fuzzy.withIdentifiers(
+      {
+        for (SelectModel<T> element in dataToSearchIn)
+          element.itemName: element,
+      },
+      options: fuzzyOptions ??
+          FuzzyOptions(
+            findAllMatches: true,
+            tokenize: true,
+            threshold: 0.5,
+          ),
+    );
 
-  /// Creating an argument constructor of [ScoreableSelectModel] class.
-  const ScoreableSelectModel({
-    required super.itemName,
-    required super.itemList,
-    required this.score,
-    super.value,
-    super.extraInfoSingleItem,
-    super.avatarSingleItem,
-    super.enabled,
-    super.isCategory,
-  });
-
-  ScoreableSelectModel.fromModel(SelectModel<T> model, this.score)
-      : super(
-          itemName: model.itemName,
-          itemList: model.itemList,
-          value: model.value,
-          extraInfoSingleItem: model.extraInfoSingleItem,
-          avatarSingleItem: model.avatarSingleItem,
-          enabled: model.enabled,
-          isCategory: model.isCategory,
-        );
-  ScoreableSelectModel.fromModelWithNewList(
-      SelectModel<T> model, this.score, List<SelectModel<T>> itemList)
-      : super(
-          itemName: model.itemName,
-          itemList: itemList,
-          value: model.value,
-          extraInfoSingleItem: model.extraInfoSingleItem,
-          avatarSingleItem: model.avatarSingleItem,
-          enabled: model.enabled,
-          isCategory: model.isCategory,
-        );
-
-  @override
-  String toString() {
-    return '\nScoreableSelectModel(itemName=$itemName, score=$score ,isCategory=$isCategory, itemList=$itemList)\n';
+    return fuse.search(searchText);
   }
 }
