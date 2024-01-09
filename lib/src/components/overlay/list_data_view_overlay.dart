@@ -117,7 +117,7 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
             );
           }
 
-          if ((snapshot.data as List).isEmpty) {
+          if (snapshot.data == null || (snapshot.data as List).isEmpty) {
             return SearchEmptyInfoOverlay(
               searchEmptyInfoOverlayBuilder:
                   widget.searchEmptyInfoOverlayBuilder,
