@@ -211,22 +211,37 @@ class _DropdownOverlayState<T> extends State<DropdownOverlay<T>> {
   bool _isFitBottom() {
     final offsetPillbox = widget.layerLink.leader?.offset ?? const Offset(0, 0);
     final heightPillbox = widget.layerLink.leaderSize?.height ?? 0;
+    final mediaQueryHeight = MediaQuery.of(context).size.height;
+    final scrolable = Scrollable.of(context);
+    final contextOffset =
+        (context.findRenderObject() as RenderBox).localToGlobal(Offset.zero);
 
-    double viewDimension = widget
-            .scrollController?.position.viewportDimension ??
-        (MediaQuery.of(context).size.height - (widget.appBarMaxHeight ?? 0));
+    final layerOffset = (scrolable.context.findRenderObject() as RenderBox)
+        .localToGlobal(Offset.zero);
+
+    double viewDimension =
+        widget.scrollController?.position.viewportDimension ??
+            (scrolable.position.viewportDimension);
+    final bottomSpace = mediaQueryHeight - viewDimension - layerOffset.dy;
 
     return offsetPillbox.dy +
             heightPillbox +
-            sizeDropdownOverlayContent.height -
-            viewDimension <=
+            sizeDropdownOverlayContent.height +
+            contextOffset.dy -
+            viewDimension -
+            bottomSpace <=
         0;
   }
 
   bool _isFitTop() {
     final offsetPillbox = widget.layerLink.leader?.offset ?? const Offset(0, 0);
-
-    return offsetPillbox.dy - sizeDropdownOverlayContent.height > 0;
+    final layerOffset =
+        (Scrollable.of(context).context.findRenderObject() as RenderBox)
+            .localToGlobal(Offset.zero);
+    return offsetPillbox.dy +
+            layerOffset.dy -
+            sizeDropdownOverlayContent.height >
+        0;
   }
 
   void _changeDirectAnchor() {
