@@ -18,11 +18,11 @@ class BasicExample1 extends StatelessWidget {
             selectDataController: SelectDataController(
               data: ExampleData.exampleData1,
               initSelected: const [
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'David Eubanks',
+                  label: 'David Eubanks',
                 ),
-                ItemModel(value: null, itemName: 'Robert Keller')
+                SelectableItem(value: null, label: 'Robert Keller'),
               ],
             ),
             scrollController: scrollController,

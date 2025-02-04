@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class OverlayItemWidget<T> extends StatefulWidget {
   final int deepth;
-  final SelectModel<T> singleItem;
+  final SelectableInterface<T> singleItem;
   final SelectDataController<T> selectDataController;
   final void Function() overlayHide;
   final CategoryItemOverlayBuilder<T>? overlayItemBuilder;
@@ -67,14 +67,14 @@ class _CategoryItemOverlayState<T> extends State<OverlayItemWidget<T>> {
       );
     }
     Widget text = Text(
-      widget.singleItem.itemName,
+      widget.singleItem.finalLabel,
       overflow: widget.overlayItemSettings.textOverflow,
       style: _getNameItemTextStyle(),
     );
     if (widget.overlayItemSettings.showTooltip) {
       text = Tooltip(
         waitDuration: const Duration(seconds: 1),
-        message: widget.singleItem.itemName,
+        message: widget.singleItem.finalLabel,
         child: text,
       );
     }
@@ -109,14 +109,14 @@ class _CategoryItemOverlayState<T> extends State<OverlayItemWidget<T>> {
                 ),
                 for (int i = 0; i < widget.deepth; i++)
                   widget.overlayItemSettings.indent,
-                if (widget.singleItem.avatarSingleItem != null &&
+                if (widget.singleItem.icon != null &&
                     widget.overlayItemSettings.showAvatar)
                   Container(
                     height: widget.overlayItemSettings.avatarMaxHeight,
                     width: widget.overlayItemSettings.avatarMaxWidth,
                     margin: widget.overlayItemSettings.avatarMargin,
                     child: FittedBox(
-                      child: widget.singleItem.avatarSingleItem,
+                      child: widget.singleItem.icon,
                     ),
                   ),
                 Flexible(
@@ -129,13 +129,13 @@ class _CategoryItemOverlayState<T> extends State<OverlayItemWidget<T>> {
                         child: text,
                       ),
                       if (widget.overlayItemSettings.showExtraInfo &&
-                          widget.singleItem.extraInfoSingleItem != null)
+                          widget.singleItem.extraInfo != null)
                         Container(
                           padding: widget.overlayItemSettings.extraInfoPadding,
                           child: Text(
                             // This can't be null anyways.
                             // ignore: avoid-non-null-assertion
-                            widget.singleItem.extraInfoSingleItem!,
+                            widget.singleItem.extraInfo!,
                             overflow: widget
                                 .overlayItemSettings.extraInfoTextOverflow,
                             style: _getExtraInfoTextStyle(),

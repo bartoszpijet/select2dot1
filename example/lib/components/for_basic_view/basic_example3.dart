@@ -19,7 +19,7 @@ class BasicExample3 extends StatelessWidget {
               data: ExampleData.exampleData1,
               isMultiSelect: false,
               initSelected: const [
-                ItemModel(value: null, itemName: 'Manuel Eyre')
+                SelectableItem(value: null, label: 'Manuel Eyre')
               ],
             ),
             isSearchable: false,

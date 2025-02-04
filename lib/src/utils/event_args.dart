@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/category_model.dart';
-import 'package:select2dot1/src/models/item_model.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_category.dart';
+import 'package:select2dot1/src/models/selectable_item.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 
 /// This is a function that will be used to build your own title of the pillbox.
@@ -120,7 +120,7 @@ class PillboxContentMultiDetails<T> {
   final void Function() onFocusChange;
 
   /// This is a function returning a [Widget] of the the chip of the pillbox.
-  final Widget Function(ItemModel<T> singleItem) selectChip;
+  final Widget Function(SelectableItem<T> singleItem) selectChip;
 
   /// This is a function returning a [Widget] of the empty info of the pillbox.
   final Widget Function() selectEmptyInfo;
@@ -251,8 +251,8 @@ typedef SelectChipBuilder<T> = Widget Function(
 
 /// This is a class which contains necessary details to build your own select chip of the pillbox.
 class SelectChipDetails<T> {
-  /// This is a [ItemModel] that will be used to build the select chip of the pillbox.
-  final SelectModel<T> singleItem;
+  /// This is a [SelectableItem] that will be used to build the select chip of the pillbox.
+  final SelectableInterface<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
@@ -280,8 +280,8 @@ typedef SelectSingleBuilder<T> = Widget Function(
 
 /// This is a class which contains necessary details to build your own select single of the pillbox.
 class SelectSingleDetails<T> {
-  /// This is a [SelectModel<T>] that will be used to build the select single of the pillbox.
-  final SelectModel<T> singleItem;
+  /// This is a [SelectableInterface<T>] that will be used to build the select single of the pillbox.
+  final SelectableInterface<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
@@ -476,10 +476,11 @@ class ListDataViewOverlayDetails<T> {
   final void Function() overlayHide;
 
   /// This is a function returning a [Widget] of the categoryNameOverlay.
-  final Widget Function(CategoryModel<T> singleCategory) categoryNameOverlay;
+  final Widget Function(SelectableCategory<T> singleCategory)
+      categoryNameOverlay;
 
   /// This is a function returning a [Widget] of the categoryItemOverlay.
-  final Widget Function(ItemModel<T> singleItem) categoryItemOverlay;
+  final Widget Function(SelectableItem<T> singleItem) categoryItemOverlay;
 
   /// This is a function returning a [Widget] of the search empty info modal.
   final Widget Function() searchEmptyInfoOverlay;
@@ -515,8 +516,8 @@ typedef CategoryItemOverlayBuilder<T> = Widget Function(
 
 /// This is a class which contains necessary details to build your own category item.
 class CategoryItemOverlayDetails<T> {
-  /// This is a [SelectModel<T>] that will be used to build the category item.
-  final SelectModel<T> singleItem;
+  /// This is a [SelectableInterface<T>] that will be used to build the category item.
+  final SelectableInterface<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
@@ -560,8 +561,8 @@ typedef CategoryNameOverlayBuilder<T> = Widget Function(
 
 /// This is a class which contains necessary details to build your own category name.
 class CategoryNameOverlayDetails<T> {
-  /// This is a [CategoryModel] that will be used to build the category name.
-  final SelectModel<T> singleCategory;
+  /// This is a [SelectableCategory] that will be used to build the category name.
+  final SelectableInterface<T> singleCategory;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
@@ -768,10 +769,10 @@ class ListDataViewModalDetails<T> {
   final SelectDataController<T> selectDataController;
 
   /// This is a function returning a [Widget] of the ModalCategoryWidget.
-  final Widget Function(CategoryModel<T> singleCategory) categoryNameModal;
+  final Widget Function(SelectableCategory<T> singleCategory) categoryNameModal;
 
   /// This is a function returning a [Widget] of the ModalItemWidget.
-  final Widget Function(ItemModel<T> singleItem) categoryItemModal;
+  final Widget Function(SelectableItem<T> singleItem) categoryItemModal;
 
   /// This is a function returning a [Widget] of the search empty info modal.
   final Widget Function() searchEmptyInfoModal;
@@ -807,8 +808,8 @@ typedef CategoryNameModalBuilder<T> = Widget Function(
 
 /// This is a class which contains necessary details to build your own category name modal.
 class CategoryNameModalDetails<T> {
-  /// This is a [CategoryModel] that will be used to build the category name modal.
-  final SelectModel<T> singleCategory;
+  /// This is a [SelectableCategory] that will be used to build the category name modal.
+  final SelectableInterface<T> singleCategory;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
@@ -840,8 +841,8 @@ typedef CategoryItemModalBuilder<T> = Widget Function(
 
 /// This is a class which contains necessary details to build your own category item modal.
 class CategoryItemModalDetails<T> {
-  /// This is a [ItemModel] that will be used to build the category item modal.
-  final SelectModel<T> singleItem;
+  /// This is a [SelectableItem] that will be used to build the category item modal.
+  final SelectableInterface<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;

@@ -5,7 +5,7 @@ import 'package:select2dot1/src/components/select_chip.dart';
 import 'package:select2dot1/src/components/select_empty_info.dart';
 import 'package:select2dot1/src/components/select_overload_info.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/pillbox_content_multi_settings.dart';
 import 'package:select2dot1/src/settings/pillbox_icon_settings.dart';
@@ -238,7 +238,7 @@ class _PillboxContentMultiState<T> extends State<PillboxContentMulti<T>> {
     }
   }
 
-  Widget _selectChip(SelectModel<T> i) => SelectChip<T>(
+  Widget _selectChip(SelectableInterface<T> i) => SelectChip<T>(
         singleItem: i,
         selectDataController: widget.selectDataController,
         selectChipBuilder: widget.selectChipBuilder,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/select_single_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class SelectSingle<T> extends StatelessWidget {
-  final SelectModel<T> singleItem;
+  final SelectableInterface<T> singleItem;
   final SelectDataController<T> selectDataController;
   final SelectSingleBuilder<T>? selectSingleBuilder;
   final SelectSingleSettings selectSingleSettings;
@@ -40,13 +40,12 @@ class SelectSingle<T> extends StatelessWidget {
       padding: selectSingleSettings.padding,
       child: Row(
         children: [
-          if (singleItem.avatarSingleItem != null &&
-              selectSingleSettings.showAvatar)
+          if (singleItem.icon != null && selectSingleSettings.showAvatar)
             Container(
               width: selectSingleSettings.avatarMaxWidth,
               height: selectSingleSettings.avatarMaxHeight,
               margin: selectSingleSettings.avatarMargin,
-              child: FittedBox(child: singleItem.avatarSingleItem),
+              child: FittedBox(child: singleItem.icon),
             ),
           Flexible(
             child: Column(
@@ -56,19 +55,19 @@ class SelectSingle<T> extends StatelessWidget {
                 Container(
                   padding: selectSingleSettings.textPadding,
                   child: Text(
-                    singleItem.itemName,
+                    singleItem.finalLabel,
                     overflow: selectSingleSettings.textOverflow,
                     style: _getTextStyle(),
                   ),
                 ),
-                if (singleItem.extraInfoSingleItem != null &&
+                if (singleItem.extraInfo != null &&
                     selectSingleSettings.showExtraInfo)
                   Container(
                     padding: selectSingleSettings.extraInfoPadding,
                     child: Text(
                       // This can't be null anyways.
                       // ignore: avoid-non-null-assertion
-                      singleItem.extraInfoSingleItem!,
+                      singleItem.extraInfo!,
                       overflow: selectSingleSettings.extraInfoTextOverflow,
                       style: _getExtraInfoTextStyle(),
                     ),

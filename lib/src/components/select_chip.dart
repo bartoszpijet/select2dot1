@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/select_chip_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class SelectChip<T> extends StatelessWidget {
-  final SelectModel<T> singleItem;
+  final SelectableInterface<T> singleItem;
   final SelectDataController<T> selectDataController;
   final SelectChipBuilder<T>? selectChipBuilder;
   final SelectChipSettings selectChipSettings;
@@ -42,13 +42,12 @@ class SelectChip<T> extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (selectChipSettings.isAvatarVisible &&
-              singleItem.avatarSingleItem != null)
+          if (selectChipSettings.isAvatarVisible && singleItem.icon != null)
             Container(
               width: selectChipSettings.avatarMaxWidth,
               height: selectChipSettings.avatarMaxHeight,
               margin: selectChipSettings.avatarMargin,
-              child: FittedBox(child: singleItem.avatarSingleItem),
+              child: FittedBox(child: singleItem.icon),
             ),
           Flexible(
             child: MouseRegion(
@@ -57,7 +56,7 @@ class SelectChip<T> extends StatelessWidget {
                 constraints: selectChipSettings.textBoxConstraints,
                 padding: selectChipSettings.textPadding,
                 child: Text(
-                  singleItem.itemName,
+                  singleItem.finalLabel,
                   overflow: selectChipSettings.textOverflow,
                   style: _getChipTextStyle(),
                 ),

@@ -18,15 +18,15 @@ class BasicExample8 extends StatelessWidget {
             selectDataController: SelectDataController(
               data: ExampleData.exampleData3,
               initSelected: const [
-                ItemModel(
-                  itemName: 'Alabama',
+                SelectableItem(
+                  label: 'Alabama',
                   value: 'Alabama1',
                 ),
-                ItemModel(
-                  itemName: 'Alabama',
+                SelectableItem(
+                  label: 'Alabama',
                   value: 'Alabama2',
                 ),
-                ItemModel(value: null, itemName: 'Mississippi'),
+                SelectableItem(value: null, label: 'Mississippi'),
               ],
             ),
             selectSingleSettings:

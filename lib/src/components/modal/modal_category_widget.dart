@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:select2dot1/select2dot1.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class ModalCategoryWidget<T> extends StatefulWidget {
   final int deepth;
-  final SelectModel<T> singleCategory;
+  final SelectableInterface<T> singleCategory;
   final SelectDataController<T> selectDataController;
   final CategoryNameModalBuilder<T>? modalCategoryBuilder;
   final ModalCategorySettings modalCategorySettings;
@@ -63,7 +64,7 @@ class _CategoryItemModalState<T> extends State<ModalCategoryWidget<T>> {
     Widget text = Text(
       // This can't be null because of the if statement above.
       // ignore: avoid-non-null-assertion
-      widget.singleCategory.itemName,
+      widget.singleCategory.finalLabel,
       overflow: widget.modalCategorySettings.textOverflow,
       style: _getTextStyle(),
     );
@@ -71,7 +72,7 @@ class _CategoryItemModalState<T> extends State<ModalCategoryWidget<T>> {
     if (widget.modalCategorySettings.showTooltip) {
       text = Tooltip(
         waitDuration: const Duration(seconds: 1),
-        message: widget.singleCategory.itemName,
+        message: widget.singleCategory.finalLabel,
         child: text,
       );
     }
@@ -157,7 +158,7 @@ class _CategoryItemModalState<T> extends State<ModalCategoryWidget<T>> {
   }
 
   void _onTapCategory() {
-    if (!widget.singleCategory.isCategory) {
+    if (widget.singleCategory is! SelectableCategory<T>) {
       return;
     }
     if (widget.selectDataController.isCategorySelectable) {
@@ -177,16 +178,15 @@ class _CategoryItemModalState<T> extends State<ModalCategoryWidget<T>> {
       if (!widget.selectDataController.isMultiSelect) {
         return;
       }
+      List<SelectableInterface<T>> itemList =
+          (widget.singleCategory as SelectableCategory<T>).childrens;
       //TODO: recurrence add all children.
-      if (widget.singleCategory.itemList.every(
+      if (itemList.every(
         (element) => widget.selectDataController.selectedList.contains(element),
       )) {
-        widget.selectDataController.removeGroupSelectChip(
-          widget.singleCategory.itemList,
-        );
+        widget.selectDataController.removeGroupSelectChip(itemList);
       } else {
-        widget.selectDataController
-            .addGroupSelectChip(widget.singleCategory.itemList);
+        widget.selectDataController.addGroupSelectChip(itemList);
       }
     }
   }

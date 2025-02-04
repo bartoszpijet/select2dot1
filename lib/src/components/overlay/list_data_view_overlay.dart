@@ -8,9 +8,9 @@ import 'package:select2dot1/src/components/overlay/loading_data_overlay.dart';
 import 'package:select2dot1/src/components/overlay/search_empty_info_overlay.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/category_model.dart';
-import 'package:select2dot1/src/models/item_model.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_category.dart';
+import 'package:select2dot1/src/models/selectable_item.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
 import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
@@ -186,16 +186,17 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
   Future<List<Widget>> dataFuture() async {
     List<Widget> listDataViewChildren = [];
 
-    for (SelectModel<T> item in widget.searchController.getResults) {
+    for (SelectableInterface<T> item in widget.searchController.getResults) {
       listDataViewChildren.addAll(categoryOverlay(item));
     }
 
     return listDataViewChildren;
   }
 
-  List<Widget> categoryOverlay(SelectModel<T> category, [int deepth = 0]) {
+  List<Widget> categoryOverlay(SelectableInterface<T> category,
+      [int deepth = 0]) {
     List<Widget> listDataViewChildren = [];
-    if (!category.isCategory) {
+    if (category is! SelectableCategory<T>) {
       listDataViewChildren.add(
         OverlayItemWidget(
           deepth: deepth,
@@ -207,6 +208,7 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
           globalSettings: widget.globalSettings,
         ),
       );
+
       return listDataViewChildren;
     }
     listDataViewChildren.add(
@@ -219,14 +221,15 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
         globalSettings: widget.globalSettings,
       ),
     );
-    for (SelectModel<T> item in category.itemList) {
+    for (SelectableInterface<T> item in category.childrens) {
       listDataViewChildren.addAll(categoryOverlay(item, deepth + 1));
     }
 
     return listDataViewChildren;
   }
 
-  Widget _categoryNameOverlay(CategoryModel<T> i) => OverlayCategoryWidget<T>(
+  Widget _categoryNameOverlay(SelectableCategory<T> i) =>
+      OverlayCategoryWidget<T>(
         singleCategory: i,
         selectDataController: widget.selectDataController,
         overlayCategoryBuilder: widget.overlayCategoryBuilder,
@@ -234,7 +237,7 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
         globalSettings: widget.globalSettings,
       );
 
-  Widget _categoryItemOverlay(ItemModel<T> i) => OverlayItemWidget<T>(
+  Widget _categoryItemOverlay(SelectableItem<T> i) => OverlayItemWidget<T>(
         singleItem: i,
         selectDataController: widget.selectDataController,
         overlayHide: widget.overlayHide,

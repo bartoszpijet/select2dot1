@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class ModalItemWidget<T> extends StatefulWidget {
   final int deepth;
-  final SelectModel<T> singleItem;
+  final SelectableInterface<T> singleItem;
   final SelectDataController<T> selectDataController;
   final CategoryItemModalBuilder<T>? modalItemBuilder;
   final ModalItemSettings modalItemSettings;
@@ -64,7 +64,7 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
       );
     }
     Widget text = Text(
-      widget.singleItem.itemName,
+      widget.singleItem.finalLabel,
       overflow: widget.modalItemSettings.textOverflow,
       style: _getNameItemTextStyle(),
     );
@@ -72,7 +72,7 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
     if (widget.modalItemSettings.showTooltip) {
       text = Tooltip(
         waitDuration: const Duration(seconds: 1),
-        message: widget.singleItem.itemName,
+        message: widget.singleItem.finalLabel,
         child: text,
       );
     }
@@ -105,14 +105,14 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
               ),
               for (int i = 0; i < widget.deepth; i++)
                 widget.modalItemSettings.indent,
-              if (widget.singleItem.avatarSingleItem != null &&
+              if (widget.singleItem.icon != null &&
                   widget.modalItemSettings.showAvatar)
                 Container(
                   height: widget.modalItemSettings.avatarMaxHeight,
                   width: widget.modalItemSettings.avatarMaxWidth,
                   margin: widget.modalItemSettings.avatarMargin,
                   child: FittedBox(
-                    child: widget.singleItem.avatarSingleItem,
+                    child: widget.singleItem.icon,
                   ),
                 ),
               Flexible(
@@ -125,13 +125,13 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
                       child: text,
                     ),
                     if (widget.modalItemSettings.showExtraInfo &&
-                        widget.singleItem.extraInfoSingleItem != null)
+                        widget.singleItem.extraInfo != null)
                       Container(
                         padding: widget.modalItemSettings.extraInfoPadding,
                         child: Text(
                           // This can't be null anyways.
                           // ignore: avoid-non-null-assertion
-                          widget.singleItem.extraInfoSingleItem!,
+                          widget.singleItem.extraInfo!,
                           overflow:
                               widget.modalItemSettings.extraInfoTextOverflow,
                           style: _getExtraInfoTextStyle(),

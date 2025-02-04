@@ -5,9 +5,9 @@ import 'package:select2dot1/src/components/modal/loading_data_modal.dart';
 import 'package:select2dot1/src/components/modal/search_empty_info_modal.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/models/category_model.dart';
-import 'package:select2dot1/src/models/item_model.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_category.dart';
+import 'package:select2dot1/src/models/selectable_item.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
 import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
@@ -148,16 +148,17 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
   Future<List<Widget>> dataFuture() async {
     List<Widget> listDataViewChildren = [];
 
-    for (SelectModel<T> item in widget.searchController.getResults) {
+    for (SelectableInterface<T> item in widget.searchController.getResults) {
       listDataViewChildren.addAll(categoryModal(item));
     }
 
     return listDataViewChildren;
   }
 
-  List<Widget> categoryModal(SelectModel<T> category, [int deepth = 0]) {
+  List<Widget> categoryModal(SelectableInterface<T> category,
+      [int deepth = 0]) {
     List<Widget> listDataViewChildren = [];
-    if (!category.isCategory) {
+    if (category is! SelectableCategory<T>) {
       listDataViewChildren.add(
         ModalItemWidget(
           deepth: deepth,
@@ -180,14 +181,14 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
         globalSettings: widget.globalSettings,
       ),
     );
-    for (SelectModel<T> item in category.itemList) {
+    for (SelectableInterface<T> item in category.childrens) {
       listDataViewChildren.addAll(categoryModal(item, deepth + 1));
     }
 
     return listDataViewChildren;
   }
 
-  Widget _categoryNameModal(CategoryModel<T> i) => ModalCategoryWidget<T>(
+  Widget _categoryNameModal(SelectableCategory<T> i) => ModalCategoryWidget<T>(
         singleCategory: i,
         selectDataController: widget.selectDataController,
         modalCategoryBuilder: widget.modalCategoryBuilder,
@@ -195,7 +196,7 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
         globalSettings: widget.globalSettings,
       );
 
-  Widget _categoryItemModal(ItemModel<T> i) => ModalItemWidget<T>(
+  Widget _categoryItemModal(SelectableItem<T> i) => ModalItemWidget<T>(
         singleItem: i,
         selectDataController: widget.selectDataController,
         modalItemBuilder: widget.modalItemBuilder,

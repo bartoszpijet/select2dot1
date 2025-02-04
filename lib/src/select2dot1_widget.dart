@@ -11,7 +11,7 @@ import 'package:select2dot1/src/controllers/overlay_controller.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/dropdown_overlay.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/pillbox.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/modal/done_button_modal_settings.dart';
@@ -47,12 +47,12 @@ import 'package:select2dot1/src/utils/event_args.dart';
 ///
 /// On the first step you need to create a list of data that you want to display in.
 /// ```dart
-/// static const List<CategoryModel> exampleData = [
-///     CategoryModel(
+/// static const List<SelectableCategory> exampleData = [
+///     SelectableCategory(
 ///       nameCategory: 'Team Leader',
 ///       itemList: [
-///         ItemModel(
-///           itemName: 'David Eubanks',
+///         SelectableItem(
+///           finalLabel: 'David Eubanks',
 ///           extraInfoSingleItem: 'Full time',
 ///           avatarSingleItem: CircleAvatar(
 ///             backgroundColor: Colors.transparent,
@@ -60,8 +60,8 @@ import 'package:select2dot1/src/utils/event_args.dart';
 ///             backgroundImage: AssetImage('assets/images/avatar1.jpg'),
 ///           ),
 ///         ),
-///         ItemModel(
-///           itemName: 'Stuart Resch',
+///         SelectableItem(
+///           finalLabel: 'Stuart Resch',
 ///           extraInfoSingleItem: 'Part time',
 ///           avatarSingleItem: CircleAvatar(
 ///             backgroundColor: Colors.blue,
@@ -88,7 +88,7 @@ class Select2dot1<T> extends StatefulWidget {
 
   /// Used this to get the value of the widget outside the widget.
   /// It is call every time when the value of the widget is changed.
-  final ValueChanged<List<SelectModel<T>>>? onChanged;
+  final ValueChanged<List<SelectableInterface<T>>>? onChanged;
 
   /// Pass it if you want adjustable dropdown anchor.
   final ScrollController? scrollController;

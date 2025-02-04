@@ -2,42 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:select2dot1/select2dot1.dart';
 
 class ExampleData {
-  static const List<SelectModel<String>> exampleData1 = [
-    CategoryModel<String>(
-      itemName: 'Team Leader',
-      itemList: [
-        CategoryModel<String>(
-          itemName: 'Design',
-          itemList: <ItemModel<String>>[
-            ItemModel(
+  static const List<SelectableInterface<String>> exampleData1 = [
+    SelectableCategory<String>(
+      label: 'Team Leader',
+      value: null,
+      childrens: [
+        SelectableCategory<String>(
+          label: 'Design',
+          value: null,
+          childrens: <SelectableItem<String>>[
+            SelectableItem(
               value: null,
-              itemName: 'Ed Smith',
-              extraInfoSingleItem: 'Full time',
-              avatarSingleItem: CircleAvatar(
+              label: 'Ed Smith',
+              extraInfo: 'Full time',
+              icon: CircleAvatar(
                 backgroundColor: Colors.brown,
                 child: Text('ES', style: TextStyle(color: Colors.white)),
               ),
             ),
           ],
         ),
-        CategoryModel<String>(
-          itemName: 'IT',
-          itemList: <ItemModel<String>>[
-            ItemModel(
+        SelectableCategory<String>(
+          label: 'IT',
+          value: null,
+          childrens: <SelectableItem<String>>[
+            SelectableItem(
               value: null,
-              itemName: 'David Eubanks',
-              extraInfoSingleItem: 'Full time',
-              avatarSingleItem: CircleAvatar(
+              label: 'David Eubanks',
+              extraInfo: 'Full time',
+              icon: CircleAvatar(
                 backgroundColor: Colors.transparent,
                 foregroundColor: Colors.transparent,
                 backgroundImage: AssetImage('assets/images/avatar1.jpg'),
               ),
             ),
-            ItemModel(
+            SelectableItem(
               value: null,
-              itemName: 'Stuart Resch',
-              extraInfoSingleItem: 'Part time',
-              avatarSingleItem: CircleAvatar(
+              label: 'Stuart Resch',
+              extraInfo: 'Part time',
+              icon: CircleAvatar(
                 backgroundColor: Colors.blue,
                 child: Text('SR', style: TextStyle(color: Colors.white)),
               ),
@@ -46,66 +49,68 @@ class ExampleData {
         ),
       ],
     ),
-    CategoryModel<String>(
-      itemName: 'Programmer',
-      itemList: <ItemModel<String>>[
-        ItemModel(
+    SelectableCategory<String>(
+      label: 'Programmer',
+      value: null,
+      childrens: <SelectableItem<String>>[
+        SelectableItem(
           value: null,
-          itemName: 'David Eubanks',
-          extraInfoSingleItem: 'Full time',
-          avatarSingleItem: CircleAvatar(
+          label: 'David Eubanks',
+          extraInfo: 'Full time',
+          icon: CircleAvatar(
             backgroundColor: Colors.transparent,
             foregroundColor: Colors.transparent,
             backgroundImage: AssetImage('assets/images/avatar1.jpg'),
           ),
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Manuel Eyre',
-          extraInfoSingleItem: 'Full time',
-          avatarSingleItem: CircleAvatar(
+          label: 'Manuel Eyre',
+          extraInfo: 'Full time',
+          icon: CircleAvatar(
             backgroundColor: Colors.transparent,
             foregroundColor: Colors.transparent,
             backgroundImage: AssetImage('assets/images/avatar2.jpg'),
           ),
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Robert Keller',
-          extraInfoSingleItem: 'Part time',
-          avatarSingleItem: CircleAvatar(
+          label: 'Robert Keller',
+          extraInfo: 'Part time',
+          icon: CircleAvatar(
             backgroundColor: Colors.brown,
             child: Text('RK', style: TextStyle(color: Colors.white)),
           ),
         ),
       ],
     ),
-    CategoryModel<String>(
-      itemName: 'UX Designer',
-      itemList: <ItemModel<String>>[
-        ItemModel(
+    SelectableCategory<String>(
+      label: 'UX Designer',
+      value: null,
+      childrens: <SelectableItem<String>>[
+        SelectableItem(
           value: null,
-          itemName: 'Shirley Stark',
-          extraInfoSingleItem: 'Part time',
-          avatarSingleItem: CircleAvatar(
+          label: 'Shirley Stark',
+          extraInfo: 'Part time',
+          icon: CircleAvatar(
             backgroundColor: Colors.purple,
             child: Text('SS', style: TextStyle(color: Colors.white)),
           ),
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Wendy Cangelosi',
-          extraInfoSingleItem: 'Part time',
-          avatarSingleItem: CircleAvatar(
+          label: 'Wendy Cangelosi',
+          extraInfo: 'Part time',
+          icon: CircleAvatar(
             backgroundColor: Colors.green,
             child: Text('WC', style: TextStyle(color: Colors.white)),
           ),
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Antoinette Herbert',
-          extraInfoSingleItem: 'Full time',
-          avatarSingleItem: CircleAvatar(
+          label: 'Antoinette Herbert',
+          extraInfo: 'Full time',
+          icon: CircleAvatar(
             backgroundColor: Colors.orange,
             child: Text('AH', style: TextStyle(color: Colors.white)),
           ),
@@ -114,250 +119,257 @@ class ExampleData {
     ),
   ];
 
-  static const List<CategoryModel<String>> exampleData2 = [
-    CategoryModel<String>(
-      itemName: 'Alaskan/Hawaiian Time Zone',
-      itemList: <ItemModel<String>>[
-        ItemModel(
+  static const List<SelectableCategory<String>> exampleData2 = [
+    SelectableCategory<String>(
+      label: 'Alaskan/Hawaiian Time Zone',
+      value: null,
+      childrens: <SelectableItem<String>>[
+        SelectableItem(
           value: null,
-          itemName: 'Alaska',
-          extraInfoSingleItem: '1395 Lincoln Street',
+          label: 'Alaska',
+          extraInfo: '1395 Lincoln Street',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Hawaii',
-          extraInfoSingleItem: '4880 Michigan Avenue',
-        ),
-      ],
-    ),
-    CategoryModel<String>(
-      itemName: 'Pacific Time Zone',
-      itemList: <ItemModel<String>>[
-        ItemModel(
-          value: null,
-          itemName: 'California',
-          extraInfoSingleItem: '3878 Chapel Street',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Nevada',
-          extraInfoSingleItem: '4045 Lucy Lane',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Oregon',
-          extraInfoSingleItem: '83 Kenwood Place',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Washington',
-          extraInfoSingleItem: '3573 Pallet Street',
+          label: 'Hawaii',
+          extraInfo: '4880 Michigan Avenue',
         ),
       ],
     ),
-    CategoryModel<String>(
-      itemName: 'Mountain Time Zone',
-      itemList: <ItemModel<String>>[
-        ItemModel(
+    SelectableCategory<String>(
+      label: 'Pacific Time Zone',
+      value: null,
+      childrens: <SelectableItem<String>>[
+        SelectableItem(
           value: null,
-          itemName: 'Arizona',
-          extraInfoSingleItem: '4473 Prospect Street',
+          label: 'California',
+          extraInfo: '3878 Chapel Street',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Colorado',
-          extraInfoSingleItem: '2247 Nuzum Court',
+          label: 'Nevada',
+          extraInfo: '4045 Lucy Lane',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Idaho',
-          extraInfoSingleItem: '1182 Bailey Drive',
+          label: 'Oregon',
+          extraInfo: '83 Kenwood Place',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Montana',
-          extraInfoSingleItem: '4530 Elk City Road',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Nebraska',
-          extraInfoSingleItem: '2012 Armbrester Drive',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'New Mexico',
-          extraInfoSingleItem: '2393 Wines Lane',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'North Dakota',
-          extraInfoSingleItem: '4190 Don Jackson Lane',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Utah',
-          extraInfoSingleItem: '468 Green Acres Road',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Wyoming',
-          extraInfoSingleItem: '1898 Sardis Sta',
+          label: 'Washington',
+          extraInfo: '3573 Pallet Street',
         ),
       ],
     ),
-    CategoryModel<String>(
-      itemName: 'Central Time Zone',
-      itemList: <ItemModel<String>>[
-        ItemModel(
+    SelectableCategory<String>(
+      label: 'Mountain Time Zone',
+      value: null,
+      childrens: <SelectableItem<String>>[
+        SelectableItem(
           value: null,
-          itemName: 'Alabama',
-          extraInfoSingleItem: '4446 Jarvisville Road',
+          label: 'Arizona',
+          extraInfo: '4473 Prospect Street',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Arkansas',
-          extraInfoSingleItem: '4111 Little Acres Lane',
+          label: 'Colorado',
+          extraInfo: '2247 Nuzum Court',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Illonois',
-          extraInfoSingleItem: '3444 Clark Street',
+          label: 'Idaho',
+          extraInfo: '1182 Bailey Drive',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Iowa',
-          extraInfoSingleItem: '4610 Lucy Lane',
+          label: 'Montana',
+          extraInfo: '4530 Elk City Road',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Kansas',
-          extraInfoSingleItem: '323 Stratford Drive',
+          label: 'Nebraska',
+          extraInfo: '2012 Armbrester Drive',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Kentucky',
-          extraInfoSingleItem: '3631 Vine Street',
+          label: 'New Mexico',
+          extraInfo: '2393 Wines Lane',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Louisiana',
-          extraInfoSingleItem: '3283 Godfrey Street',
+          label: 'North Dakota',
+          extraInfo: '4190 Don Jackson Lane',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Minnesota',
-          extraInfoSingleItem: '4838 Ridenour Street',
+          label: 'Utah',
+          extraInfo: '468 Green Acres Road',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Mississippi',
-          extraInfoSingleItem: '38 Ray Court',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Missouri',
-          extraInfoSingleItem: '1360 Bingamon Road',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Oklahoma',
-          extraInfoSingleItem: '1636 Sundown Lane',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'South Dakota',
-          extraInfoSingleItem: '1091 Elm Drive',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Texas',
-          extraInfoSingleItem: '4764 Bond Street',
-        ),
-        ItemModel(
-          value: null,
-          itemName: 'Tennessee',
-          extraInfoSingleItem: '4540 Oakmound Road',
+          label: 'Wyoming',
+          extraInfo: '1898 Sardis Sta',
         ),
       ],
     ),
-    CategoryModel<String>(
-      itemName: 'Eastern Time Zone',
-      itemList: <ItemModel<String>>[
-        ItemModel(
+    SelectableCategory<String>(
+      label: 'Central Time Zone',
+      value: null,
+      childrens: <SelectableItem<String>>[
+        SelectableItem(
           value: null,
-          itemName: 'Connecticut',
-          extraInfoSingleItem: '695 Center Avenue',
+          label: 'Alabama',
+          extraInfo: '4446 Jarvisville Road',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Massechusetts',
-          extraInfoSingleItem: '2085 Heron Way',
+          label: 'Arkansas',
+          extraInfo: '4111 Little Acres Lane',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'North Carolina',
-          extraInfoSingleItem: '1034 Conference Center Way',
+          label: 'Illonois',
+          extraInfo: '3444 Clark Street',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'South Carolina',
-          extraInfoSingleItem: '3865 Hickory Street',
+          label: 'Iowa',
+          extraInfo: '4610 Lucy Lane',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'Vermont',
-          extraInfoSingleItem: '3159 Sumner Street',
+          label: 'Kansas',
+          extraInfo: '323 Stratford Drive',
         ),
-        ItemModel(
+        SelectableItem(
           value: null,
-          itemName: 'West Virginia',
-          extraInfoSingleItem: '2506 Hall Street',
+          label: 'Kentucky',
+          extraInfo: '3631 Vine Street',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Louisiana',
+          extraInfo: '3283 Godfrey Street',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Minnesota',
+          extraInfo: '4838 Ridenour Street',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Mississippi',
+          extraInfo: '38 Ray Court',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Missouri',
+          extraInfo: '1360 Bingamon Road',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Oklahoma',
+          extraInfo: '1636 Sundown Lane',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'South Dakota',
+          extraInfo: '1091 Elm Drive',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Texas',
+          extraInfo: '4764 Bond Street',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Tennessee',
+          extraInfo: '4540 Oakmound Road',
         ),
       ],
     ),
-  ];
-
-  static const List<CategoryModel<String>> exampleData3 = [
-    CategoryModel<String>(
-      itemName: '',
-      itemList: <ItemModel<String>>[
-        ItemModel(value: 'Alabama1', itemName: 'Alabama'),
-        ItemModel(value: 'Alabama2', itemName: 'Alabama'),
-        ItemModel(value: null, itemName: 'Arkansas'),
-        ItemModel(value: null, itemName: 'Illonois'),
-        ItemModel(value: null, itemName: 'Iowa'),
-        ItemModel(value: null, itemName: 'Kansas'),
-        ItemModel(value: null, itemName: 'Kentucky'),
-        ItemModel(value: null, itemName: 'Louisiana'),
-        ItemModel(value: null, itemName: 'Minnesota'),
-        ItemModel(value: null, itemName: 'Mississippi'),
-        ItemModel(value: null, itemName: 'Missouri'),
-        ItemModel(value: null, itemName: 'Oklahoma'),
-        ItemModel(value: null, itemName: 'South Dakota'),
-        ItemModel(value: null, itemName: 'Texas'),
-        ItemModel(value: null, itemName: 'Tennessee'),
+    SelectableCategory<String>(
+      label: 'Eastern Time Zone',
+      value: null,
+      childrens: <SelectableItem<String>>[
+        SelectableItem(
+          value: null,
+          label: 'Connecticut',
+          extraInfo: '695 Center Avenue',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Massechusetts',
+          extraInfo: '2085 Heron Way',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'North Carolina',
+          extraInfo: '1034 Conference Center Way',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'South Carolina',
+          extraInfo: '3865 Hickory Street',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'Vermont',
+          extraInfo: '3159 Sumner Street',
+        ),
+        SelectableItem(
+          value: null,
+          label: 'West Virginia',
+          extraInfo: '2506 Hall Street',
+        ),
       ],
     ),
   ];
 
-  static const List<CategoryModel<String>> exampleData4 = [
-    CategoryModel<String>(
-      itemName: '',
-      itemList: [
-        ItemModel(value: null, itemName: 'Alabama'),
-        ItemModel(value: null, itemName: 'Arkansas'),
-        ItemModel(value: null, itemName: 'Illonois'),
-        ItemModel(value: null, itemName: 'Iowa'),
-        ItemModel(value: null, itemName: 'Kansas'),
-        ItemModel(value: null, itemName: 'Kentucky'),
-        ItemModel(value: null, itemName: 'Louisiana'),
-        ItemModel(value: null, itemName: 'Minnesota'),
-        ItemModel(value: null, itemName: 'Mississippi'),
-        ItemModel(value: null, itemName: 'Missouri'),
-        ItemModel(value: null, itemName: 'Oklahoma'),
-        ItemModel(value: null, itemName: 'South Dakota'),
-        ItemModel(value: null, itemName: 'Texas'),
-        ItemModel(value: null, itemName: 'Tennessee'),
+  static const List<SelectableCategory<String>> exampleData3 = [
+    SelectableCategory<String>(
+      label: '',
+      value: null,
+      childrens: <SelectableItem<String>>[
+        SelectableItem(value: 'Alabama1', label: 'Alabama'),
+        SelectableItem(value: 'Alabama2', label: 'Alabama'),
+        SelectableItem(value: null, label: 'Arkansas'),
+        SelectableItem(value: null, label: 'Illonois'),
+        SelectableItem(value: null, label: 'Iowa'),
+        SelectableItem(value: null, label: 'Kansas'),
+        SelectableItem(value: null, label: 'Kentucky'),
+        SelectableItem(value: null, label: 'Louisiana'),
+        SelectableItem(value: null, label: 'Minnesota'),
+        SelectableItem(value: null, label: 'Mississippi'),
+        SelectableItem(value: null, label: 'Missouri'),
+        SelectableItem(value: null, label: 'Oklahoma'),
+        SelectableItem(value: null, label: 'South Dakota'),
+        SelectableItem(value: null, label: 'Texas'),
+        SelectableItem(value: null, label: 'Tennessee'),
+      ],
+    ),
+  ];
+
+  static const List<SelectableCategory<String>> exampleData4 = [
+    SelectableCategory<String>(
+      label: '',
+      value: null,
+      childrens: [
+        SelectableItem(value: null, label: 'Alabama'),
+        SelectableItem(value: null, label: 'Arkansas'),
+        SelectableItem(value: null, label: 'Illonois'),
+        SelectableItem(value: null, label: 'Iowa'),
+        SelectableItem(value: null, label: 'Kansas'),
+        SelectableItem(value: null, label: 'Kentucky'),
+        SelectableItem(value: null, label: 'Louisiana'),
+        SelectableItem(value: null, label: 'Minnesota'),
+        SelectableItem(value: null, label: 'Mississippi'),
+        SelectableItem(value: null, label: 'Missouri'),
+        SelectableItem(value: null, label: 'Oklahoma'),
+        SelectableItem(value: null, label: 'South Dakota'),
+        SelectableItem(value: null, label: 'Texas'),
+        SelectableItem(value: null, label: 'Tennessee'),
       ],
     ),
   ];
