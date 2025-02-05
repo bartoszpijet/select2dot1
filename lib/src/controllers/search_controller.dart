@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuzzysearch/fuzzysearch.dart';
+import 'package:select2dot1/src/models/category_item.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_category.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
 
@@ -18,11 +20,11 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
 
   /// Data to search.
   /// It is required.
-  final List<SelectableInterface<T>> data;
+  final Iterable<ItemInterface<T>> data;
 
   /// Search results.
   /// First it will be same as [data].
-  final List<SelectableInterface<T>> results;
+  final List<ItemInterface<T>> results;
 
   /// Hide category if [SelectableInterface.itemList] is empty.
   /// Default to [true].
@@ -37,7 +39,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   final bool searchInCategories;
 
   /// Getter for [results] find by [findSearchDataResults].
-  List<SelectableInterface<T>> get getResults => results;
+  List<ItemInterface<T>> get getResults => results;
 
   /// Creating an argument constructor of [SearchControllerSelect2dot1] class.
   /// [data] is data to search. [data] is required.
@@ -47,9 +49,8 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     this.hideEmptyCategory = true,
     this.hideCategoryAfterSearch = true,
     this.searchInCategories = false,
-  }) : results = data
-            .cast<SelectableInterface<T>>()
-            .toList() // Fix pass by reference.
+  }) : results =
+            data.cast<ItemInterface<T>>().toList() // Fix pass by reference.
   {
     oldLength = countLength();
     if (searchInCategories && (hideCategoryAfterSearch || hideEmptyCategory)) {
@@ -89,7 +90,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
       }
     } else {
       List<SelectableInterface<T>> resultsWithScore =
-          await addFromList(data, searchText);
+          await addFromList(data.whereType(), searchText);
 
       resultsWithScore.sort((a, b) => a.score.compareTo(b.score));
       results.addAll(
@@ -106,7 +107,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   /// Count length of search results function.
   int countLength() {
     int length = 0;
-    for (SelectableInterface<T> element in results) {
+    for (SelectableInterface<T> element in results.whereType()) {
       if (element is SelectableCategory<T>) {
         int toAdd = element.childrens.length;
         if (toAdd == 0 && hideEmptyCategory) continue;
@@ -121,14 +122,16 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
 
   List<SelectableInterface<T>> get flatData => addChildrens(data);
 
-  List<SelectableInterface<T>> addChildrens(List<SelectableInterface<T>> list) {
+  List<SelectableInterface<T>> addChildrens(
+    Iterable<ItemInterface<T>> list,
+  ) {
     List<SelectableInterface<T>> tempFlatData = [];
-    for (SelectableInterface<T> element in list) {
-      if (element is SelectableCategory<T>) {
+    for (ItemInterface<T> element in list) {
+      if (element is CategoryItem<T>) {
         tempFlatData.addAll(
-          addChildrens(element.childrens.cast<SelectableInterface<T>>()),
+          addChildrens(element.childrens),
         );
-      } else {
+      } else if (element is SelectableInterface<T>) {
         tempFlatData.add(element);
       }
     }
@@ -137,7 +140,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   }
 
   Future<List<SelectableInterface<T>>> addToResults(
-    List<SelectableInterface<T>> dataToAdd,
+    Iterable<SelectableInterface<T>> dataToAdd,
     String searchText,
   ) async {
     List<SelectableInterface<T>> resultsWithScore = [];
@@ -158,12 +161,12 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   }
 
   Future<List<SelectableInterface<T>>> addFromList(
-    List<SelectableInterface<T>> data,
+    Iterable<SelectableInterface<T>> data,
     String searchText,
   ) async {
     List<SelectableInterface<T>> resultsWithScore = [];
 
-    List<SelectableInterface<T>> selectableData = searchInCategories
+    Iterable<SelectableInterface<T>> selectableData = searchInCategories
         ? data
         : data.where((element) => element is! SelectableCategory<T>).toList();
     resultsWithScore.addAll(await addToResults(selectableData, searchText));
@@ -173,7 +176,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
 
     for (SelectableCategory<T> category in categoryData) {
       List<SelectableInterface<T>> items = await addFromList(
-        category.childrens,
+        category.childrens.whereType<SelectableInterface<T>>(),
         searchText,
       );
       if (items.isNotEmpty) {
@@ -198,7 +201,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   }
 
   Future<List<Result<SelectableInterface<T>>>> fuzzySearch(
-    List<SelectableInterface<T>> dataToSearchIn,
+    Iterable<SelectableInterface<T>> dataToSearchIn,
     String searchText,
   ) {
     Fuzzy<SelectableInterface<T>> fuse = Fuzzy.withIdentifiers(

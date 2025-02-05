@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
@@ -7,7 +8,7 @@ import 'package:select2dot1/src/utils/event_args.dart';
 
 class ModalItemWidget<T> extends StatefulWidget {
   final int deepth;
-  final SelectableInterface<T> singleItem;
+  final ItemInterface<T> singleItem;
   final SelectDataController<T> selectDataController;
   final CategoryItemModalBuilder<T>? modalItemBuilder;
   final ModalItemSettings modalItemSettings;
@@ -196,12 +197,18 @@ class _CategoryItemModalState<T> extends State<ModalItemWidget<T>> {
   }
 
   void _onTapSingleItemCategory() {
+    if (widget.singleItem is! SelectableInterface<T>) {
+      return;
+    }
     if (!isSelected) {
       widget.selectDataController.isMultiSelect
-          ? widget.selectDataController.addSelectChip(widget.singleItem)
-          : widget.selectDataController.setSingleSelect(widget.singleItem);
+          ? widget.selectDataController
+              .addSelectChip(widget.singleItem as SelectableInterface<T>)
+          : widget.selectDataController
+              .setSingleSelect(widget.singleItem as SelectableInterface<T>);
     } else {
-      widget.selectDataController.removeSelectedChip(widget.singleItem);
+      widget.selectDataController
+          .removeSelectedChip(widget.singleItem as SelectableInterface<T>);
     }
 
     if (!widget.selectDataController.isMultiSelect) {

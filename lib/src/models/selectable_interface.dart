@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
 
 /// This is a model class which contains the name of the item, the value of the item, the extra info of the item, and the avatar of the item.
-abstract class SelectableInterface<T> {
+abstract class SelectableInterface<T> extends ItemInterface<T> {
   /// The value of this item.
   final T? value;
 
@@ -9,49 +9,41 @@ abstract class SelectableInterface<T> {
   /// Default true.
   final bool enabled;
 
-  /// The label of this item.
-  /// Only one of label or getLabel may be not null.
-  /// Either of label or getLabel is required.
-  final String? label;
-
   /// Function that get Label for this item.
   /// Only one of label or getLabel may be not null.
   /// Either of label or getLabel is required.
   final String Function(T? value)? getLabel;
-
-  /// The extra info of this item.
-  /// It is optional.
-  final String? extraInfo;
-
-  /// The icon of this item.
-  /// It is optional.
-  final Widget? icon;
 
   /// Data with which this item may be found in search except it's label and/or value.
   final Set<String> metadataSearch;
 
   final double score;
 
+  @override
   String get finalLabel => label ?? getLabel?.call(value) ?? 'NULL';
 
   /// Creating an argument constructor of [SelectableInterface] class.
   const SelectableInterface({
     required this.value,
-    this.label,
+
+    /// The label of this item.
+    /// Only one of label or getLabel may be not null.
+    /// Either of label or getLabel is required.
+    super.label,
     this.getLabel,
     this.enabled = true,
-    this.extraInfo,
-    this.icon,
+    super.extraInfo,
+    super.icon,
     this.metadataSearch = const {},
   }) : score = 0;
 
   const SelectableInterface.withScore({
     required this.value,
-    this.label,
+    super.label,
     this.getLabel,
     this.enabled = true,
-    this.extraInfo,
-    this.icon,
+    super.extraInfo,
+    super.icon,
     this.metadataSearch = const {},
     this.score = 0,
   });

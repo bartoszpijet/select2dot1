@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/select2dot1.dart';
-import 'package:select2dot1/src/models/selectable_item.dart';
+import 'package:select2dot1/src/models/category_item.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
+import 'package:select2dot1/src/models/selectable_item.dart';
 
 /// SelectDataController is a class that will be used to control select data and contains all data.
 class SelectDataController<T> extends ChangeNotifier {
   /// All data pass to the package.
   /// It is required.
-  List<SelectableInterface<T>> data;
+  Iterable<ItemInterface<T>> data;
 
   /// This is a boolean to set multi select or single select.
   /// Default is true.
@@ -24,10 +25,10 @@ class SelectDataController<T> extends ChangeNotifier {
   /// This is initial selected data.
   /// This data will be add to the [selectedList] when the class is created.
   /// If [isMultiSelect] is false, must be null or length <= 1.
-  final List<SelectableInterface<T>>? initSelected;
+  final Iterable<SelectableInterface<T>>? initSelected;
 
   /// This is a list of [SelectableItem] selected items.
-  final List<SelectableInterface<T>> selectedList = [];
+  final Set<SelectableInterface<T>> selectedList = {};
 
   /// SelectDataController is a class that will be used to control select data.
   /// Use this constructor to create a [SelectDataController] object.
@@ -61,7 +62,7 @@ class SelectDataController<T> extends ChangeNotifier {
 
   /// Add items from list of [SelectableInterface<T>] to the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
-  void addGroupSelectChip(List<SelectableInterface<T>>? singleItemList) {
+  void addGroupSelectChip(Iterable<SelectableInterface<T>>? singleItemList) {
     if (singleItemList == null) {
       return;
     }
@@ -78,7 +79,7 @@ class SelectDataController<T> extends ChangeNotifier {
 
   /// Remove items from list of [SelectableInterface<T>] to the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
-  void removeGroupSelectChip(List<SelectableInterface<T>>? singleItemList) {
+  void removeGroupSelectChip(Iterable<SelectableInterface<T>>? singleItemList) {
     if (singleItemList == null) {
       return;
     }
@@ -100,8 +101,8 @@ class SelectDataController<T> extends ChangeNotifier {
     }
 
     if (!_singleItemContainsInSelected(singleItem)) {
-      selectedList.add(getCategoryFromData(singleItem));
-      if (notify) notifyListeners();
+      bool added = selectedList.add(getCategoryFromData(singleItem));
+      if (notify && added) notifyListeners();
     }
   }
 
@@ -131,8 +132,8 @@ class SelectDataController<T> extends ChangeNotifier {
     }
 
     selectedList.clear();
-    selectedList.add(getCategoryFromData(singleItem));
-    notifyListeners();
+    bool added = selectedList.add(getCategoryFromData(singleItem));
+    if (added) notifyListeners();
   }
 
   /// Check if the [SelectableInterface<T>] is in the [selectedList].
@@ -148,7 +149,7 @@ class SelectDataController<T> extends ChangeNotifier {
     SelectableInterface<T> patternSingleItem,
   ) {
     SelectableInterface<T>? returnedVal;
-    for (SelectableInterface<T> item in data) {
+    for (ItemInterface<T> item in data.whereType()) {
       returnedVal = deepContains(patternSingleItem, item);
       if (returnedVal != null) break;
     }
@@ -158,17 +159,16 @@ class SelectDataController<T> extends ChangeNotifier {
 
   SelectableInterface<T>? deepContains(
     SelectableInterface<T> search,
-    SelectableInterface<T> inThis,
+    ItemInterface<T> inThis,
   ) {
     if (search == inThis) {
-      return inThis;
+      return search;
     }
-    if (inThis is! SelectableCategory<T> || inThis.childrens.isEmpty) {
+    if (inThis is! CategoryItem<T> || inThis.childrens.isEmpty) {
       return null;
     } else {
       SelectableInterface<T>? contain;
-      for (SelectableInterface<T> inner
-          in (inThis as SelectableCategory<T>).childrens) {
+      for (ItemInterface<T> inner in inThis.childrens) {
         contain = deepContains(search, inner);
         if (contain != null) break;
       }

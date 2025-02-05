@@ -3,7 +3,7 @@ import 'package:select2dot1/select2dot1.dart';
 
 class CustomSelect2dot1<T> extends StatelessWidget {
   final String title;
-  final List<SelectableInterface<T>> data;
+  final Iterable<ItemInterface<T>> data;
   final bool isMultiSelect;
   final bool avatarInSingleSelect;
   final bool extraInfoInSingleSelect;

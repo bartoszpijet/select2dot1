@@ -8,6 +8,8 @@ import 'package:select2dot1/src/components/overlay/loading_data_overlay.dart';
 import 'package:select2dot1/src/components/overlay/search_empty_info_overlay.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
+import 'package:select2dot1/src/models/category_item.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_category.dart';
 import 'package:select2dot1/src/models/selectable_item.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
@@ -186,17 +188,16 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
   Future<List<Widget>> dataFuture() async {
     List<Widget> listDataViewChildren = [];
 
-    for (SelectableInterface<T> item in widget.searchController.getResults) {
+    for (ItemInterface<T> item in widget.searchController.getResults) {
       listDataViewChildren.addAll(categoryOverlay(item));
     }
 
     return listDataViewChildren;
   }
 
-  List<Widget> categoryOverlay(SelectableInterface<T> category,
-      [int deepth = 0]) {
+  List<Widget> categoryOverlay(ItemInterface<T> category, [int deepth = 0]) {
     List<Widget> listDataViewChildren = [];
-    if (category is! SelectableCategory<T>) {
+    if (category is! CategoryItem<T>) {
       listDataViewChildren.add(
         OverlayItemWidget(
           deepth: deepth,
@@ -221,7 +222,7 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
         globalSettings: widget.globalSettings,
       ),
     );
-    for (SelectableInterface<T> item in category.childrens) {
+    for (ItemInterface<T> item in category.childrens) {
       listDataViewChildren.addAll(categoryOverlay(item, deepth + 1));
     }
 

@@ -151,7 +151,7 @@ class _PillboxContentMultiState<T> extends State<PillboxContentMulti<T>> {
                                   globalSettings: widget.globalSettings,
                                 ),
                               ]
-                            : widget.selectDataController.selectedList.reversed
+                            : widget.selectDataController.selectedList
                                 .map(
                                   (i) => SelectChip(
                                     singleItem: i,

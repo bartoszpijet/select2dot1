@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
+import 'package:select2dot1/src/models/category_item.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_category.dart';
 import 'package:select2dot1/src/models/selectable_item.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
@@ -517,7 +519,7 @@ typedef CategoryItemOverlayBuilder<T> = Widget Function(
 /// This is a class which contains necessary details to build your own category item.
 class CategoryItemOverlayDetails<T> {
   /// This is a [SelectableInterface<T>] that will be used to build the category item.
-  final SelectableInterface<T> singleItem;
+  final ItemInterface<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
@@ -562,7 +564,7 @@ typedef CategoryNameOverlayBuilder<T> = Widget Function(
 /// This is a class which contains necessary details to build your own category name.
 class CategoryNameOverlayDetails<T> {
   /// This is a [SelectableCategory] that will be used to build the category name.
-  final SelectableInterface<T> singleCategory;
+  final CategoryItem<T> singleCategory;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
@@ -808,8 +810,8 @@ typedef CategoryNameModalBuilder<T> = Widget Function(
 
 /// This is a class which contains necessary details to build your own category name modal.
 class CategoryNameModalDetails<T> {
-  /// This is a [SelectableCategory] that will be used to build the category name modal.
-  final SelectableInterface<T> singleCategory;
+  /// This is a [CategoryItem<T>] that will be used to build the category name modal.
+  final CategoryItem<T> singleCategory;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
@@ -842,7 +844,7 @@ typedef CategoryItemModalBuilder<T> = Widget Function(
 /// This is a class which contains necessary details to build your own category item modal.
 class CategoryItemModalDetails<T> {
   /// This is a [SelectableItem] that will be used to build the category item modal.
-  final SelectableInterface<T> singleItem;
+  final ItemInterface<T> singleItem;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;

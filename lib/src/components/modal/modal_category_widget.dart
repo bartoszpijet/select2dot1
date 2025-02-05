@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/select2dot1.dart';
+
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
+import 'package:select2dot1/src/models/category_item.dart';
+import 'package:select2dot1/src/models/selectable_category.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
 import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
@@ -8,7 +10,7 @@ import 'package:select2dot1/src/utils/event_args.dart';
 
 class ModalCategoryWidget<T> extends StatefulWidget {
   final int deepth;
-  final SelectableInterface<T> singleCategory;
+  final CategoryItem<T> singleCategory;
   final SelectDataController<T> selectDataController;
   final CategoryNameModalBuilder<T>? modalCategoryBuilder;
   final ModalCategorySettings modalCategorySettings;
@@ -168,18 +170,21 @@ class _CategoryItemModalState<T> extends State<ModalCategoryWidget<T>> {
       if (widget.selectDataController.selectedList
           .contains(widget.singleCategory)) {
         widget.selectDataController.removeSelectedChip(
-          widget.singleCategory,
+          widget.singleCategory as SelectableCategory<T>,
         );
       } else {
-        widget.selectDataController.addSelectChip(widget.singleCategory);
+        widget.selectDataController
+            .addSelectChip(widget.singleCategory as SelectableCategory<T>);
       }
     }
     if (widget.selectDataController.isCategoryAddAllChildren) {
       if (!widget.selectDataController.isMultiSelect) {
         return;
       }
-      List<SelectableInterface<T>> itemList =
-          (widget.singleCategory as SelectableCategory<T>).childrens;
+      Iterable<SelectableInterface<T>> itemList =
+          (widget.singleCategory as SelectableCategory<T>)
+              .childrens
+              .whereType();
       //TODO: recurrence add all children.
       if (itemList.every(
         (element) => widget.selectDataController.selectedList.contains(element),

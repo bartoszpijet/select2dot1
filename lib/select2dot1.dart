@@ -2,9 +2,11 @@ library select2dot1;
 
 export 'src/controllers/search_controller.dart';
 export 'src/controllers/select_data_controller.dart';
+export 'src/models/category_item.dart';
+export 'src/models/item_interface.dart';
 export 'src/models/selectable_category.dart';
-export 'src/models/selectable_item.dart';
 export 'src/models/selectable_interface.dart';
+export 'src/models/selectable_item.dart';
 export 'src/select2dot1_widget.dart';
 export 'src/settings/global_settings.dart';
 export 'src/settings/modal/done_button_modal_settings.dart';

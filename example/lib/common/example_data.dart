@@ -7,12 +7,11 @@ class ExampleData {
       label: 'Team Leader',
       value: null,
       childrens: [
-        SelectableCategory<String>(
+        CategoryItem<String>(
           label: 'Design',
-          value: null,
           childrens: <SelectableItem<String>>[
             SelectableItem(
-              value: null,
+              value: 'Ed Smith',
               label: 'Ed Smith',
               extraInfo: 'Full time',
               icon: CircleAvatar(
@@ -22,12 +21,11 @@ class ExampleData {
             ),
           ],
         ),
-        SelectableCategory<String>(
+        CategoryItem<String>(
           label: 'IT',
-          value: null,
           childrens: <SelectableItem<String>>[
             SelectableItem(
-              value: null,
+              value: 'David Eubanks',
               label: 'David Eubanks',
               extraInfo: 'Full time',
               icon: CircleAvatar(
@@ -37,7 +35,7 @@ class ExampleData {
               ),
             ),
             SelectableItem(
-              value: null,
+              value: 'Stuart Resch',
               label: 'Stuart Resch',
               extraInfo: 'Part time',
               icon: CircleAvatar(
@@ -54,7 +52,7 @@ class ExampleData {
       value: null,
       childrens: <SelectableItem<String>>[
         SelectableItem(
-          value: null,
+          value: 'David Eubanks',
           label: 'David Eubanks',
           extraInfo: 'Full time',
           icon: CircleAvatar(
@@ -64,7 +62,7 @@ class ExampleData {
           ),
         ),
         SelectableItem(
-          value: null,
+          value: 'Manuel Eyre',
           label: 'Manuel Eyre',
           extraInfo: 'Full time',
           icon: CircleAvatar(
@@ -74,7 +72,7 @@ class ExampleData {
           ),
         ),
         SelectableItem(
-          value: null,
+          value: 'Robert Keller',
           label: 'Robert Keller',
           extraInfo: 'Part time',
           icon: CircleAvatar(
@@ -89,7 +87,7 @@ class ExampleData {
       value: null,
       childrens: <SelectableItem<String>>[
         SelectableItem(
-          value: null,
+          value: 'Shirley Stark',
           label: 'Shirley Stark',
           extraInfo: 'Part time',
           icon: CircleAvatar(
@@ -98,7 +96,7 @@ class ExampleData {
           ),
         ),
         SelectableItem(
-          value: null,
+          value: 'Wendy Cangelosi',
           label: 'Wendy Cangelosi',
           extraInfo: 'Part time',
           icon: CircleAvatar(
@@ -107,7 +105,7 @@ class ExampleData {
           ),
         ),
         SelectableItem(
-          value: null,
+          value: 'Antoinette Herbert',
           label: 'Antoinette Herbert',
           extraInfo: 'Full time',
           icon: CircleAvatar(
@@ -119,10 +117,9 @@ class ExampleData {
     ),
   ];
 
-  static const List<SelectableCategory<String>> exampleData2 = [
-    SelectableCategory<String>(
+  static const List<CategoryItem<String>> exampleData2 = [
+    CategoryItem<String>(
       label: 'Alaskan/Hawaiian Time Zone',
-      value: null,
       childrens: <SelectableItem<String>>[
         SelectableItem(
           value: null,
@@ -136,9 +133,8 @@ class ExampleData {
         ),
       ],
     ),
-    SelectableCategory<String>(
+    CategoryItem<String>(
       label: 'Pacific Time Zone',
-      value: null,
       childrens: <SelectableItem<String>>[
         SelectableItem(
           value: null,
@@ -162,9 +158,8 @@ class ExampleData {
         ),
       ],
     ),
-    SelectableCategory<String>(
+    CategoryItem<String>(
       label: 'Mountain Time Zone',
-      value: null,
       childrens: <SelectableItem<String>>[
         SelectableItem(
           value: null,
@@ -213,9 +208,8 @@ class ExampleData {
         ),
       ],
     ),
-    SelectableCategory<String>(
+    CategoryItem<String>(
       label: 'Central Time Zone',
-      value: null,
       childrens: <SelectableItem<String>>[
         SelectableItem(
           value: null,
@@ -289,9 +283,8 @@ class ExampleData {
         ),
       ],
     ),
-    SelectableCategory<String>(
+    CategoryItem<String>(
       label: 'Eastern Time Zone',
-      value: null,
       childrens: <SelectableItem<String>>[
         SelectableItem(
           value: null,

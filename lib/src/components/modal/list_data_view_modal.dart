@@ -5,6 +5,8 @@ import 'package:select2dot1/src/components/modal/loading_data_modal.dart';
 import 'package:select2dot1/src/components/modal/search_empty_info_modal.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
+import 'package:select2dot1/src/models/category_item.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_category.dart';
 import 'package:select2dot1/src/models/selectable_item.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
@@ -148,17 +150,16 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
   Future<List<Widget>> dataFuture() async {
     List<Widget> listDataViewChildren = [];
 
-    for (SelectableInterface<T> item in widget.searchController.getResults) {
+    for (ItemInterface<T> item in widget.searchController.getResults) {
       listDataViewChildren.addAll(categoryModal(item));
     }
 
     return listDataViewChildren;
   }
 
-  List<Widget> categoryModal(SelectableInterface<T> category,
-      [int deepth = 0]) {
+  List<Widget> categoryModal(ItemInterface<T> category, [int deepth = 0]) {
     List<Widget> listDataViewChildren = [];
-    if (category is! SelectableCategory<T>) {
+    if (category is! CategoryItem<T>) {
       listDataViewChildren.add(
         ModalItemWidget(
           deepth: deepth,
@@ -169,6 +170,7 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
           globalSettings: widget.globalSettings,
         ),
       );
+
       return listDataViewChildren;
     }
     listDataViewChildren.add(
@@ -181,7 +183,7 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
         globalSettings: widget.globalSettings,
       ),
     );
-    for (SelectableInterface<T> item in category.childrens) {
+    for (ItemInterface<T> item in category.childrens) {
       listDataViewChildren.addAll(categoryModal(item, deepth + 1));
     }
 

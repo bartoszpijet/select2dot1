@@ -88,7 +88,7 @@ class Select2dot1<T> extends StatefulWidget {
 
   /// Used this to get the value of the widget outside the widget.
   /// It is call every time when the value of the widget is changed.
-  final ValueChanged<List<SelectableInterface<T>>>? onChanged;
+  final ValueChanged<Iterable<SelectableInterface<T>>>? onChanged;
 
   /// Pass it if you want adjustable dropdown anchor.
   final ScrollController? scrollController;
