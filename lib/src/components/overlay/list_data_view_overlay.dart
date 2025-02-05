@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/components/overlay/overlay_category_widget.dart';
-
-import 'package:select2dot1/src/components/overlay/overlay_item_widget.dart';
 import 'package:select2dot1/src/components/overlay/loading_data_overlay.dart';
+import 'package:select2dot1/src/components/overlay/overlay_category_widget.dart';
+import 'package:select2dot1/src/components/overlay/overlay_item_widget.dart';
 import 'package:select2dot1/src/components/overlay/search_empty_info_overlay.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
@@ -12,12 +11,11 @@ import 'package:select2dot1/src/models/category_item.dart';
 import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_category.dart';
 import 'package:select2dot1/src/models/selectable_item.dart';
-import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
-import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
 import 'package:select2dot1/src/settings/overlay/list_data_view_overlay_settings.dart';
 import 'package:select2dot1/src/settings/overlay/loading_data_overlay_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
+import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
 import 'package:select2dot1/src/settings/overlay/search_empty_info_overlay_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
@@ -154,8 +152,8 @@ class _ListDataViewOverlayState<T> extends State<ListDataViewOverlay<T>> {
                   primary: false,
                   itemExtent: widget.listDataViewOverlaySettings.itemExtents,
                   controller: scrollController,
-                  itemBuilder: (context, index) => snapshot.data![index],
-                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) => snapshot.data?[index],
+                  itemCount: snapshot.data?.length,
                 ),
               ),
             ),

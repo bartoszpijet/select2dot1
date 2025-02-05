@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/components/modal/modal_item_widget.dart';
-import 'package:select2dot1/src/components/modal/modal_category_widget.dart';
 import 'package:select2dot1/src/components/modal/loading_data_modal.dart';
+import 'package:select2dot1/src/components/modal/modal_category_widget.dart';
+import 'package:select2dot1/src/components/modal/modal_item_widget.dart';
 import 'package:select2dot1/src/components/modal/search_empty_info_modal.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
@@ -9,12 +9,11 @@ import 'package:select2dot1/src/models/category_item.dart';
 import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_category.dart';
 import 'package:select2dot1/src/models/selectable_item.dart';
-import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
-import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
 import 'package:select2dot1/src/settings/modal/list_data_view_modal_settings.dart';
 import 'package:select2dot1/src/settings/modal/loading_data_modal_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
+import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
 import 'package:select2dot1/src/settings/modal/search_empty_info_modal_settings.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
@@ -119,8 +118,8 @@ class _ListDataViewModalState<T> extends State<ListDataViewModal<T>> {
             shrinkWrap: true,
             itemExtent: widget.listDataViewModalSettings.itemExtents,
             controller: widget.scrollController,
-            itemBuilder: (context, index) => snapshot.data![index],
-            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) => snapshot.data?[index],
+            itemCount: snapshot.data?.length,
           ),
         );
       },
