@@ -14,7 +14,7 @@ class BasicExample4 extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Select2dot1(
+          Select2dot1<String>(
             selectDataController: SelectDataController(
               data: ExampleData.exampleData2,
               initSelected: const [
@@ -22,18 +22,18 @@ class BasicExample4 extends StatelessWidget {
                 SelectableItem(value: null, label: 'California'),
               ],
             ),
-            selectSingleSettings:
-                const SelectSingleSettings(showExtraInfo: false),
-            modalItemSettings: const ModalItemSettings(
-              showExtraInfo: false,
+            dropdownListData: DropdownListData(
+              scrollController: scrollController,
             ),
-            overlayItemSettings: const OverlayItemSettings(
-              showExtraInfo: false,
+            selectStyle: const SelectStyle(
+              selectSingleSettings: SelectSingleSettings(showExtraInfo: false),
+              pillboxStyle: PillboxStyle(
+                pillboxTitleSettings: PillboxTitleSettings(title: 'Example 4'),
+              ),
+              modalStyle: ModalStyle(
+                titleModalSettings: TitleModalSettings(title: 'Example 4'),
+              ),
             ),
-            scrollController: scrollController,
-            pillboxTitleSettings:
-                const PillboxTitleSettings(title: 'Example 4'),
-            titleModalSettings: const TitleModalSettings(title: 'Example 4'),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),

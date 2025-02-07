@@ -289,7 +289,7 @@ In the following example you will be shown how to customize mainColor and fontFa
 ```dart
 Select2dot2(
   selectDataController: SelectDataController(data: exampleData),
-  globalSettings: const GlobalSettings(
+  selectStyle: const SelectStyle(
     fontFamily: 'Roboto',
     mainColor: Colors.blue,
   ),

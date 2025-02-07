@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/select_single_settings.dart';
+import 'package:select2dot1/src/styles/select_single_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class SelectSingle<T> extends StatelessWidget {
@@ -10,7 +10,7 @@ class SelectSingle<T> extends StatelessWidget {
   final SelectDataController<T> selectDataController;
   final SelectSingleBuilder<T>? selectSingleBuilder;
   final SelectSingleSettings selectSingleSettings;
-  final GlobalSettings globalSettings;
+  final SelectStyle selectStyle;
 
   const SelectSingle({
     super.key,
@@ -18,7 +18,7 @@ class SelectSingle<T> extends StatelessWidget {
     required this.selectDataController,
     required this.selectSingleBuilder,
     required this.selectSingleSettings,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 
   @override
@@ -28,75 +28,28 @@ class SelectSingle<T> extends StatelessWidget {
       // ignore: avoid-non-null-assertion
       return selectSingleBuilder!(
         context,
-        SelectSingleDetails(
+        SelectSingleDetails<T>(
           singleItem: singleItem,
           selectDataController: selectDataController,
-          globalSettings: globalSettings,
+          selectStyle: selectStyle,
         ),
       );
     }
 
-    return Container(
-      padding: selectSingleSettings.padding,
-      child: Row(
-        children: [
-          if (singleItem.icon != null && selectSingleSettings.showAvatar)
-            Container(
-              width: selectSingleSettings.avatarMaxWidth,
-              height: selectSingleSettings.avatarMaxHeight,
-              margin: selectSingleSettings.avatarMargin,
-              child: FittedBox(child: singleItem.icon),
-            ),
-          Flexible(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: selectSingleSettings.textPadding,
-                  child: Text(
-                    singleItem.finalLabel,
-                    overflow: selectSingleSettings.textOverflow,
-                    style: _getTextStyle(),
-                  ),
-                ),
-                if (singleItem.extraInfo != null &&
-                    selectSingleSettings.showExtraInfo)
-                  Container(
-                    padding: selectSingleSettings.extraInfoPadding,
-                    child: Text(
-                      // This can't be null anyways.
-                      // ignore: avoid-non-null-assertion
-                      singleItem.extraInfo!,
-                      overflow: selectSingleSettings.extraInfoTextOverflow,
-                      style: _getExtraInfoTextStyle(),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  TextStyle _getExtraInfoTextStyle() {
-    TextStyle textStyle = selectSingleSettings.extraInfoTextStyle;
-    textStyle = textStyle.copyWith(fontFamily: globalSettings.fontFamily);
-
-    if (textStyle.color == null) {
-      textStyle = textStyle.copyWith(color: globalSettings.activeColor);
-    }
-
-    return textStyle;
+    return singleItem.getLabel?.call(singleItem.value) ??
+        Text(
+          singleItem.label,
+          overflow: selectSingleSettings.textOverflow,
+          style: _getTextStyle(),
+        );
   }
 
   TextStyle _getTextStyle() {
     TextStyle textStyle = selectSingleSettings.textStyle;
-    textStyle = textStyle.copyWith(fontFamily: globalSettings.fontFamily);
+    textStyle = textStyle.copyWith(fontFamily: selectStyle.fontFamily);
 
     if (textStyle.color == null) {
-      textStyle = textStyle.copyWith(color: globalSettings.textColor);
+      textStyle = textStyle.copyWith(color: selectStyle.textColor);
     }
 
     return textStyle;

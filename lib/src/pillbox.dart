@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/components/pillbox_content.dart';
-import 'package:select2dot1/src/components/pillbox_title.dart';
+import 'package:select2dot1/src/components/pillbox/pillbox_content.dart';
+import 'package:select2dot1/src/components/pillbox/pillbox_title.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/pillbox_content_multi_settings.dart';
-import 'package:select2dot1/src/settings/pillbox_icon_settings.dart';
-import 'package:select2dot1/src/settings/pillbox_settings.dart';
-import 'package:select2dot1/src/settings/pillbox_title_settings.dart';
-import 'package:select2dot1/src/settings/select_chip_settings.dart';
-import 'package:select2dot1/src/settings/select_empty_info_settings.dart';
-import 'package:select2dot1/src/settings/select_overload_info_settings.dart';
-import 'package:select2dot1/src/settings/select_single_settings.dart';
+import 'package:select2dot1/src/styles/pillbox_content_multi_settings.dart';
+import 'package:select2dot1/src/styles/pillbox_icon_settings.dart';
+import 'package:select2dot1/src/styles/pillbox_settings.dart';
+import 'package:select2dot1/src/styles/pillbox_title_settings.dart';
+import 'package:select2dot1/src/styles/select_chip_settings.dart';
+import 'package:select2dot1/src/styles/select_empty_info_settings.dart';
+import 'package:select2dot1/src/styles/select_overload_info_settings.dart';
+import 'package:select2dot1/src/styles/select_single_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
+import 'package:select2dot1/src/utils/select_mode.dart';
 
 class Pillbox<T> extends StatefulWidget {
+  final SelectMode mode;
   final SelectDataController<T> selectDataController;
   final void Function() onTap;
   final ValueNotifier<bool>? isVisibleOverlay;
@@ -35,10 +37,11 @@ class Pillbox<T> extends StatefulWidget {
   final SelectOverloadInfoSettings selectOverloadInfoSettings;
   final SelectEmptyInfoBuilder? selectEmptyInfoBuilder;
   final SelectEmptyInfoSettings selectEmptyInfoSettings;
-  final GlobalSettings globalSettings;
+  final SelectStyle selectStyle;
 
   const Pillbox.modal({
     super.key,
+    required this.mode,
     required this.selectDataController,
     required this.onTap,
     this.isVisibleOverlay,
@@ -60,7 +63,7 @@ class Pillbox<T> extends StatefulWidget {
     required this.selectOverloadInfoSettings,
     required this.selectEmptyInfoBuilder,
     required this.selectEmptyInfoSettings,
-    required this.globalSettings,
+    required this.selectStyle,
   }) : assert(
           pillboxLayerLink == null,
           'Pillbox.modal: pillboxLayerLink must be null, because it is not used in modal mode.',
@@ -68,6 +71,7 @@ class Pillbox<T> extends StatefulWidget {
 
   const Pillbox.overlay({
     super.key,
+    required this.mode,
     required this.selectDataController,
     required this.onTap,
     required this.isVisibleOverlay,
@@ -89,7 +93,7 @@ class Pillbox<T> extends StatefulWidget {
     required this.selectOverloadInfoSettings,
     required this.selectEmptyInfoBuilder,
     required this.selectEmptyInfoSettings,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 
   @override
@@ -126,7 +130,7 @@ class _PillboxState<T> extends State<Pillbox<T>> {
           hover: hover,
           pillboxTitle: _pillboxTitle,
           pillboxContent: _pillboxContent,
-          globalSettings: widget.globalSettings,
+          selectStyle: widget.selectStyle,
         ),
       );
     }
@@ -153,9 +157,10 @@ class _PillboxState<T> extends State<Pillbox<T>> {
               hover: hover,
               pillboxTitleBuilder: widget.pillboxTitleBuilder,
               pillboxTitleSettings: widget.pillboxTitleSettings,
-              globalSettings: widget.globalSettings,
+              selectStyle: widget.selectStyle,
             ),
             PillboxContent(
+              mode: widget.mode,
               selectDataController: widget.selectDataController,
               hover: hover,
               isVisibleOvarlay: widget.isVisibleOverlay,
@@ -174,7 +179,7 @@ class _PillboxState<T> extends State<Pillbox<T>> {
               selectOverloadInfoSettings: widget.selectOverloadInfoSettings,
               selectEmptyInfoBuilder: widget.selectEmptyInfoBuilder,
               selectEmptyInfoSettings: widget.selectEmptyInfoSettings,
-              globalSettings: widget.globalSettings,
+              selectStyle: widget.selectStyle,
             ),
           ],
         ),
@@ -195,10 +200,11 @@ class _PillboxState<T> extends State<Pillbox<T>> {
         hover: hover,
         pillboxTitleBuilder: widget.pillboxTitleBuilder,
         pillboxTitleSettings: widget.pillboxTitleSettings,
-        globalSettings: widget.globalSettings,
+        selectStyle: widget.selectStyle,
       );
 
   Widget _pillboxContent() => PillboxContent(
+        mode: widget.mode,
         selectDataController: widget.selectDataController,
         hover: hover,
         isVisibleOvarlay: widget.isVisibleOverlay,
@@ -217,6 +223,6 @@ class _PillboxState<T> extends State<Pillbox<T>> {
         selectOverloadInfoSettings: widget.selectOverloadInfoSettings,
         selectEmptyInfoBuilder: widget.selectEmptyInfoBuilder,
         selectEmptyInfoSettings: widget.selectEmptyInfoSettings,
-        globalSettings: widget.globalSettings,
+        selectStyle: widget.selectStyle,
       );
 }

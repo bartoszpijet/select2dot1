@@ -9,19 +9,6 @@ abstract class SelectableInterface<T> extends ItemInterface<T> {
   /// Default true.
   final bool enabled;
 
-  /// Function that get Label for this item.
-  /// Only one of label or getLabel may be not null.
-  /// Either of label or getLabel is required.
-  final String Function(T? value)? getLabel;
-
-  /// Data with which this item may be found in search except it's label and/or value.
-  final Set<String> metadataSearch;
-
-  final double score;
-
-  @override
-  String get finalLabel => label ?? getLabel?.call(value) ?? 'NULL';
-
   /// Creating an argument constructor of [SelectableInterface] class.
   const SelectableInterface({
     required this.value,
@@ -30,35 +17,29 @@ abstract class SelectableInterface<T> extends ItemInterface<T> {
     /// Only one of label or getLabel may be not null.
     /// Either of label or getLabel is required.
     super.label,
-    this.getLabel,
+    super.getLabel,
     this.enabled = true,
-    super.extraInfo,
-    super.icon,
-    this.metadataSearch = const {},
-  }) : score = 0;
+    super.metadataSearch = const {},
+  });
 
   const SelectableInterface.withScore({
     required this.value,
     super.label,
-    this.getLabel,
+    super.getLabel,
     this.enabled = true,
-    super.extraInfo,
-    super.icon,
-    this.metadataSearch = const {},
-    this.score = 0,
-  });
-
-  SelectableInterface<T> copyWithScore(double score);
+    super.metadataSearch = const {},
+    double score = 0,
+  }) : super.withScore(score: score);
 
   @override
-  int get hashCode => finalLabel.hashCode ^ value.hashCode;
+  int get hashCode => label.hashCode ^ value.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is SelectableInterface &&
           runtimeType == other.runtimeType &&
-          finalLabel == other.finalLabel &&
-          extraInfo == other.extraInfo &&
-          value == other.value;
+          label == other.label &&
+          value == other.value &&
+          enabled == other.enabled;
 }

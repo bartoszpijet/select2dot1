@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/select_empty_info_settings.dart';
+import 'package:select2dot1/src/styles/select_empty_info_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class SelectEmptyInfo extends StatelessWidget {
   final SelectEmptyInfoBuilder? selectEmptyInfoBuilder;
   final SelectEmptyInfoSettings selectEmptyInfoSettings;
-  final GlobalSettings globalSettings;
+  final SelectStyle selectStyle;
 
   const SelectEmptyInfo({
     super.key,
     required this.selectEmptyInfoBuilder,
     required this.selectEmptyInfoSettings,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 
   @override
@@ -23,7 +23,7 @@ class SelectEmptyInfo extends StatelessWidget {
       return selectEmptyInfoBuilder!(
         context,
         SelectEmptyInfoDetails(
-          globalSettings: globalSettings,
+          selectStyle: selectStyle,
         ),
       );
     }
@@ -39,10 +39,10 @@ class SelectEmptyInfo extends StatelessWidget {
 
   TextStyle _getTextStyle() {
     TextStyle textStyle = selectEmptyInfoSettings.textStyle;
-    textStyle = textStyle.copyWith(fontFamily: globalSettings.fontFamily);
+    textStyle = textStyle.copyWith(fontFamily: selectStyle.fontFamily);
 
     if (textStyle.color == null) {
-      textStyle = textStyle.copyWith(color: globalSettings.inActiveColor);
+      textStyle = textStyle.copyWith(color: selectStyle.inActiveColor);
     }
 
     return textStyle;

@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/overlay/search_bar_overlay_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class SearchBarOverlay<T> extends StatefulWidget {
@@ -12,8 +11,7 @@ class SearchBarOverlay<T> extends StatefulWidget {
   final SearchControllerSelect2dot1<T> searchController;
   final bool isSearchable;
   final SearchBarOverlayBuilder<T>? searchBarOverlayBuilder;
-  final SearchBarOverlaySettings searchBarOverlaySettings;
-  final GlobalSettings globalSettings;
+  final SelectStyle selectStyle;
 
   const SearchBarOverlay({
     super.key,
@@ -21,8 +19,7 @@ class SearchBarOverlay<T> extends StatefulWidget {
     required this.searchController,
     required this.isSearchable,
     required this.searchBarOverlayBuilder,
-    required this.searchBarOverlaySettings,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 
   @override
@@ -37,8 +34,10 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
   @override
   void initState() {
     super.initState();
-    isFocus = widget.searchBarOverlaySettings.textFieldAutofocus;
-    if (widget.searchBarOverlaySettings.textFieldAutofocus) {
+    isFocus = widget
+        .selectStyle.overlayStyle.searchBarOverlaySettings.textFieldAutofocus;
+    if (widget
+        .selectStyle.overlayStyle.searchBarOverlaySettings.textFieldAutofocus) {
       searchBarFocusNode.requestFocus();
     }
     searchBarFocusNode.addListener(_focusOverlayController);
@@ -67,7 +66,7 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
           searchBarController: searchBarController,
           searchBarFocusNode: searchBarFocusNode,
           isFocus: isFocus,
-          globalSettings: widget.globalSettings,
+          selectStyle: widget.selectStyle,
         ),
       );
     }
@@ -85,7 +84,8 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
         maintainSize: true,
         maintainState: true,
         child: Container(
-          margin: widget.searchBarOverlaySettings.margin,
+          margin:
+              widget.selectStyle.overlayStyle.searchBarOverlaySettings.margin,
           decoration: _getDecoration(),
           child: RawKeyboardListener(
             focusNode: FocusNode(),
@@ -101,10 +101,11 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
                 child: TextField(
                   focusNode: searchBarFocusNode,
                   controller: searchBarController,
-                  cursorColor:
-                      widget.searchBarOverlaySettings.textFieldCursorColor ??
-                          widget.globalSettings.mainColor,
-                  autofocus: widget.searchBarOverlaySettings.textFieldAutofocus,
+                  cursorColor: widget.selectStyle.overlayStyle
+                          .searchBarOverlaySettings.textFieldCursorColor ??
+                      widget.selectStyle.mainColor,
+                  autofocus: widget.selectStyle.overlayStyle
+                      .searchBarOverlaySettings.textFieldAutofocus,
                   enabled: widget.isSearchable,
                   decoration: _getTextFieldDecoration(),
                   style: _getTextFieldStyle(),
@@ -119,12 +120,14 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
 
   InputDecoration _getTextFieldDecoration() {
     InputDecoration inputDecoration = isFocus
-        ? widget.searchBarOverlaySettings.textFieldDecorationFocus
-        : widget.searchBarOverlaySettings.textFieldDecorationNoFocus;
+        ? widget.selectStyle.overlayStyle.searchBarOverlaySettings
+            .textFieldDecorationFocus
+        : widget.selectStyle.overlayStyle.searchBarOverlaySettings
+            .textFieldDecorationNoFocus;
 
     if (inputDecoration.focusColor == null) {
       inputDecoration = inputDecoration.copyWith(
-        focusColor: widget.globalSettings.mainColor,
+        focusColor: widget.selectStyle.mainColor,
       );
     }
 
@@ -132,7 +135,7 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
       inputDecoration = inputDecoration.copyWith(
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: widget.globalSettings.mainColor,
+            color: widget.selectStyle.mainColor,
             // Its specyfic parameters.
             // ignore: no-magic-number
             width: 2,
@@ -143,17 +146,17 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
 
     if (inputDecoration.suffixIcon == null) {
       Color suffixIconColor = isFocus
-          ? widget.globalSettings.mainColor
-          : widget.globalSettings.inActiveColor;
+          ? widget.selectStyle.mainColor
+          : widget.selectStyle.inActiveColor;
       inputDecoration = inputDecoration.copyWith(
-        suffixIcon:
-            widget.searchBarOverlaySettings.textFieldDecorationSuffixIcon
-                ? IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: searchBarController.clear,
-                    color: suffixIconColor,
-                  )
-                : null,
+        suffixIcon: widget.selectStyle.overlayStyle.searchBarOverlaySettings
+                .textFieldDecorationSuffixIcon
+            ? IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: searchBarController.clear,
+                color: suffixIconColor,
+              )
+            : null,
       );
     }
 
@@ -164,7 +167,7 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
           // ignore: no-magic-number
           fontSize: 16,
           fontWeight: FontWeight.w100,
-          color: widget.globalSettings.inActiveColor,
+          color: widget.selectStyle.inActiveColor,
         ),
       );
     }
@@ -173,17 +176,18 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
   }
 
   TextStyle _getTextFieldStyle() {
-    TextStyle textFieldStyle = widget.searchBarOverlaySettings.textFieldStyle;
+    TextStyle textFieldStyle =
+        widget.selectStyle.overlayStyle.searchBarOverlaySettings.textFieldStyle;
 
     if (textFieldStyle.fontFamily == null) {
       textFieldStyle = textFieldStyle.copyWith(
-        fontFamily: widget.globalSettings.fontFamily,
+        fontFamily: widget.selectStyle.fontFamily,
       );
     }
 
     if (textFieldStyle.color == null) {
       textFieldStyle = textFieldStyle.copyWith(
-        color: widget.globalSettings.textColor,
+        color: widget.selectStyle.textColor,
       );
     }
 
@@ -192,12 +196,14 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
 
   BoxDecoration _getDecoration() {
     BoxDecoration decoration = isFocus
-        ? widget.searchBarOverlaySettings.boxDecorationFocus
-        : widget.searchBarOverlaySettings.boxDecorationNoFocus;
+        ? widget.selectStyle.overlayStyle.searchBarOverlaySettings
+            .boxDecorationFocus
+        : widget.selectStyle.overlayStyle.searchBarOverlaySettings
+            .boxDecorationNoFocus;
 
     if (decoration.color == null) {
       decoration = decoration.copyWith(
-        color: widget.globalSettings.backgroundColor,
+        color: widget.selectStyle.backgroundColor,
       );
     }
 
@@ -206,7 +212,7 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
         boxShadow: isFocus
             ? [
                 BoxShadow(
-                  color: widget.globalSettings.mainColor,
+                  color: widget.selectStyle.mainColor,
                   spreadRadius: 1.0,
                   // Its specyfic parameters.
                   // ignore: no-magic-number

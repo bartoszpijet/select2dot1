@@ -7,8 +7,6 @@ class SelectableItem<T> extends SelectableInterface<T> {
     required super.value,
     super.label,
     super.getLabel,
-    super.extraInfo,
-    super.icon,
     super.enabled,
     super.metadataSearch,
   });
@@ -18,8 +16,6 @@ class SelectableItem<T> extends SelectableInterface<T> {
           value: item.value,
           getLabel: item.getLabel,
           label: item.label,
-          extraInfo: item.extraInfo,
-          icon: item.icon,
           enabled: item.enabled,
           metadataSearch: item.metadataSearch,
           score: score,

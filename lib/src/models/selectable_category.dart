@@ -10,14 +10,17 @@ class SelectableCategory<T> extends SelectableInterface<T>
   @override
   final Iterable<ItemInterface<T>> childrens;
 
+  /// If true and select is multiuselect this Item will be clickable. After click all children will be added to selected list.
+  @override
+  final bool addAllChildren;
+
   /// Creating an argument constructor of [SelectableCategory] class.
   const SelectableCategory({
     required super.value,
     super.getLabel,
-    super.label = null,
+    super.label,
     required this.childrens,
-    super.extraInfo,
-    super.icon,
+    this.addAllChildren = false,
     super.enabled,
     super.metadataSearch,
   });
@@ -25,26 +28,26 @@ class SelectableCategory<T> extends SelectableInterface<T>
   SelectableCategory._score(
     SelectableCategory<T> item,
     double score, [
-    Iterable<SelectableInterface<T>>? childrens,
+    Iterable<ItemInterface<T>>? childrens,
   ])  : childrens = childrens ?? item.childrens,
+        addAllChildren = item.addAllChildren,
         super.withScore(
           value: item.value,
           getLabel: item.getLabel,
           label: item.label,
-          extraInfo: item.extraInfo,
-          icon: item.icon,
           enabled: item.enabled,
           metadataSearch: item.metadataSearch,
           score: score,
         );
 
   @override
-  SelectableInterface<T> copyWithScore(double score) =>
+  ItemInterface<T> copyWithScore(double score) =>
       SelectableCategory._score(this, score);
 
-  SelectableInterface<T> copyWithScoreAndList(
+  @override
+  ItemInterface<T> copyWithScoreAndList(
     double score,
-    Iterable<SelectableInterface<T>> childrens,
+    Iterable<ItemInterface<T>> childrens,
   ) =>
       SelectableCategory._score(this, score, childrens);
 
@@ -56,6 +59,5 @@ class SelectableCategory<T> extends SelectableInterface<T>
       identical(this, other) ||
       (other is SelectableCategory &&
           value == other.value &&
-          childrens == other.childrens &&
-          finalLabel == other.finalLabel);
+          label == other.label);
 }

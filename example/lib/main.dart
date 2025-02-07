@@ -29,12 +29,7 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
       childrens: <SelectableItem<String>>[
         SelectableItem<String>(
           label: 'Alabama',
-          extraInfo: '1395 Lincoln Street',
           value: 'Alabama',
-          icon: CircleAvatar(
-            backgroundColor: Colors.orange,
-            child: Text('AL', style: TextStyle(color: Colors.white)),
-          ),
         ),
         SelectableItem(label: 'Arkansas', value: 'Arkansas'),
         SelectableItem(label: 'Illonois', value: 'Illonois'),
@@ -79,7 +74,9 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
                     selectDataController: SelectDataController(
                       data: exampleData,
                     ),
-                    scrollController: scrollController,
+                    dropdownListData: DropdownListData(
+                      scrollController: scrollController,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 250),
@@ -100,10 +97,12 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
                     data: exampleData,
                     isMultiSelect: false,
                     initSelected: const [
-                      SelectableItem(label: 'Arkansas', value: 'Arkansas')
+                      SelectableItem(label: 'Arkansas', value: 'Arkansas'),
                     ],
                   ),
-                  scrollController: scrollController,
+                  dropdownListData: DropdownListData(
+                    scrollController: scrollController,
+                  ),
                 ),
                 const SizedBox(height: 250),
                 Select2dot1<String>(
@@ -115,21 +114,28 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
                       SelectableItem(label: 'Alabama', value: 'Alabama'),
                     ],
                   ),
-                  pillboxContentMultiSettings:
-                      const PillboxContentMultiSettings(pillboxOverload: 5),
-                  selectSingleSettings:
-                      const SelectSingleSettings(showExtraInfo: false),
-                  modalItemSettings: const ModalItemSettings(
-                    showExtraInfo: false,
+                  // item: const ModalItemSettings(
+                  //   showExtraInfo: false,
+                  // ),
+
+                  dropdownListData: DropdownListData(
+                    scrollController: scrollController,
                   ),
-                  overlayItemSettings: const OverlayItemSettings(
-                    showExtraInfo: false,
+                  selectStyle: const SelectStyle(
+                    selectSingleSettings:
+                        SelectSingleSettings(showExtraInfo: false),
+                    pillboxStyle: PillboxStyle(
+                      pillboxContentMultiSettings: PillboxContentMultiSettings(
+                        pillboxOverload: 5,
+                      ),
+                      pillboxTitleSettings:
+                          PillboxTitleSettings(title: 'Example 7'),
+                    ),
+                    modalStyle: ModalStyle(
+                      titleModalSettings:
+                          TitleModalSettings(title: 'Example 7'),
+                    ),
                   ),
-                  scrollController: scrollController,
-                  pillboxTitleSettings:
-                      const PillboxTitleSettings(title: 'Example 7'),
-                  titleModalSettings:
-                      const TitleModalSettings(title: 'Example 7'),
                 ),
                 const SizedBox(height: 250),
               ],

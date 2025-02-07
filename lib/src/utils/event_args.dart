@@ -5,9 +5,9 @@ import 'package:select2dot1/src/controllers/select_data_controller.dart';
 import 'package:select2dot1/src/models/category_item.dart';
 import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_category.dart';
-import 'package:select2dot1/src/models/selectable_item.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
+import 'package:select2dot1/src/models/selectable_item.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 
 /// This is a function that will be used to build your own title of the pillbox.
 typedef PillboxTitleBuilder = Widget Function(
@@ -32,8 +32,8 @@ class PillboxTitleDetails {
   /// This is emmbedded function services change the focus of the pillbox.
   final void Function() onFocusChange;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [PillboxTitleDetails] class.
   /// Remember: You don't need use all of the parameters.
@@ -42,7 +42,7 @@ class PillboxTitleDetails {
     required this.hover,
     required this.isFocus,
     required this.onFocusChange,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -78,8 +78,8 @@ class PillboxDetails<T> {
   /// This is a function returning a [Widget] of the content of the pillbox.
   final Widget Function() pillboxContent;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [PillboxDetails] class.
   /// Remember: You don't need use all of the parameters.
@@ -91,7 +91,7 @@ class PillboxDetails<T> {
     required this.hover,
     required this.pillboxTitle,
     required this.pillboxContent,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -133,8 +133,8 @@ class PillboxContentMultiDetails<T> {
   /// This is a function returning a [Widget] of the icon of the pillbox.
   final Widget Function() pillboxIcon;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [PillboxContentMultiDetails] class.
   /// Remember: You don't need use all of the parameters.
@@ -148,7 +148,7 @@ class PillboxContentMultiDetails<T> {
     required this.selectEmptyInfo,
     required this.selectOverloadInfo,
     required this.pillboxIcon,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -187,8 +187,8 @@ class PillboxContentSingleDetails<T> {
   /// This is a function returning a [Widget] of the icon of the pillbox.
   final Widget Function() pillboxIcon;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [PillboxContentSingleDetails] class.
   /// Remember: You don't need use all of the parameters.
@@ -201,7 +201,7 @@ class PillboxContentSingleDetails<T> {
     required this.selectSingle,
     required this.selectEmptyInfo,
     required this.pillboxIcon,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -228,8 +228,8 @@ class PillboxIconDetails {
   /// This is embedded function services change the focus of the pillbox.
   final void Function() onFocusChange;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [PillboxIconDetails] class.
   /// Remember: You don't need use all of the parameters.
@@ -238,7 +238,7 @@ class PillboxIconDetails {
     required this.hover,
     required this.isFocus,
     required this.onFocusChange,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -259,15 +259,15 @@ class SelectChipDetails<T> {
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [SelectChipDetails] class.
   /// Remember: You don't need use all of the parameters.
   const SelectChipDetails({
     required this.singleItem,
     required this.selectDataController,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -288,15 +288,15 @@ class SelectSingleDetails<T> {
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [SelectSingleDetails] class.
   /// Remember: You don't need use all of the parameters.
   const SelectSingleDetails({
     required this.singleItem,
     required this.selectDataController,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -311,13 +311,13 @@ typedef SelectEmptyInfoBuilder = Widget Function(
 
 /// This is a class which contains necessary details to build your own empty info of the pillbox.
 class SelectEmptyInfoDetails {
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [SelectEmptyInfoDetails] class.
   /// Remember: You don't need use all of the parameters.
   const SelectEmptyInfoDetails({
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -335,14 +335,14 @@ class SelectOverloadInfoDetails {
   /// This is a int representing the number of selected items.
   int countSelected;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [SelectOverloadInfoDetails] class.
   /// Remember: You don't need use all of the parameters.
   SelectOverloadInfoDetails({
     required this.countSelected,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -361,7 +361,7 @@ class DropdownContentOverlayDetails<T> {
   final SelectDataController<T> selectDataController;
 
   /// This is embedded function services hide the overlay of the pillbox.
-  final void Function() overlayHide;
+  final void Function(BuildContext context) closeSelect;
 
   /// This is a [LayerLink] that will be used to link the dropdown to the pillbox.
   final LayerLink layerLink;
@@ -381,21 +381,21 @@ class DropdownContentOverlayDetails<T> {
   /// This is a function returning a [Widget] of the list data view.
   final Widget Function() listDataViewOverlay;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [DropdownContentOverlayDetails] class.
   /// Remember: You don't need use all of the parameters.
   const DropdownContentOverlayDetails({
     required this.selectDataController,
-    required this.overlayHide,
+    required this.closeSelect,
     required this.layerLink,
     required this.scrollController,
     required this.appBarMaxHeight,
     required this.searchController,
     required this.searchBarOverlay,
     required this.listDataViewOverlay,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -422,8 +422,8 @@ class SearchBarOverlayDetails<T> {
   /// This is a boolean representing the focus of the search bar.
   bool isFocus;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [SearchBarOverlayDetails] class.
   /// Remember: You don't need use all of the parameters.
@@ -432,42 +432,21 @@ class SearchBarOverlayDetails<T> {
     required this.searchBarFocusNode,
     required this.searchBarController,
     required this.isFocus,
-    required this.globalSettings,
-  });
-}
-
-/// This is a function that will be used to build your own search empty info.
-typedef SearchEmptyInfoOverlayBuilder = Widget Function(
-  /// [context] is a [BuildContext] that will be used to build your own search empty info.
-  BuildContext context,
-
-  /// [searchEmptyInfoOverlayDetails] is a [SearchEmptyInfoOverlayDetails] that will be used to build your own search empty info.
-  SearchEmptyInfoOverlayDetails searchEmptyInfoOverlayDetails,
-);
-
-/// This is a class which contains necessary details to build your own search empty info.
-class SearchEmptyInfoOverlayDetails {
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
-
-  /// Creating an argument constructor of [SearchEmptyInfoOverlayDetails] class.
-  /// Remember: You don't need use all of the parameters.
-  const SearchEmptyInfoOverlayDetails({
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
 /// This is a function that will be used to build your own list data view.
-typedef ListDataViewOverlayBuilder<T> = Widget Function(
+typedef ItemListBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own list data view.
   BuildContext context,
 
-  /// [listDataViewOverlayDetails] is a [ListDataViewOverlayDetails] that will be used to build your own list data view.
-  ListDataViewOverlayDetails<T> listDataViewOverlayDetails,
+  /// [itemListDetails] is a [ItemListDetails] that will be used to build your own list data view.
+  ItemListDetails<T> itemListDetails,
 );
 
 /// This is a class which contains necessary details to build your own list data view.
-class ListDataViewOverlayDetails<T> {
+class ItemListDetails<T> {
   /// This is a [ScrollController] that will be used to control the scroll in list data view.
   final SearchControllerSelect2dot1<T> searchController;
 
@@ -475,7 +454,7 @@ class ListDataViewOverlayDetails<T> {
   final SelectDataController<T> selectDataController;
 
   /// This is emmbeded function services hide overlay.
-  final void Function() overlayHide;
+  final void Function(BuildContext) closeSelect;
 
   /// This is a function returning a [Widget] of the categoryNameOverlay.
   final Widget Function(SelectableCategory<T> singleCategory)
@@ -490,102 +469,122 @@ class ListDataViewOverlayDetails<T> {
   /// This is a function returning a [Widget] of the loading data modal.
   final Widget Function() loadingDataOverlay;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
-  /// Creating an argument constructor of [ListDataViewOverlayDetails] class.
+  /// Creating an argument constructor of [ItemListBuilderDetails] class.
   /// Remember: You don't need use all of the parameters.
-  const ListDataViewOverlayDetails({
+  const ItemListDetails({
     required this.searchController,
     required this.selectDataController,
-    required this.overlayHide,
+    required this.closeSelect,
     required this.categoryNameOverlay,
     required this.categoryItemOverlay,
     required this.searchEmptyInfoOverlay,
     required this.loadingDataOverlay,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
+/// This is a function that will be used to build custom labl from [getLabel].
+typedef LabelBuilder<T> = Widget Function(T? value);
+
 /// This is a function that will be used to build your own category name.
-typedef CategoryItemOverlayBuilder<T> = Widget Function(
+typedef ItemWidgetBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own category name.
   BuildContext context,
 
-  /// [categoryItemOverlayDetails] is a [CategoryItemOverlayDetails] that will be used to build your own category name.
-  CategoryItemOverlayDetails<T> categoryItemOverlayDetails,
+  /// [categoryItemDetails] is a [ItemWidgetBuilder] that will be used to build your own category name.
+  ItemWidgetDetails<T> categoryItemDetails,
 );
 
 /// This is a class which contains necessary details to build your own category item.
-class CategoryItemOverlayDetails<T> {
+class ItemWidgetDetails<T> {
   /// This is a [SelectableInterface<T>] that will be used to build the category item.
-  final ItemInterface<T> singleItem;
+  final ItemInterface<T> item;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
 
   /// This is emmbeded function services hide overlay.
-  final void Function() overlayHide;
-
-  /// This is a boolean representing the hover state of the category item.
-  bool hover;
+  final void Function(BuildContext context) closeSelect;
 
   /// This is a boolean representing the selected state of the category item.
-  bool isSelected;
+  WidgetStatesController statesController;
 
   /// This is emmbeded function services tap on SingleItemCategory.
-  final void Function() onTapSingleItemCategory;
+  final void Function()? onTapItem;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
-  /// Creating an argument constructor of [CategoryItemOverlayDetails] class.
+  /// Creating an argument constructor of [ItemWidgetDetails] class.
   /// Remember: You don't need use all of the parameters.
-  CategoryItemOverlayDetails({
-    required this.singleItem,
+  ItemWidgetDetails({
+    required this.item,
     required this.selectDataController,
-    required this.overlayHide,
-    required this.hover,
-    required this.isSelected,
-    required this.onTapSingleItemCategory,
-    required this.globalSettings,
+    required this.closeSelect,
+    required this.statesController,
+    required this.onTapItem,
+    required this.selectStyle,
   });
 }
 
 /// This is a function that will be used to build your own category name.
-typedef CategoryNameOverlayBuilder<T> = Widget Function(
+typedef CategoryWidgetBuilder<T> = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own category name.
   BuildContext context,
 
-  /// [categoryNameOverlayDetails] is a [CategoryNameOverlayDetails] that will be used to build your own category name.
-  CategoryNameOverlayDetails<T> categoryNameOverlayDetails,
+  /// [categoryWidgetDetails] is a [CategoryWidgetDetails] that will be used to build your own category name.
+  CategoryWidgetDetails<T> categoryWidgetDetails,
 );
 
 /// This is a class which contains necessary details to build your own category name.
-class CategoryNameOverlayDetails<T> {
+class CategoryWidgetDetails<T> {
   /// This is a [SelectableCategory] that will be used to build the category name.
-  final CategoryItem<T> singleCategory;
+  final CategoryItem<T> category;
 
   /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
   final SelectDataController<T> selectDataController;
 
   /// This is a boolean representing the hover state of the category.
-  bool hover;
+  WidgetStatesController statesController;
 
   /// This is emmbeded function services tap on category name.
-  final void Function() onTapCategory;
+  final void Function()? onTapCategory;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
-  /// Creating an argument constructor of [CategoryNameOverlayDetails] class.
+  /// Creating an argument constructor of [CategoryWidgetDetails] class.
   /// Remember: You don't need use all of the parameters.
-  CategoryNameOverlayDetails({
-    required this.singleCategory,
+  CategoryWidgetDetails({
+    required this.category,
     required this.selectDataController,
-    required this.hover,
+    required this.statesController,
     required this.onTapCategory,
-    required this.globalSettings,
+    required this.selectStyle,
+  });
+}
+
+/// This is a function that will be used to build your own search empty info modal.
+typedef SearchEmptyInfoBuilder = Widget Function(
+  /// [context] is a [BuildContext] that will be used to build your own search empty info modal.
+  BuildContext context,
+
+  /// [searchEmptyInfoDetails] is a [SearchEmptyInfoDetails] that will be used to build your own search empty info modal.
+  SearchEmptyInfoDetails searchEmptyInfoDetails,
+);
+
+/// This is a class which contains necessary details to build your own search empty info modal.
+class SearchEmptyInfoDetails {
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
+
+  /// Creating an argument constructor of [SearchEmptyInfoDetails] class.
+  /// Remember: You don't need use all of the parameters.
+  const SearchEmptyInfoDetails({
+    required this.selectStyle,
   });
 }
 
@@ -621,8 +620,8 @@ class DropdownContentModalDetails<T> {
   /// This is a function returning a [Widget] of the list data view.
   final Widget Function() listDataViewModal;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [DropdownContentModalDetails] class.
   /// Remember: You don't need use all of the parameters.
@@ -634,7 +633,7 @@ class DropdownContentModalDetails<T> {
     required this.doneButtonModal,
     required this.searchBarModal,
     required this.listDataViewModal,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -652,14 +651,14 @@ class DoneButtonModalDetails {
   /// This is emmbeded function services hide the modal.
   final void Function() hideModal;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [DoneButtonModalDetails] class.
   /// Remember: You don't need use all of the parameters.
   const DoneButtonModalDetails({
     required this.hideModal,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -674,13 +673,13 @@ typedef TitleModalBuilder = Widget Function(
 
 /// This is a class which contains necessary details to build your own title modal.
 class TittleModalDetails {
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [TittleModalDetails] class.
   /// Remember: You don't need use all of the parameters.
   const TittleModalDetails({
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
@@ -713,8 +712,8 @@ class SearchBarModalDetails<T> {
   /// This is emmbeded function services when the [SearchControllerSelect2dot1] is changed.
   final void Function() onChangedSearchBarController;
 
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
   /// Creating an argument constructor of [SearchBarModalDetails] class.
   /// Remember: You don't need use all of the parameters.
@@ -725,184 +724,25 @@ class SearchBarModalDetails<T> {
     required this.isFocus,
     required this.focusModalController,
     required this.onChangedSearchBarController,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 }
 
-/// This is a function that will be used to build your own search empty info modal.
-typedef SearchEmptyInfoModalBuilder = Widget Function(
-  /// [context] is a [BuildContext] that will be used to build your own search empty info modal.
-  BuildContext context,
-
-  /// [searchEmptyInfoModalDetails] is a [SearchEmptyInfoModalDetails] that will be used to build your own search empty info modal.
-  SearchEmptyInfoModalDetails searchEmptyInfoModalDetails,
-);
-
-/// This is a class which contains necessary details to build your own search empty info modal.
-class SearchEmptyInfoModalDetails {
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
-
-  /// Creating an argument constructor of [SearchEmptyInfoModalDetails] class.
-  /// Remember: You don't need use all of the parameters.
-  const SearchEmptyInfoModalDetails({
-    required this.globalSettings,
-  });
-}
-
-/// This is a function that will be used to build your own list data view modal.
-typedef ListDataViewModalBuilder<T> = Widget Function(
-  /// [context] is a [BuildContext] that will be used to build your own list data view modal.
-  BuildContext context,
-
-  /// [listDataViewModalDetails] is a [ListDataViewModalDetails] that will be used to build your own list data view modal.
-  ListDataViewModalDetails<T> listDataViewModalDetails,
-);
-
-/// This is a class which contains necessary details to build your own list data view modal.
-class ListDataViewModalDetails<T> {
-  /// This is a [ScrollController] that will be used to control the scroll in the list data view modal.
-  final ScrollController scrollController;
-
-  /// This is a [SearchControllerSelect2dot1] that will be used to control the search.
-  final SearchControllerSelect2dot1<T> searchController;
-
-  /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController<T> selectDataController;
-
-  /// This is a function returning a [Widget] of the ModalCategoryWidget.
-  final Widget Function(SelectableCategory<T> singleCategory) categoryNameModal;
-
-  /// This is a function returning a [Widget] of the ModalItemWidget.
-  final Widget Function(SelectableItem<T> singleItem) categoryItemModal;
-
-  /// This is a function returning a [Widget] of the search empty info modal.
-  final Widget Function() searchEmptyInfoModal;
-
-  /// This is a function returning a [Widget] of the loading data modal.
-  final Widget Function() loadingDataModal;
-
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
-
-  /// Creating an argument constructor of [ListDataViewModalDetails] class.
-  /// Remember: You don't need use all of the parameters.
-  const ListDataViewModalDetails({
-    required this.scrollController,
-    required this.searchController,
-    required this.selectDataController,
-    required this.categoryNameModal,
-    required this.categoryItemModal,
-    required this.searchEmptyInfoModal,
-    required this.loadingDataModal,
-    required this.globalSettings,
-  });
-}
-
-/// This is a function that will be used to build your own category name modal.
-typedef CategoryNameModalBuilder<T> = Widget Function(
-  /// [context] is a [BuildContext] that will be used to build your own category name modal.
-  BuildContext context,
-
-  /// [categoryNameModalDetails] is a [CategoryNameModalDetails] that will be used to build your own category name modal.
-  CategoryNameModalDetails<T> categoryNameModalDetails,
-);
-
-/// This is a class which contains necessary details to build your own category name modal.
-class CategoryNameModalDetails<T> {
-  /// This is a [CategoryItem<T>] that will be used to build the category name modal.
-  final CategoryItem<T> singleCategory;
-
-  /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController<T> selectDataController;
-
-  /// This is a emmbeded function service tap on CategoryName.
-  final void Function() onTapCategory;
-
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
-
-  /// Creating an argument constructor of [CategoryNameModalDetails] class.
-  /// Remember: You don't need use all of the parameters.
-  const CategoryNameModalDetails({
-    required this.singleCategory,
-    required this.selectDataController,
-    required this.onTapCategory,
-    required this.globalSettings,
-  });
-}
-
-/// This is a function that will be used to build your own category item modal.
-typedef CategoryItemModalBuilder<T> = Widget Function(
+typedef LoaderBuilder = Widget Function(
   /// [context] is a [BuildContext] that will be used to build your own category item modal.
   BuildContext context,
 
-  /// [categoryItemModalDetails] is a [CategoryItemModalDetails] that will be used to build your own category item modal.
-  CategoryItemModalDetails<T> categoryItemModalDetails,
+  /// [LoadingDataDetails] is a [LoadingDataDetails] that will be used to build your own category item modal.
+  LoaderDetails loadingDataDetails,
 );
 
-/// This is a class which contains necessary details to build your own category item modal.
-class CategoryItemModalDetails<T> {
-  /// This is a [SelectableItem] that will be used to build the category item modal.
-  final ItemInterface<T> singleItem;
+class LoaderDetails {
+  /// This is a [SelectStyle] that will be used to get the global settings.
+  final SelectStyle selectStyle;
 
-  /// This is a [SelectDataController] that will be used to control the selection of the category item and get data from it.
-  final SelectDataController<T> selectDataController;
-
-  /// This is a boolean representing whether the category item is selected or not.
-  bool isSelected;
-
-  /// This is a emmbeded function service tap on SignleItemCategory.
-  final void Function() onTapSingleItemCategory;
-
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
-
-  /// Creating an argument constructor of [CategoryItemModalDetails] class.
+  /// Creating an argument constructor of [LoaderDetails] class.
   /// Remember: You don't need use all of the parameters.
-  CategoryItemModalDetails({
-    required this.singleItem,
-    required this.selectDataController,
-    required this.isSelected,
-    required this.onTapSingleItemCategory,
-    required this.globalSettings,
-  });
-}
-
-typedef LoadingDataOverlayBuilder = Widget Function(
-  /// [context] is a [BuildContext] that will be used to build your own category item modal.
-  BuildContext context,
-
-  /// [loadingDataOverlayDetails] is a [LoadingDataOverlayDetails] that will be used to build your own category item modal.
-  LoadingDataOverlayDetails loadingDataOverlayDetails,
-);
-
-class LoadingDataOverlayDetails {
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
-
-  /// Creating an argument constructor of [LoadingDataOverlayDetails] class.
-  /// Remember: You don't need use all of the parameters.
-  const LoadingDataOverlayDetails({
-    required this.globalSettings,
-  });
-}
-
-typedef LoadingDataModalBuilder = Widget Function(
-  /// [context] is a [BuildContext] that will be used to build your own category item modal.
-  BuildContext context,
-
-  /// [loadingDataModalDetails] is a [LoadingDataModalDetails] that will be used to build your own category item modal.
-  LoadingDataModalDetails loadingDataModalDetails,
-);
-
-class LoadingDataModalDetails {
-  /// This is a [GlobalSettings] that will be used to get the global settings.
-  final GlobalSettings globalSettings;
-
-  /// Creating an argument constructor of [LoadingDataOverlayDetails] class.
-  /// Remember: You don't need use all of the parameters.
-  const LoadingDataModalDetails({
-    required this.globalSettings,
+  const LoaderDetails({
+    required this.selectStyle,
   });
 }

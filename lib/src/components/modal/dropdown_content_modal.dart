@@ -1,74 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:select2dot1/src/components/item_list_widget.dart';
 import 'package:select2dot1/src/components/modal/done_button_modal.dart';
-import 'package:select2dot1/src/components/modal/list_data_view_modal.dart';
 import 'package:select2dot1/src/components/modal/search_bar_modal.dart';
 import 'package:select2dot1/src/components/modal/title_modal.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/modal_item_settings.dart';
-import 'package:select2dot1/src/settings/modal/modal_category_settings.dart';
-import 'package:select2dot1/src/settings/modal/done_button_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/dropdown_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/list_data_view_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/loading_data_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/search_bar_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/search_empty_info_modal_settings.dart';
-import 'package:select2dot1/src/settings/modal/title_modal_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class DropdownContentModal<T> extends StatefulWidget {
   final ScrollController scrollController;
   final SelectDataController<T> selectDataController;
+  final void Function(BuildContext context) closeSelect;
   final SearchControllerSelect2dot1<T> searchController;
   final Duration searchDealey;
   final DropdownContentModalBuilder<T>? dropdownContentModalBuilder;
-  final DropdownModalSettings dropdownModalSettings;
   final TitleModalBuilder? titleModalBuilder;
-  final TitleModalSettings titleModalSettings;
   final DoneButtonModalBuilder? doneButtonModalBuilder;
-  final DoneButtonModalSettings doneButtonModalSettings;
   final bool isSearchable;
   final SearchBarModalBuilder<T>? searchBarModalBuilder;
-  final SearchBarModalSettings searchBarModalSettings;
-  final LoadingDataModalBuilder? loadingDataModalBuilder;
-  final LoadingDataModalSettings loadingDataModalSettings;
-  final SearchEmptyInfoModalBuilder? searchEmptyInfoModalBuilder;
-  final SearchEmptyInfoModalSettings searchEmptyInfoModalSettings;
-  final ListDataViewModalBuilder<T>? listDataViewModalBuilder;
-  final ListDataViewModalSettings listDataViewModalSettings;
-  final CategoryItemModalBuilder<T>? modalItemBuilder;
-  final ModalItemSettings modalItemSettings;
-  final CategoryNameModalBuilder<T>? modalCategoryBuilder;
-  final ModalCategorySettings modalCategorySettings;
-  final GlobalSettings globalSettings;
+  final LoaderBuilder? loaderBuilder;
+  final SearchEmptyInfoBuilder? searchEmptyInfoBuilder;
+  final ItemListBuilder<T>? itemListBuilder;
+  final ItemWidgetBuilder<T>? itemBuilder;
+  final CategoryWidgetBuilder<T>? categoryBuilder;
+  final SelectStyle selectStyle;
 
   const DropdownContentModal({
     super.key,
     required this.scrollController,
     required this.selectDataController,
+    required this.closeSelect,
     required this.searchController,
     required this.searchDealey,
     required this.dropdownContentModalBuilder,
-    required this.dropdownModalSettings,
     required this.titleModalBuilder,
-    required this.titleModalSettings,
     required this.doneButtonModalBuilder,
-    required this.doneButtonModalSettings,
     required this.isSearchable,
     required this.searchBarModalBuilder,
-    required this.searchBarModalSettings,
-    required this.loadingDataModalBuilder,
-    required this.loadingDataModalSettings,
-    required this.searchEmptyInfoModalBuilder,
-    required this.searchEmptyInfoModalSettings,
-    required this.listDataViewModalBuilder,
-    required this.listDataViewModalSettings,
-    required this.modalItemBuilder,
-    required this.modalItemSettings,
-    required this.modalCategoryBuilder,
-    required this.modalCategorySettings,
-    required this.globalSettings,
+    required this.loaderBuilder,
+    required this.searchEmptyInfoBuilder,
+    required this.itemListBuilder,
+    required this.itemBuilder,
+    required this.categoryBuilder,
+    required this.selectStyle,
   });
 
   @override
@@ -92,13 +67,14 @@ class _DropdownContentModalState<T> extends State<DropdownContentModal<T>> {
           doneButtonModal: _doneButtonModal,
           searchBarModal: _searchBarModal,
           listDataViewModal: _listDataViewModal,
-          globalSettings: widget.globalSettings,
+          selectStyle: widget.selectStyle,
         ),
       );
     }
 
     return Container(
-      padding: widget.dropdownModalSettings.contentPadding,
+      padding:
+          widget.selectStyle.modalStyle.dropdownModalSettings.contentPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -107,14 +83,16 @@ class _DropdownContentModalState<T> extends State<DropdownContentModal<T>> {
               Expanded(
                 child: TitleModal(
                   titleModalBuilder: widget.titleModalBuilder,
-                  titleModalSettings: widget.titleModalSettings,
-                  globalSettings: widget.globalSettings,
+                  titleModalSettings:
+                      widget.selectStyle.modalStyle.titleModalSettings,
+                  selectStyle: widget.selectStyle,
                 ),
               ),
               DoneButtonModal(
                 doneButtonModalBuilder: widget.doneButtonModalBuilder,
-                doneButtonModalSettings: widget.doneButtonModalSettings,
-                globalSettings: widget.globalSettings,
+                doneButtonModalSettings:
+                    widget.selectStyle.modalStyle.doneButtonModalSettings,
+                selectStyle: widget.selectStyle,
               ),
             ],
           ),
@@ -123,30 +101,26 @@ class _DropdownContentModalState<T> extends State<DropdownContentModal<T>> {
             searchController: widget.searchController,
             isSearchable: widget.isSearchable,
             searchBarModalBuilder: widget.searchBarModalBuilder,
-            searchBarModalSettings: widget.searchBarModalSettings,
-            globalSettings: widget.globalSettings,
+            searchBarModalSettings:
+                widget.selectStyle.modalStyle.searchBarModalSettings,
+            selectStyle: widget.selectStyle,
           ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
-              child: ListDataViewModal(
+              child: ItemListWidget<T>.modal(
                 scrollController: widget.scrollController,
                 searchController: widget.searchController,
+                closeSelect: widget.closeSelect,
                 selectDataController: widget.selectDataController,
-                loadingDataModalBuilder: widget.loadingDataModalBuilder,
-                loadingDataModalSettings: widget.loadingDataModalSettings,
-                searchEmptyInfoModalBuilder: widget.searchEmptyInfoModalBuilder,
-                searchEmptyInfoModalSettings:
-                    widget.searchEmptyInfoModalSettings,
-                listDataViewModalBuilder: widget.listDataViewModalBuilder,
-                listDataViewModalSettings: widget.listDataViewModalSettings,
-                modalItemBuilder: widget.modalItemBuilder,
-                modalItemSettings: widget.modalItemSettings,
-                modalCategoryBuilder: widget.modalCategoryBuilder,
-                modalCategorySettings: widget.modalCategorySettings,
-                globalSettings: widget.globalSettings,
+                loaderBuilder: widget.loaderBuilder,
+                searchEmptyInfoBuilder: widget.searchEmptyInfoBuilder,
+                itemListBuilder: widget.itemListBuilder,
+                itemBuilder: widget.itemBuilder,
+                categoryBuilder: widget.categoryBuilder,
+                selectStyle: widget.selectStyle,
               ),
             ),
           ),
@@ -157,14 +131,15 @@ class _DropdownContentModalState<T> extends State<DropdownContentModal<T>> {
 
   Widget _titleModal() => TitleModal(
         titleModalBuilder: widget.titleModalBuilder,
-        titleModalSettings: widget.titleModalSettings,
-        globalSettings: widget.globalSettings,
+        titleModalSettings: widget.selectStyle.modalStyle.titleModalSettings,
+        selectStyle: widget.selectStyle,
       );
 
   Widget _doneButtonModal() => DoneButtonModal(
         doneButtonModalBuilder: widget.doneButtonModalBuilder,
-        doneButtonModalSettings: widget.doneButtonModalSettings,
-        globalSettings: widget.globalSettings,
+        doneButtonModalSettings:
+            widget.selectStyle.modalStyle.doneButtonModalSettings,
+        selectStyle: widget.selectStyle,
       );
 
   Widget _searchBarModal() => SearchBarModal(
@@ -172,24 +147,21 @@ class _DropdownContentModalState<T> extends State<DropdownContentModal<T>> {
         searchController: widget.searchController,
         isSearchable: widget.isSearchable,
         searchBarModalBuilder: widget.searchBarModalBuilder,
-        searchBarModalSettings: widget.searchBarModalSettings,
-        globalSettings: widget.globalSettings,
+        searchBarModalSettings:
+            widget.selectStyle.modalStyle.searchBarModalSettings,
+        selectStyle: widget.selectStyle,
       );
 
-  Widget _listDataViewModal() => ListDataViewModal(
+  Widget _listDataViewModal() => ItemListWidget<T>.modal(
         scrollController: widget.scrollController,
         searchController: widget.searchController,
+        closeSelect: widget.closeSelect,
         selectDataController: widget.selectDataController,
-        loadingDataModalBuilder: widget.loadingDataModalBuilder,
-        loadingDataModalSettings: widget.loadingDataModalSettings,
-        searchEmptyInfoModalBuilder: widget.searchEmptyInfoModalBuilder,
-        searchEmptyInfoModalSettings: widget.searchEmptyInfoModalSettings,
-        listDataViewModalBuilder: widget.listDataViewModalBuilder,
-        listDataViewModalSettings: widget.listDataViewModalSettings,
-        modalItemBuilder: widget.modalItemBuilder,
-        modalItemSettings: widget.modalItemSettings,
-        modalCategoryBuilder: widget.modalCategoryBuilder,
-        modalCategorySettings: widget.modalCategorySettings,
-        globalSettings: widget.globalSettings,
+        loaderBuilder: widget.loaderBuilder,
+        searchEmptyInfoBuilder: widget.searchEmptyInfoBuilder,
+        itemListBuilder: widget.itemListBuilder,
+        itemBuilder: widget.itemBuilder,
+        categoryBuilder: widget.categoryBuilder,
+        selectStyle: widget.selectStyle,
       );
 }

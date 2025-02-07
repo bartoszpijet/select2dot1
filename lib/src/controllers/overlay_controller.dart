@@ -8,8 +8,21 @@ mixin OverlayController<T> on AnimatedState<T> {
   // ignore: avoid-late-keyword
   final OverlayPortalController overlayController = OverlayPortalController();
 
-  ValueNotifier<bool> get getIsVisibleOvarlay =>
-      ValueNotifier<bool>(overlayController.isShowing);
+  // It has to be late.
+  // ignore: avoid-late-keyword
+  late final ValueNotifier<bool> isVisibleOvarlayNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    isVisibleOvarlayNotifier = ValueNotifier<bool>(overlayController.isShowing);
+  }
+
+  @override
+  void dispose() {
+    isVisibleOvarlayNotifier.dispose();
+    super.dispose();
+  }
 
   void toogleOverlay() {
     if (overlayController.isShowing) {
@@ -31,17 +44,18 @@ mixin OverlayController<T> on AnimatedState<T> {
       getAnimationController.reverse().then((_) => overlayController.hide()),
     );
   }
-
+/*
   void refreshOverlayState(_) {
-    // if (_overlay == null) {
-    //   return;
-    // }
-    // // This can't be null, assert is above.
-    // // ignore: avoid-non-null-assertion
-    // if (_overlay!.mounted) {
-    //   // Just refresh.
-    //   // ignore: no-empty-block
-    //   _overlay?.setState(() {});
-    // }
+    if (_overlay == null) {
+      return;
+    }
+    // This can't be null, assert is above.
+    // ignore: avoid-non-null-assertion
+    if (_overlay!.mounted) {
+      // Just refresh.
+      // ignore: no-empty-block
+      _overlay?.setState(() {});
+    }
   }
+  */
 }

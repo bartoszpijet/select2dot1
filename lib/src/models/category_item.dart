@@ -6,13 +6,39 @@ class CategoryItem<T> extends ItemInterface<T> {
   /// If provided that item is CategoryItem<T>.
   final Iterable<ItemInterface<T>> childrens;
 
+  /// If true and select is multiuselect this Item will be clickable. After click all children will be added to selected list.
+  final bool addAllChildren;
+
   /// Creating an argument constructor of [CategoryItem<T>] class.
   const CategoryItem({
-    required super.label,
+    super.label,
+    super.getLabel,
     required this.childrens,
-    super.extraInfo,
-    super.icon,
+    this.addAllChildren = false,
   });
+
+  CategoryItem._score(
+    CategoryItem<T> item,
+    double score, [
+    Iterable<ItemInterface<T>>? childrens,
+  ])  : childrens = childrens ?? item.childrens,
+        addAllChildren = item.addAllChildren,
+        super.withScore(
+          getLabel: item.getLabel,
+          label: item.label,
+          metadataSearch: item.metadataSearch,
+          score: score,
+        );
+
+  @override
+  ItemInterface<T> copyWithScore(double score) =>
+      CategoryItem._score(this, score);
+
+  ItemInterface<T> copyWithScoreAndList(
+    double score,
+    Iterable<ItemInterface<T>> childrens,
+  ) =>
+      CategoryItem._score(this, score, childrens);
 
   @override
   int get hashCode => super.hashCode ^ childrens.hashCode;

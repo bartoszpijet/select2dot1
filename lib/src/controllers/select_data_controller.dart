@@ -3,6 +3,7 @@ import 'package:select2dot1/src/models/category_item.dart';
 import 'package:select2dot1/src/models/item_interface.dart';
 import 'package:select2dot1/src/models/selectable_interface.dart';
 import 'package:select2dot1/src/models/selectable_item.dart';
+import 'package:select2dot1/src/utils/deep_contains.dart';
 
 /// SelectDataController is a class that will be used to control select data and contains all data.
 class SelectDataController<T> extends ChangeNotifier {
@@ -13,14 +14,6 @@ class SelectDataController<T> extends ChangeNotifier {
   /// This is a boolean to set multi select or single select.
   /// Default is true.
   bool isMultiSelect;
-
-  /// If it is [true] evry item in [itemList] will be added to selected values.
-  /// Default true.
-  final bool isCategoryAddAllChildren;
-
-  /// This is a boolean to select category.
-  /// Default is false.
-  final bool isCategorySelectable;
 
   /// This is initial selected data.
   /// This data will be add to the [selectedList] when the class is created.
@@ -37,14 +30,12 @@ class SelectDataController<T> extends ChangeNotifier {
   SelectDataController({
     required this.data,
     this.isMultiSelect = true,
-    this.isCategoryAddAllChildren = true,
-    this.isCategorySelectable = false,
     this.initSelected,
   }) : assert(
           isMultiSelect || initSelected == null || initSelected.length <= 1,
           'For single select, initSelected must be null or length <= 1',
         ) {
-    addGroupSelectChip(initSelected);
+    addGroupSelectChip(initSelected?.where((e) => data.deepContains(e)));
   }
 
   /// Function to set an SelectDataController to another SelectDataController with the same reference.
@@ -63,12 +54,12 @@ class SelectDataController<T> extends ChangeNotifier {
   /// Add items from list of [SelectableInterface<T>] to the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
   void addGroupSelectChip(Iterable<SelectableInterface<T>>? singleItemList) {
-    if (singleItemList == null) {
+    if (singleItemList == null || singleItemList.isEmpty) {
       return;
     }
 
     if (!isMultiSelect) {
-      setSingleSelect(singleItemList.first);
+      setSingleSelect(singleItemList.single);
     }
 
     for (var singleItem in singleItemList) {

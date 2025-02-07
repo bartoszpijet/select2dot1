@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/title_modal_settings.dart';
+import 'package:select2dot1/src/styles/modal/title_modal_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class TitleModal extends StatelessWidget {
   final TitleModalBuilder? titleModalBuilder;
   final TitleModalSettings titleModalSettings;
-  final GlobalSettings globalSettings;
+  final SelectStyle selectStyle;
 
   const TitleModal({
     super.key,
     required this.titleModalBuilder,
     required this.titleModalSettings,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 
   @override
@@ -23,7 +23,7 @@ class TitleModal extends StatelessWidget {
       return titleModalBuilder!(
         context,
         TittleModalDetails(
-          globalSettings: globalSettings,
+          selectStyle: selectStyle,
         ),
       );
     }
@@ -48,12 +48,12 @@ class TitleModal extends StatelessWidget {
     TextStyle textStyle = titleModalSettings.titleTextStyle;
 
     if (textStyle.fontFamily == null) {
-      textStyle = textStyle.copyWith(fontFamily: globalSettings.fontFamily);
+      textStyle = textStyle.copyWith(fontFamily: selectStyle.fontFamily);
     }
 
     if (textStyle.color == null) {
       textStyle = textStyle.copyWith(
-        color: globalSettings.textColor,
+        color: selectStyle.textColor,
       );
     }
 
