@@ -9,37 +9,33 @@ mixin ModalController<T> on AnimatedState<T> {
     unawaited(
       showModalBottomSheet(
         isScrollControlled: true,
-        shape: widget.dropdownModalSettings.shape,
-        backgroundColor: widget.dropdownModalSettings.backgroundColor,
-        barrierColor: widget.dropdownModalSettings.barrierColor,
+        shape: widget.selectStyle.modalStyle.dropdownModalSettings.shape,
+        backgroundColor:
+            widget.selectStyle.modalStyle.dropdownModalSettings.backgroundColor,
+        barrierColor:
+            widget.selectStyle.modalStyle.dropdownModalSettings.barrierColor,
         context: context,
         builder: (context) {
           return DropdownModal(
             selectDataController: widget.selectDataController,
             dropdownContentModalScrollController:
-                widget.dropdownContentModalScrollController,
+                widget.modalData.dropdownContentModalScrollController,
             searchController: widget.searchController,
-            searchDealey: widget.searchDealey,
-            dropdownContentModalBuilder: widget.dropdownContentModalBuilder,
-            dropdownModalSettings: widget.dropdownModalSettings,
-            titleModalBuilder: widget.titleModalBuilder,
-            titleModalSettings: widget.titleModalSettings,
-            doneButtonModalBuilder: widget.doneButtonModalBuilder,
-            doneButtonModalSettings: widget.doneButtonModalSettings,
+            searchDealey: widget.dropdownListData.searchDealey,
+            closeSelect: Navigator.pop,
+            dropdownContentModalBuilder:
+                widget.modalData.dropdownContentModalBuilder,
+            titleModalBuilder: widget.modalData.titleModalBuilder,
+            doneButtonModalBuilder: widget.modalData.doneButtonModalBuilder,
             isSearchable: widget.isSearchable,
-            searchBarModalBuilder: widget.searchBarModalBuilder,
-            searchBarModalSettings: widget.searchBarModalSettings,
-            loadingDataModalBuilder: widget.loadingDataModalBuilder,
-            loadingDataModalSettings: widget.loadingDataModalSettings,
-            searchEmptyInfoModalBuilder: widget.searchEmptyInfoModalBuilder,
-            searchEmptyInfoModalSettings: widget.searchEmptyInfoModalSettings,
-            listDataViewModalBuilder: widget.listDataViewModalBuilder,
-            listDataViewModalSettings: widget.listDataViewModalSettings,
-            modalItemBuilder: widget.modalItemBuilder,
-            modalItemSettings: widget.modalItemSettings,
-            modalCategoryBuilder: widget.modalCategoryBuilder,
-            modalCategorySettings: widget.modalCategorySettings,
-            globalSettings: widget.globalSettings,
+            searchBarModalBuilder: widget.modalData.searchBarModalBuilder,
+            loaderBuilder: widget.dropdownListData.loaderBuilder,
+            searchEmptyInfoBuilder:
+                widget.dropdownListData.searchEmptyInfoBuilder,
+            itemListBuilder: widget.dropdownListData.itemListBuilder,
+            itemBuilder: widget.dropdownListData.itemBuilder,
+            categoryBuilder: widget.dropdownListData.categoryBuilder,
+            selectStyle: widget.selectStyle,
           );
         },
       ),

@@ -14,18 +14,28 @@ class BasicExample2 extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Select2dot1(
+          Select2dot1<String>(
             selectDataController: SelectDataController(
               data: ExampleData.exampleData1,
               isMultiSelect: false,
               initSelected: const [
-                ItemModel(value: null, itemName: 'David Eubanks')
+                SelectableItem<String>(
+                  value: 'David Eubanks',
+                  label: 'David Eubanks',
+                ),
               ],
             ),
-            scrollController: scrollController,
-            pillboxTitleSettings:
-                const PillboxTitleSettings(title: 'Example 2'),
-            titleModalSettings: const TitleModalSettings(title: 'Example 2'),
+            dropdownListData: DropdownListData(
+              scrollController: scrollController,
+            ),
+            selectStyle: const SelectStyle(
+              pillboxStyle: PillboxStyle(
+                pillboxTitleSettings: PillboxTitleSettings(title: 'Example 2'),
+              ),
+              modalStyle: ModalStyle(
+                titleModalSettings: TitleModalSettings(title: 'Example 2'),
+              ),
+            ),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),

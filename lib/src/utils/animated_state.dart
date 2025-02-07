@@ -12,9 +12,9 @@ abstract class AnimatedState<T> extends State<Select2dot1<T>>
   @override
   void initState() {
     super.initState();
-
     _animationController = AnimationController(
-      duration: widget.dropdownOverlaySettings.animationDuration,
+      duration: widget
+          .selectStyle.overlayStyle.dropdownOverlaySettings.animationDuration,
       vsync: this,
     );
   }

@@ -22,29 +22,26 @@ class SimpleExampleApp extends StatefulWidget {
 class _SimpleExampleAppState extends State<SimpleExampleApp> {
   ScrollController scrollController = ScrollController();
 
-  static const List<CategoryModel<String>> exampleData = [
-    CategoryModel(
-      itemName: 'Central Time Zone',
-      itemList: <ItemModel<String>>[
-        ItemModel<String>(
-          itemName: 'Alabama',
-          extraInfoSingleItem: '1395 Lincoln Street',
+  static const List<SelectableCategory<String>> exampleData = [
+    SelectableCategory(
+      label: 'Central Time Zone',
+      value: 'Central Time Zone',
+      childrens: <SelectableItem<String>>[
+        SelectableItem<String>(
+          label: 'Alabama',
           value: 'Alabama',
-          avatarSingleItem: CircleAvatar(
-            backgroundColor: Colors.orange,
-            child: Text('AL', style: TextStyle(color: Colors.white)),
-          ),
         ),
-        ItemModel(itemName: 'Arkansas', value: 'Arkansas'),
-        ItemModel(itemName: 'Illonois', value: 'Illonois'),
+        SelectableItem(label: 'Arkansas', value: 'Arkansas'),
+        SelectableItem(label: 'Illonois', value: 'Illonois'),
       ],
     ),
-    CategoryModel(
-      itemName: 'Pacific Time Zone',
-      itemList: <ItemModel<String>>[
-        ItemModel(itemName: 'California', value: 'California'),
-        ItemModel(itemName: 'Nevada', value: 'Nevada'),
-        ItemModel(itemName: 'Oregon', value: 'Oregon'),
+    SelectableCategory(
+      label: 'Pacific Time Zone',
+      value: 'Pacific Time Zone',
+      childrens: <SelectableItem<String>>[
+        SelectableItem(label: 'California', value: 'California'),
+        SelectableItem(label: 'Nevada', value: 'Nevada'),
+        SelectableItem(label: 'Oregon', value: 'Oregon'),
       ],
     ),
   ];
@@ -77,7 +74,9 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
                     selectDataController: SelectDataController(
                       data: exampleData,
                     ),
-                    scrollController: scrollController,
+                    dropdownListData: DropdownListData(
+                      scrollController: scrollController,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 250),
@@ -85,8 +84,8 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
                   selectDataController: SelectDataController(
                     data: exampleData,
                     initSelected: const [
-                      ItemModel(
-                        itemName: 'Oregon',
+                      SelectableItem(
+                        label: 'Oregon',
                         value: 'Oregon',
                       ),
                     ],
@@ -98,36 +97,45 @@ class _SimpleExampleAppState extends State<SimpleExampleApp> {
                     data: exampleData,
                     isMultiSelect: false,
                     initSelected: const [
-                      ItemModel(itemName: 'Arkansas', value: 'Arkansas')
+                      SelectableItem(label: 'Arkansas', value: 'Arkansas'),
                     ],
                   ),
-                  scrollController: scrollController,
+                  dropdownListData: DropdownListData(
+                    scrollController: scrollController,
+                  ),
                 ),
                 const SizedBox(height: 250),
                 Select2dot1<String>(
                   selectDataController: SelectDataController(
                     data: exampleData,
                     initSelected: const [
-                      ItemModel(itemName: 'Illonois', value: 'Illonois'),
-                      ItemModel(itemName: 'California', value: 'California'),
-                      ItemModel(itemName: 'Alabama', value: 'Alabama'),
+                      SelectableItem(label: 'Illonois', value: 'Illonois'),
+                      SelectableItem(label: 'California', value: 'California'),
+                      SelectableItem(label: 'Alabama', value: 'Alabama'),
                     ],
                   ),
-                  pillboxContentMultiSettings:
-                      const PillboxContentMultiSettings(pillboxOverload: 5),
-                  selectSingleSettings:
-                      const SelectSingleSettings(showExtraInfo: false),
-                  modalItemSettings: const ModalItemSettings(
-                    showExtraInfo: false,
+                  // item: const ModalItemSettings(
+                  //   showExtraInfo: false,
+                  // ),
+
+                  dropdownListData: DropdownListData(
+                    scrollController: scrollController,
                   ),
-                  overlayItemSettings: const OverlayItemSettings(
-                    showExtraInfo: false,
+                  selectStyle: const SelectStyle(
+                    selectSingleSettings:
+                        SelectSingleSettings(showExtraInfo: false),
+                    pillboxStyle: PillboxStyle(
+                      pillboxContentMultiSettings: PillboxContentMultiSettings(
+                        pillboxOverload: 5,
+                      ),
+                      pillboxTitleSettings:
+                          PillboxTitleSettings(title: 'Example 7'),
+                    ),
+                    modalStyle: ModalStyle(
+                      titleModalSettings:
+                          TitleModalSettings(title: 'Example 7'),
+                    ),
                   ),
-                  scrollController: scrollController,
-                  pillboxTitleSettings:
-                      const PillboxTitleSettings(title: 'Example 7'),
-                  titleModalSettings:
-                      const TitleModalSettings(title: 'Example 7'),
                 ),
                 const SizedBox(height: 250),
               ],

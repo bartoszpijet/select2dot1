@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fuzzysearch/fuzzysearch.dart';
-import 'package:select2dot1/src/models/scoreable_select_model.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/category_item.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
 
 /// SearchController is a class that will be used to search data.
 // Its okay.
@@ -18,13 +19,13 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
 
   /// Data to search.
   /// It is required.
-  final List<SelectModel<T>> data;
+  final Iterable<ItemInterface<T>> data;
 
   /// Search results.
   /// First it will be same as [data].
-  final List<SelectModel<T>> results;
+  final List<ItemInterface<T>> results;
 
-  /// Hide category if [SelectModel.itemList] is empty.
+  /// Hide category if Category itemList is empty.
   /// Default to [true].
   final bool hideEmptyCategory;
 
@@ -37,7 +38,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   final bool searchInCategories;
 
   /// Getter for [results] find by [findSearchDataResults].
-  List<SelectModel<T>> get getResults => results;
+  List<ItemInterface<T>> get getResults => results;
 
   /// Creating an argument constructor of [SearchControllerSelect2dot1] class.
   /// [data] is data to search. [data] is required.
@@ -47,7 +48,7 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     this.hideEmptyCategory = true,
     this.hideCategoryAfterSearch = true,
     this.searchInCategories = false,
-  }) : results = data.toList() // Fix pass by reference.
+  }) : results = List.of(data) // Fix pass by reference.
   {
     oldLength = countLength();
     if (searchInCategories && (hideCategoryAfterSearch || hideEmptyCategory)) {
@@ -76,23 +77,22 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     results.clear();
 
     if (hideCategoryAfterSearch) {
-      List<Result<SelectModel<T>>> tmpResults =
+      Iterable<Result<ItemInterface<T>>> tmpResults =
           await fuzzySearch(flatData, searchText);
-      for (Result<SelectModel<T>> searchResult in tmpResults) {
-        if (searchResult.identifier != null) {
+      for (Result<ItemInterface<T>> searchResult in tmpResults) {
+        if (searchResult.identifier != null &&
+            searchResult.identifier is SelectableInterface<T>) {
           // Null check done above.
           // ignore: avoid-non-null-assertion
           results.add(searchResult.identifier!);
         }
       }
     } else {
-      List<ScoreableSelectModel<T>> resultsWithScore =
+      List<ItemInterface<T>> resultsWithScore =
           await addFromList(data, searchText);
 
       resultsWithScore.sort((a, b) => a.score.compareTo(b.score));
-      results.addAll(
-        resultsWithScore.cast<SelectModel<T>>(),
-      );
+      results.addAll(resultsWithScore);
     }
 
     int newLength = countLength();
@@ -104,11 +104,11 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
   /// Count length of search results function.
   int countLength() {
     int length = 0;
-    for (SelectModel<T> element in results) {
-      if (element.isCategory) {
-        int toAdd = element.itemList.length;
+    for (ItemInterface<T> element in results) {
+      if (element is CategoryItem<T>) {
+        int toAdd = element.childrens.length;
         if (toAdd == 0 && hideEmptyCategory) continue;
-        length += element.itemList.length + 1;
+        length += element.childrens.length + 1;
       } else {
         length++;
       }
@@ -117,14 +117,16 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     return length;
   }
 
-  List<SelectModel<T>> get flatData => addChildrens(data);
+  List<SelectableInterface<T>> get flatData => addChildrens(data);
 
-  List<SelectModel<T>> addChildrens(List<SelectModel<T>> list) {
-    List<SelectModel<T>> tempFlatData = [];
-    for (SelectModel<T> element in list) {
-      if (element.isCategory) {
-        tempFlatData.addAll(addChildrens(element.itemList));
-      } else {
+  List<SelectableInterface<T>> addChildrens(Iterable<ItemInterface<T>> list) {
+    List<SelectableInterface<T>> tempFlatData = [];
+    for (ItemInterface<T> element in list) {
+      if (element is CategoryItem<T>) {
+        tempFlatData.addAll(
+          addChildrens(element.childrens),
+        );
+      } else if (element is SelectableInterface<T>) {
         tempFlatData.add(element);
       }
     }
@@ -132,61 +134,47 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     return tempFlatData;
   }
 
-  Future<List<ScoreableSelectModel<T>>> addToResults(
-    List<SelectModel<T>> dataToAdd,
+  Future<List<ItemInterface<T>>> addToResults(
+    Iterable<ItemInterface<T>> dataToAdd,
     String searchText,
   ) async {
-    List<ScoreableSelectModel<T>> resultsWithScore = [];
+    List<ItemInterface<T>> resultsWithScore = [];
 
-    List<Result<SelectModel<T>>> tmpResults =
+    List<Result<ItemInterface<T>>> tmpResults =
         await fuzzySearch(dataToAdd, searchText);
-    for (Result<SelectModel<T>> searchResult in tmpResults) {
-      SelectModel<T>? resultItem = searchResult.identifier;
-
+    for (Result<ItemInterface<T>> searchResult in tmpResults) {
+      ItemInterface<T>? resultItem = searchResult.identifier;
       if (resultItem != null) {
-        ScoreableSelectModel<T> newItem;
-        if (resultItem.itemList.isEmpty) {
-          newItem = ScoreableSelectModel.fromModel(
-            resultItem,
-            searchResult.score,
-          );
-        } else {
-          newItem = ScoreableSelectModel.fromModelWithNewList(
-            resultItem,
-            searchResult.score,
-            [],
-          );
-        }
-        resultsWithScore.add(newItem);
+        ItemInterface<T> newScoreItem =
+            resultItem.copyWithScore(searchResult.score);
+        resultsWithScore.add(newScoreItem);
       }
     }
 
     return resultsWithScore;
   }
 
-  Future<List<ScoreableSelectModel<T>>> addFromList(
-    List<SelectModel<T>> data,
+  Future<List<ItemInterface<T>>> addFromList(
+    Iterable<ItemInterface<T>> data,
     String searchText,
   ) async {
-    List<ScoreableSelectModel<T>> resultsWithScore = [];
+    List<ItemInterface<T>> resultsWithScore = [];
 
-    List<SelectModel<T>> selectableData = searchInCategories
+    Iterable<ItemInterface<T>> selectableData = searchInCategories
         ? data
-        : data.where((element) => !element.isCategory).toList();
+        : data.where((element) => element is! CategoryItem<T>).toList();
     resultsWithScore.addAll(await addToResults(selectableData, searchText));
 
-    List<SelectModel<T>> categoryData =
-        data.where((element) => element.isCategory).toList();
+    List<CategoryItem<T>> categoryData =
+        data.whereType<CategoryItem<T>>().toList();
 
-    for (SelectModel<T> category in categoryData) {
-      List<ScoreableSelectModel<T>> items = await addFromList(
-        category.itemList,
+    for (CategoryItem<T> category in categoryData) {
+      List<ItemInterface<T>> items = await addFromList(
+        category.childrens,
         searchText,
       );
       if (items.isNotEmpty) {
-        ScoreableSelectModel<T> newItem =
-            ScoreableSelectModel.fromModelWithNewList(
-          category,
+        ItemInterface<T> newItem = category.copyWithScoreAndList(
           items.fold<double>(
             1,
             (value, element) => element.score < value ? element.score : value,
@@ -206,15 +194,20 @@ class SearchControllerSelect2dot1<T> extends ChangeNotifier {
     return resultsWithScore;
   }
 
-  Future<List<Result<SelectModel<T>>>> fuzzySearch(
-    List<SelectModel<T>> dataToSearchIn,
+  Future<List<Result<ItemInterface<T>>>> fuzzySearch(
+    Iterable<ItemInterface<T>> dataToSearchIn,
     String searchText,
   ) {
-    Fuzzy<SelectModel<T>> fuse = Fuzzy.withIdentifiers(
-      {
-        for (SelectModel<T> element in dataToSearchIn)
-          element.itemName: element,
-      },
+    Map<String, ItemInterface<T>> searchMap = {};
+    for (ItemInterface<T> element in dataToSearchIn) {
+      searchMap.addAll({
+        element.label: element,
+        for (String metaSearch in element.metadataSearch) metaSearch: element,
+      });
+    }
+
+    Fuzzy<ItemInterface<T>> fuse = Fuzzy.withIdentifiers(
+      searchMap,
       options: fuzzyOptions ??
           FuzzyOptions(
             findAllMatches: true,

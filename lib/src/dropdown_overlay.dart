@@ -3,22 +3,16 @@ import 'package:flutter/scheduler.dart';
 import 'package:select2dot1/src/components/overlay/dropdown_content_overlay.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/controllers/select_data_controller.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/overlay/overlay_item_settings.dart';
-import 'package:select2dot1/src/settings/overlay/overlay_category_settings.dart';
-import 'package:select2dot1/src/settings/overlay/dropdown_overlay_settings.dart';
-import 'package:select2dot1/src/settings/overlay/list_data_view_overlay_settings.dart';
-import 'package:select2dot1/src/settings/overlay/loading_data_overlay_settings.dart';
-import 'package:select2dot1/src/settings/overlay/search_bar_overlay_settings.dart';
-import 'package:select2dot1/src/settings/overlay/search_empty_info_overlay_settings.dart';
-import 'package:select2dot1/src/settings/pillbox_content_multi_settings.dart';
+import 'package:select2dot1/src/styles/overlay/dropdown_overlay_settings.dart';
+import 'package:select2dot1/src/styles/pillbox_content_multi_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class DropdownOverlay<T> extends StatefulWidget {
   final SelectDataController<T> selectDataController;
   final SearchControllerSelect2dot1<T> searchController;
   final Duration searchDealey;
-  final void Function() overlayHide;
+  final void Function(BuildContext context) closeSelect;
   final AnimationController animationController;
   final LayerLink layerLink;
   final double? appBarMaxHeight;
@@ -26,52 +20,40 @@ class DropdownOverlay<T> extends StatefulWidget {
   final PillboxLayout pillboxLayout;
   // Its okay.
   // ignore: prefer-correct-identifier-length
-  final ScrollController? dropdownContentOverlayScrollController;
+  final ScrollController? itemListScrollController;
   final DropdownContentOverlayBuilder<T>? dropdownContentOverlayBuilder;
   final DropdownOverlaySettings dropdownOverlaySettings;
   final bool isSearchable;
   final SearchBarOverlayBuilder<T>? searchBarOverlayBuilder;
-  final SearchBarOverlaySettings searchBarOverlaySettings;
-  final LoadingDataOverlayBuilder? loadingDataOverlayBuilder;
-  final LoadingDataOverlaySettings loadingDataOverlaySettings;
-  final SearchEmptyInfoOverlayBuilder? searchEmptyInfoOverlayBuilder;
-  final SearchEmptyInfoOverlaySettings searchEmptyInfoOverlaySettings;
-  final ListDataViewOverlayBuilder<T>? listDataViewOverlayBuilder;
-  final ListDataViewOverlaySettings listDataViewOverlaySettings;
-  final CategoryNameOverlayBuilder<T>? overlayCategoryBuilder;
-  final OverlayCategorySettings overlayCategorySettings;
-  final CategoryItemOverlayBuilder<T>? overlayItemBuilder;
-  final OverlayItemSettings overlayItemSettings;
-  final GlobalSettings globalSettings;
+  final LoaderBuilder? loaderBuilder;
+  final SearchEmptyInfoBuilder? searchEmptyInfoBuilder;
+  final ItemListBuilder<T>? itemListBuilder;
+  final CategoryWidgetBuilder<T>? categoryBuilder;
+  final ItemWidgetBuilder<T>? itemBuilder;
+  final SelectStyle selectStyle;
 
   const DropdownOverlay({
     super.key,
     required this.selectDataController,
     required this.searchController,
     required this.searchDealey,
-    required this.overlayHide,
+    required this.closeSelect,
     required this.animationController,
     required this.layerLink,
     required this.appBarMaxHeight,
     required this.scrollController,
     required this.pillboxLayout,
-    required this.dropdownContentOverlayScrollController,
+    required this.itemListScrollController,
     required this.dropdownContentOverlayBuilder,
     required this.dropdownOverlaySettings,
     required this.isSearchable,
     required this.searchBarOverlayBuilder,
-    required this.searchBarOverlaySettings,
-    required this.loadingDataOverlayBuilder,
-    required this.loadingDataOverlaySettings,
-    required this.searchEmptyInfoOverlayBuilder,
-    required this.searchEmptyInfoOverlaySettings,
-    required this.listDataViewOverlayBuilder,
-    required this.listDataViewOverlaySettings,
-    required this.overlayCategoryBuilder,
-    required this.overlayCategorySettings,
-    required this.overlayItemBuilder,
-    required this.overlayItemSettings,
-    required this.globalSettings,
+    required this.loaderBuilder,
+    required this.searchEmptyInfoBuilder,
+    required this.itemListBuilder,
+    required this.categoryBuilder,
+    required this.itemBuilder,
+    required this.selectStyle,
   });
 
   @override
@@ -128,80 +110,64 @@ class _DropdownOverlayState<T> extends State<DropdownOverlay<T>> {
 
               return true;
             },
-            child: SizeChangedLayoutNotifier(
-              child: Material(
-                color: Colors.transparent,
-                child: AnimatedBuilder(
-                  animation: widget.animationController,
-                  builder: (context, child) {
-                    if (widget.dropdownOverlaySettings.animationBuilder !=
-                        null) {
-                      // Its can be null anyway.
-                      // ignore: avoid-non-null-assertion
-                      return widget.dropdownOverlaySettings.animationBuilder!(
-                        context,
-                        child,
-                        widget.animationController,
-                      );
-                    }
+            /* child: SizeChangedLayoutNotifier( */
+            child: Material(
+              color: Colors.transparent,
+              child: AnimatedBuilder(
+                animation: widget.animationController,
+                builder: (context, child) {
+                  if (widget.dropdownOverlaySettings.animationBuilder != null) {
+                    // Its can be null anyway.
+                    // ignore: avoid-non-null-assertion
+                    return widget.dropdownOverlaySettings.animationBuilder!(
+                      context,
+                      child,
+                      widget.animationController,
+                    );
+                  }
 
-                    return ScaleTransition(
-                      scale: CurvedAnimation(
+                  return ScaleTransition(
+                    scale: CurvedAnimation(
+                      parent: widget.animationController,
+                      curve: widget.dropdownOverlaySettings.sizeAnimationCurve,
+                    ),
+                    child: FadeTransition(
+                      opacity: CurvedAnimation(
                         parent: widget.animationController,
                         curve:
-                            widget.dropdownOverlaySettings.sizeAnimationCurve,
+                            widget.dropdownOverlaySettings.fadeAnimationCurve,
                       ),
-                      child: FadeTransition(
-                        opacity: CurvedAnimation(
-                          parent: widget.animationController,
-                          curve:
-                              widget.dropdownOverlaySettings.fadeAnimationCurve,
-                        ),
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: TapRegion(
-                    onTapOutside: (_) => widget.overlayHide(),
-                    child: DropdownContentOverlay(
-                      key: keyDropdownOverlayContent,
-                      selectDataController: widget.selectDataController,
-                      searchController: widget.searchController,
-                      searchDealey: widget.searchDealey,
-                      overlayHide: widget.overlayHide,
-                      layerLink: widget.layerLink,
-                      scrollController: widget.scrollController,
-                      appBarMaxHeight: widget.appBarMaxHeight,
-                      dropdownContentOverlayScrollController:
-                          widget.dropdownContentOverlayScrollController,
-                      dropdownContentOverlayBuilder:
-                          widget.dropdownContentOverlayBuilder,
-                      dropdownOverlaySettings: widget.dropdownOverlaySettings,
-                      isSearchable: widget.isSearchable,
-                      searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
-                      searchBarOverlaySettings: widget.searchBarOverlaySettings,
-                      loadingDataOverlayBuilder:
-                          widget.loadingDataOverlayBuilder,
-                      loadingDataOverlaySettings:
-                          widget.loadingDataOverlaySettings,
-                      searchEmptyInfoOverlayBuilder:
-                          widget.searchEmptyInfoOverlayBuilder,
-                      searchEmptyInfoOverlaySettings:
-                          widget.searchEmptyInfoOverlaySettings,
-                      listDataViewOverlayBuilder:
-                          widget.listDataViewOverlayBuilder,
-                      listDataViewOverlaySettings:
-                          widget.listDataViewOverlaySettings,
-                      overlayCategoryBuilder: widget.overlayCategoryBuilder,
-                      overlayCategorySettings: widget.overlayCategorySettings,
-                      overlayItemBuilder: widget.overlayItemBuilder,
-                      overlayItemSettings: widget.overlayItemSettings,
-                      globalSettings: widget.globalSettings,
+                      child: child,
                     ),
+                  );
+                },
+                child: TapRegion(
+                  onTapOutside: (_) => widget.closeSelect(context),
+                  child: DropdownContentOverlay(
+                    key: keyDropdownOverlayContent,
+                    selectDataController: widget.selectDataController,
+                    searchController: widget.searchController,
+                    searchDealey: widget.searchDealey,
+                    closeSelect: widget.closeSelect,
+                    layerLink: widget.layerLink,
+                    scrollController: widget.scrollController,
+                    appBarMaxHeight: widget.appBarMaxHeight,
+                    itemListScrollController: widget.itemListScrollController,
+                    dropdownContentOverlayBuilder:
+                        widget.dropdownContentOverlayBuilder,
+                    isSearchable: widget.isSearchable,
+                    searchBarOverlayBuilder: widget.searchBarOverlayBuilder,
+                    loaderBuilder: widget.loaderBuilder,
+                    searchEmptyInfoBuilder: widget.searchEmptyInfoBuilder,
+                    itemListBuilder: widget.itemListBuilder,
+                    categoryBuilder: widget.categoryBuilder,
+                    itemBuilder: widget.itemBuilder,
+                    selectStyle: widget.selectStyle,
                   ),
                 ),
               ),
             ),
+            /* ), */
           ),
         ),
       ),
@@ -238,6 +204,7 @@ class _DropdownOverlayState<T> extends State<DropdownOverlay<T>> {
     final layerOffset =
         (Scrollable.of(context).context.findRenderObject() as RenderBox)
             .localToGlobal(Offset.zero);
+
     return offsetPillbox.dy +
             layerOffset.dy -
             sizeDropdownOverlayContent.height >

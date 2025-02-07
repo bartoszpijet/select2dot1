@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/search_bar_modal_settings.dart';
+import 'package:select2dot1/src/styles/modal/search_bar_modal_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class SearchBarModal<T> extends StatefulWidget {
@@ -12,7 +12,7 @@ class SearchBarModal<T> extends StatefulWidget {
   final bool isSearchable;
   final SearchBarModalBuilder<T>? searchBarModalBuilder;
   final SearchBarModalSettings searchBarModalSettings;
-  final GlobalSettings globalSettings;
+  final SelectStyle selectStyle;
 
   const SearchBarModal({
     super.key,
@@ -21,7 +21,7 @@ class SearchBarModal<T> extends StatefulWidget {
     required this.isSearchable,
     required this.searchBarModalBuilder,
     required this.searchBarModalSettings,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 
   @override
@@ -68,7 +68,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
           isFocus: isFocus,
           focusModalController: _focusModalController,
           onChangedSearchBarController: _onChangedSearchBarModalController,
-          globalSettings: widget.globalSettings,
+          selectStyle: widget.selectStyle,
         ),
       );
     }
@@ -79,7 +79,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
         height: widget.searchBarModalSettings.heightReplacement,
         width: double.infinity,
         color: widget.searchBarModalSettings.colorReplecment ??
-            widget.globalSettings.activeColor,
+            widget.selectStyle.activeColor,
       );
     }
 
@@ -90,7 +90,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
         focusNode: searchBarModalFocusNode,
         controller: searchBarModalController,
         cursorColor: widget.searchBarModalSettings.textFieldCursorColor ??
-            widget.globalSettings.mainColor,
+            widget.selectStyle.mainColor,
         autofocus: widget.searchBarModalSettings.textFieldAutofocus,
         decoration: _getTextFieldDecoration(),
         style: _getTextFieldStyle(),
@@ -105,7 +105,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
 
     if (inputDecoration.focusColor == null) {
       inputDecoration = inputDecoration.copyWith(
-        focusColor: widget.globalSettings.mainColor,
+        focusColor: widget.selectStyle.mainColor,
       );
     }
 
@@ -113,7 +113,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
       inputDecoration = inputDecoration.copyWith(
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: widget.globalSettings.mainColor,
+            color: widget.selectStyle.mainColor,
             // Its specyfic parameters.
             // ignore: no-magic-number
             width: 2,
@@ -124,8 +124,8 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
 
     if (inputDecoration.suffixIcon == null) {
       Color suffixIconColor = isFocus
-          ? widget.globalSettings.mainColor
-          : widget.globalSettings.inActiveColor;
+          ? widget.selectStyle.mainColor
+          : widget.selectStyle.inActiveColor;
       inputDecoration = inputDecoration.copyWith(
         suffixIcon: widget.searchBarModalSettings.textFieldDecorationSuffixIcon
             ? IconButton(
@@ -144,7 +144,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
           // ignore: no-magic-number
           fontSize: 16,
           fontWeight: FontWeight.w400,
-          color: widget.globalSettings.inActiveColor,
+          color: widget.selectStyle.inActiveColor,
         ),
       );
     }
@@ -157,13 +157,13 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
 
     if (textFieldStyle.fontFamily == null) {
       textFieldStyle = textFieldStyle.copyWith(
-        fontFamily: widget.globalSettings.fontFamily,
+        fontFamily: widget.selectStyle.fontFamily,
       );
     }
 
     if (textFieldStyle.color == null) {
       textFieldStyle = textFieldStyle.copyWith(
-        color: widget.globalSettings.textColor,
+        color: widget.selectStyle.textColor,
       );
     }
 
@@ -177,7 +177,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
 
     if (decoration.color == null) {
       decoration = decoration.copyWith(
-        color: widget.globalSettings.backgroundColor,
+        color: widget.selectStyle.backgroundColor,
       );
     }
 
@@ -186,7 +186,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
         boxShadow: isFocus
             ? [
                 BoxShadow(
-                  color: widget.globalSettings.mainColor,
+                  color: widget.selectStyle.mainColor,
                   spreadRadius: 1.0,
                   // Its specyfic parameters.
                   // ignore: no-magic-number

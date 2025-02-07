@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/settings/global_settings.dart';
-import 'package:select2dot1/src/settings/modal/done_button_modal_settings.dart';
+import 'package:select2dot1/src/styles/modal/done_button_modal_settings.dart';
+import 'package:select2dot1/src/styles/select_style.dart';
 import 'package:select2dot1/src/utils/event_args.dart';
 
 class DoneButtonModal extends StatelessWidget {
   final DoneButtonModalBuilder? doneButtonModalBuilder;
   final DoneButtonModalSettings doneButtonModalSettings;
-  final GlobalSettings globalSettings;
+  final SelectStyle selectStyle;
 
   const DoneButtonModal({
     super.key,
     required this.doneButtonModalBuilder,
     required this.doneButtonModalSettings,
-    required this.globalSettings,
+    required this.selectStyle,
   });
 
   @override
@@ -24,7 +24,7 @@ class DoneButtonModal extends StatelessWidget {
         context,
         DoneButtonModalDetails(
           hideModal: () => Navigator.pop(context),
-          globalSettings: globalSettings,
+          selectStyle: selectStyle,
         ),
       );
     }
@@ -48,7 +48,7 @@ class DoneButtonModal extends StatelessWidget {
                   child: Icon(
                     doneButtonModalSettings.icon,
                     color: doneButtonModalSettings.iconColor ??
-                        globalSettings.backgroundColor,
+                        selectStyle.backgroundColor,
                     size: doneButtonModalSettings.iconSize,
                   ),
                 ),
@@ -74,7 +74,7 @@ class DoneButtonModal extends StatelessWidget {
 
     if (decoration.color == null) {
       decoration = decoration.copyWith(
-        color: globalSettings.mainColor,
+        color: selectStyle.mainColor,
       );
     }
 
@@ -85,12 +85,12 @@ class DoneButtonModal extends StatelessWidget {
     TextStyle textStyle = doneButtonModalSettings.textStyle;
 
     if (textStyle.fontFamily == null) {
-      textStyle = textStyle.copyWith(fontFamily: globalSettings.fontFamily);
+      textStyle = textStyle.copyWith(fontFamily: selectStyle.fontFamily);
     }
 
     if (textStyle.color == null) {
       textStyle = textStyle.copyWith(
-        color: globalSettings.backgroundColor,
+        color: selectStyle.backgroundColor,
       );
     }
 

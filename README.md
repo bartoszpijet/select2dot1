@@ -87,12 +87,12 @@ import 'package:select2dot1/select2dot2.dart';
 1. The first step is you need to create a list of the data that you would like to display.
 
 ```dart
-static const List<CategoryModel> exampleData = [
-    CategoryModel(
+static const List<SelectableCategory> exampleData = [
+    SelectableCategory(
       nameCategory: 'Team Leader',
       itemList: [
-        ItemModel(
-          itemName: 'David Eubanks',
+        SelectableItem(
+          finalLabel: 'David Eubanks',
           extraInfoSingleItem: 'Full time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.transparent,
@@ -100,8 +100,8 @@ static const List<CategoryModel> exampleData = [
             backgroundImage: AssetImage('assets/images/avatar1.jpg'),
           ),
         ),
-        ItemModel(
-          itemName: 'Stuart Resch',
+        SelectableItem(
+          finalLabel: 'Stuart Resch',
           extraInfoSingleItem: 'Part time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.blue,
@@ -289,7 +289,7 @@ In the following example you will be shown how to customize mainColor and fontFa
 ```dart
 Select2dot2(
   selectDataController: SelectDataController(data: exampleData),
-  globalSettings: const GlobalSettings(
+  selectStyle: const SelectStyle(
     fontFamily: 'Roboto',
     mainColor: Colors.blue,
   ),
@@ -433,33 +433,33 @@ Select2dot2(
 
 ## Model Structur Data
 
-To use Select2dot2 widget you have to pass data to SelectDataController. Data must be on the list of CategoryModel.
+To use Select2dot2 widget you have to pass data to SelectDataController. Data must be on the list of SelectableCategory.
 
-The CategoryModel is a model which contains data about single category.
+The SelectableCategory is a model which contains data about single category.
 Parameters:
 * nameCategory - name of category (It is optional if you don't want to show group select)
-* itemList - list of ItemModel (It is required)
+* itemList - list of SelectableItem (It is required)
 
 
-ItemModel is a model which contains data about single item in category.
+SelectableItem is a model which contains data about single item in category.
 Parameters:
-* itemName - visible name of single item (It is required)
-* [value](#value-parametr-in-singleitemcategorymodel) - value of single item (It is optional)
+* finalLabel - visible name of single item (It is required)
+* [value](#value-parametr-in-singleitemSelectableCategory) - value of single item (It is optional)
 * extraInfoSingleItem - extra info about single item (It is optional)
 * avatarSingleItem - avatar of single item (It is optional)
 
-### Value parametr in ItemModel
+### Value parametr in SelectableItem
 
-It's used to get the specific id of a single item. It's necessary when you want to distinguish between single items with the same itemName.
+It's used to get the specific id of a single item. It's necessary when you want to distinguish between single items with the same finalLabel.
 
 ```dart
-static const List<CategoryModel> exampleData = [
-  CategoryModel(
+static const List<SelectableCategory> exampleData = [
+  SelectableCategory(
     itemList: [
-      ItemModel(itemName: 'Alabama', value: 'Alabama1'),
-      ItemModel(itemName: 'Alabama', value: 'Alabama2'),
-      ItemModel(itemName: 'Arkansas'),
-      ItemModel(itemName: 'Illonois'),
+      SelectableItem(finalLabel: 'Alabama', value: 'Alabama1'),
+      SelectableItem(finalLabel: 'Alabama', value: 'Alabama2'),
+      SelectableItem(finalLabel: 'Arkansas'),
+      SelectableItem(finalLabel: 'Illonois'),
     ],
   ),
 ];
@@ -468,12 +468,12 @@ static const List<CategoryModel> exampleData = [
 ### Example data
 
 ```dart
-static const List<CategoryModel> exampleData = [
-    CategoryModel(
+static const List<SelectableCategory> exampleData = [
+    SelectableCategory(
       nameCategory: 'Team Leader',
       itemList: [
-        ItemModel(
-          itemName: 'David Eubanks',
+        SelectableItem(
+          finalLabel: 'David Eubanks',
           extraInfoSingleItem: 'Full time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.transparent,
@@ -481,8 +481,8 @@ static const List<CategoryModel> exampleData = [
             backgroundImage: AssetImage('assets/images/avatar1.jpg'),
           ),
         ),
-        ItemModel(
-          itemName: 'Stuart Resch',
+        SelectableItem(
+          finalLabel: 'Stuart Resch',
           extraInfoSingleItem: 'Part time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.blue,
@@ -491,15 +491,15 @@ static const List<CategoryModel> exampleData = [
         ),
       ],
     ),
-    CategoryModel(
+    SelectableCategory(
       nameCategory: 'UX Designer',
       itemList: [
-        ItemModel(
-          itemName: 'Jan Foxstein',
+        SelectableItem(
+          finalLabel: 'Jan Foxstein',
           extraInfoSingleItem: 'Full time',
         ),
-        ItemModel(
-          itemName: 'Jhony Steward',
+        SelectableItem(
+          finalLabel: 'Jhony Steward',
           extraInfoSingleItem: 'Part time',
           avatarSingleItem: CircleAvatar(
             backgroundColor: Colors.blue,
@@ -548,8 +548,8 @@ Select2dot2(
       data: exampleData, 
       isMultiple: false, 
       initialSelectedData: [ // Remember that when isMultiple is false, you can add only one position to initialSelectedData.
-        ItemModel(
-          itemName: 'Stuart Resch',
+        SelectableItem(
+          finalLabel: 'Stuart Resch',
           value: 'Stuart Resch 1', 
         ),
       ],
@@ -604,11 +604,11 @@ Select2dot2(
 Select2dot2(
     selectDataController: SelectDataController(data: exampleData, 
     initialSelectedData: [
-        ItemModel(
-          itemName: 'Alabama',
+        SelectableItem(
+          finalLabel: 'Alabama',
         ),
-        ItemModel(
-          itemName: 'California',
+        SelectableItem(
+          finalLabel: 'California',
         ),
       ],
     ),
@@ -621,16 +621,16 @@ It is not possible to use only overlay or modal mode on all platforms. It is aut
 
 ### How to set NO group select?
 
-If you dont want to group select, you dont need to use name parameter in CategoryModel.
+If you dont want to group select, you dont need to use name parameter in SelectableCategory.
 
 ```dart
-static const List<CategoryModel> exampleData3 = [
-  CategoryModel(
-    nameCategory: null, // If you dont want to group select, you dont need to use name parameter in CategoryModel or set it to null.
+static const List<SelectableCategory> exampleData3 = [
+  SelectableCategory(
+    nameCategory: null, // If you dont want to group select, you dont need to use name parameter in SelectableCategory or set it to null.
     itemList: [
-      ItemModel(itemName: 'Alabama',),
-      ItemModel(itemName: 'Arkansas'),
-      ItemModel(itemName: 'Illonois'),
+      SelectableItem(finalLabel: 'Alabama',),
+      SelectableItem(finalLabel: 'Arkansas'),
+      SelectableItem(finalLabel: 'Illonois'),
     ],
   ),
 ];

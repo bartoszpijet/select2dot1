@@ -1,32 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:select2dot1/src/models/item_model.dart';
-import 'package:select2dot1/src/models/select_model.dart';
+import 'package:select2dot1/src/models/category_item.dart';
+import 'package:select2dot1/src/models/item_interface.dart';
+import 'package:select2dot1/src/models/selectable_interface.dart';
+import 'package:select2dot1/src/models/selectable_item.dart';
+import 'package:select2dot1/src/utils/deep_contains.dart';
 
 /// SelectDataController is a class that will be used to control select data and contains all data.
 class SelectDataController<T> extends ChangeNotifier {
   /// All data pass to the package.
   /// It is required.
-  List<SelectModel<T>> data;
+  Iterable<ItemInterface<T>> data;
 
   /// This is a boolean to set multi select or single select.
   /// Default is true.
   bool isMultiSelect;
 
-  /// If it is [true] evry item in [itemList] will be added to selected values.
-  /// Default true.
-  final bool isCategoryAddAllChildren;
-
-  /// This is a boolean to select category.
-  /// Default is false.
-  final bool isCategorySelectable;
-
   /// This is initial selected data.
   /// This data will be add to the [selectedList] when the class is created.
   /// If [isMultiSelect] is false, must be null or length <= 1.
-  final List<SelectModel<T>>? initSelected;
+  final Iterable<SelectableInterface<T>>? initSelected;
 
-  /// This is a list of [ItemModel] selected items.
-  final List<SelectModel<T>> selectedList = [];
+  /// This is a list of [SelectableItem] selected items.
+  final Set<SelectableInterface<T>> selectedList = {};
 
   /// SelectDataController is a class that will be used to control select data.
   /// Use this constructor to create a [SelectDataController] object.
@@ -35,14 +30,12 @@ class SelectDataController<T> extends ChangeNotifier {
   SelectDataController({
     required this.data,
     this.isMultiSelect = true,
-    this.isCategoryAddAllChildren = true,
-    this.isCategorySelectable = false,
     this.initSelected,
   }) : assert(
           isMultiSelect || initSelected == null || initSelected.length <= 1,
           'For single select, initSelected must be null or length <= 1',
         ) {
-    addGroupSelectChip(initSelected);
+    addGroupSelectChip(initSelected?.where((e) => data.deepContains(e)));
   }
 
   /// Function to set an SelectDataController to another SelectDataController with the same reference.
@@ -58,15 +51,15 @@ class SelectDataController<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Add items from list of [SelectModel<T>] to the [selectedList],
+  /// Add items from list of [SelectableInterface<T>] to the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
-  void addGroupSelectChip(List<SelectModel<T>>? singleItemList) {
-    if (singleItemList == null) {
+  void addGroupSelectChip(Iterable<SelectableInterface<T>>? singleItemList) {
+    if (singleItemList == null || singleItemList.isEmpty) {
       return;
     }
 
     if (!isMultiSelect) {
-      setSingleSelect(singleItemList.first);
+      setSingleSelect(singleItemList.single);
     }
 
     for (var singleItem in singleItemList) {
@@ -75,9 +68,9 @@ class SelectDataController<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Remove items from list of [SelectModel<T>] to the [selectedList],
+  /// Remove items from list of [SelectableInterface<T>] to the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
-  void removeGroupSelectChip(List<SelectModel<T>>? singleItemList) {
+  void removeGroupSelectChip(Iterable<SelectableInterface<T>>? singleItemList) {
     if (singleItemList == null) {
       return;
     }
@@ -88,10 +81,10 @@ class SelectDataController<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Add single [SelectModel<T>] to the [selectedList],
+  /// Add single [SelectableInterface<T>] to the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
   void addSelectChip(
-    SelectModel<T>? singleItem, [
+    SelectableInterface<T>? singleItem, [
     bool notify = true,
   ]) {
     if (singleItem == null) {
@@ -99,15 +92,15 @@ class SelectDataController<T> extends ChangeNotifier {
     }
 
     if (!_singleItemContainsInSelected(singleItem)) {
-      selectedList.add(getCategoryFromData(singleItem));
-      if (notify) notifyListeners();
+      bool added = selectedList.add(getCategoryFromData(singleItem));
+      if (notify && added) notifyListeners();
     }
   }
 
-  /// Remove single [SelectModel<T>] from the [selectedList],
+  /// Remove single [SelectableInterface<T>] from the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
   void removeSelectedChip(
-    SelectModel<T>? singleItem, [
+    SelectableInterface<T>? singleItem, [
     bool notify = true,
   ]) {
     if (singleItem == null) {
@@ -122,20 +115,20 @@ class SelectDataController<T> extends ChangeNotifier {
     }
   }
 
-  /// Set single [SelectModel<T>] to the [selectedList],
+  /// Set single [SelectableInterface<T>] to the [selectedList],
   /// when items are in the [data] and not in the [selectedList].
-  void setSingleSelect(SelectModel<T>? singleItem) {
+  void setSingleSelect(SelectableInterface<T>? singleItem) {
     if (singleItem == null) {
       return;
     }
 
     selectedList.clear();
-    selectedList.add(getCategoryFromData(singleItem));
-    notifyListeners();
+    bool added = selectedList.add(getCategoryFromData(singleItem));
+    if (added) notifyListeners();
   }
 
-  /// Check if the [SelectModel<T>] is in the [selectedList].
-  bool _singleItemContainsInSelected(SelectModel<T>? singleItem) {
+  /// Check if the [SelectableInterface<T>] is in the [selectedList].
+  bool _singleItemContainsInSelected(SelectableInterface<T>? singleItem) {
     if (singleItem == null) {
       return false;
     }
@@ -143,11 +136,11 @@ class SelectDataController<T> extends ChangeNotifier {
     return selectedList.contains(singleItem);
   }
 
-  SelectModel<T> getCategoryFromData(
-    SelectModel<T> patternSingleItem,
+  SelectableInterface<T> getCategoryFromData(
+    SelectableInterface<T> patternSingleItem,
   ) {
-    SelectModel<T>? returnedVal;
-    for (SelectModel<T> item in data) {
+    SelectableInterface<T>? returnedVal;
+    for (ItemInterface<T> item in data.whereType()) {
       returnedVal = deepContains(patternSingleItem, item);
       if (returnedVal != null) break;
     }
@@ -155,18 +148,18 @@ class SelectDataController<T> extends ChangeNotifier {
     return returnedVal ?? patternSingleItem;
   }
 
-  SelectModel<T>? deepContains(
-    SelectModel<T> search,
-    SelectModel<T> inThis,
+  SelectableInterface<T>? deepContains(
+    SelectableInterface<T> search,
+    ItemInterface<T> inThis,
   ) {
     if (search == inThis) {
-      return inThis;
+      return search;
     }
-    if (inThis.itemList.isEmpty) {
+    if (inThis is! CategoryItem<T> || inThis.childrens.isEmpty) {
       return null;
     } else {
-      SelectModel<T>? contain;
-      for (SelectModel<T> inner in inThis.itemList) {
+      SelectableInterface<T>? contain;
+      for (ItemInterface<T> inner in inThis.childrens) {
         contain = deepContains(search, inner);
         if (contain != null) break;
       }

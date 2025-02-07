@@ -14,114 +14,121 @@ class BasicExample10 extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Select2dot1(
+          Select2dot1<String>(
             selectDataController: SelectDataController(
               data: ExampleData.exampleData2,
               initSelected: const [
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Alabama',
+                  label: 'Alabama',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Arkansas',
+                  label: 'Arkansas',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Illonois',
+                  label: 'Illonois',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Iowa',
+                  label: 'Iowa',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Kansas',
+                  label: 'Kansas',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Kentucky',
+                  label: 'Kentucky',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Louisiana',
+                  label: 'Louisiana',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Minnesota',
+                  label: 'Minnesota',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Mississippi',
+                  label: 'Mississippi',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Missouri',
+                  label: 'Missouri',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Oklahoma',
+                  label: 'Oklahoma',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'South Dakota',
+                  label: 'South Dakota',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Texas',
+                  label: 'Texas',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Tennessee',
+                  label: 'Tennessee',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Arizona',
+                  label: 'Arizona',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Colorado',
+                  label: 'Colorado',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Idaho',
+                  label: 'Idaho',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Montana',
+                  label: 'Montana',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Nebraska',
+                  label: 'Nebraska',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'New Mexico',
+                  label: 'New Mexico',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'North Dakota',
+                  label: 'North Dakota',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Utah',
+                  label: 'Utah',
                 ),
-                ItemModel(
+                SelectableItem(
                   value: null,
-                  itemName: 'Wyoming',
+                  label: 'Wyoming',
                 ),
               ],
             ),
-            pillboxSettings: const PillboxSettings(
-              constraints: BoxConstraints(
-                minHeight: 45,
-                maxHeight: 140,
+            dropdownListData: DropdownListData(
+              scrollController: scrollController,
+            ),
+            selectStyle: const SelectStyle(
+              pillboxStyle: PillboxStyle(
+                pillboxTitleSettings: PillboxTitleSettings(title: 'Example 10'),
+                pillboxSettings: PillboxSettings(
+                  constraints: BoxConstraints(
+                    minHeight: 45,
+                    maxHeight: 140,
+                  ),
+                ),
+              ),
+              modalStyle: ModalStyle(
+                titleModalSettings: TitleModalSettings(title: 'Example 10'),
               ),
             ),
-            scrollController: scrollController,
-            pillboxTitleSettings:
-                const PillboxTitleSettings(title: 'Example 10'),
-            titleModalSettings: const TitleModalSettings(title: 'Example 10'),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),

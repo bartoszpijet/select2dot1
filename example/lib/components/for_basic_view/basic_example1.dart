@@ -9,6 +9,14 @@ class BasicExample1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(
+    //   ((ExampleData.exampleData1.first as CategoryItem<String>).childrens.first
+    //           as CategoryItem<String>)
+    //       .childrens
+    //       .whereType<SelectableInterface<String>>()
+    //       .first
+    //       .label,
+    // );
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -17,18 +25,24 @@ class BasicExample1 extends StatelessWidget {
           Select2dot1<String>(
             selectDataController: SelectDataController(
               data: ExampleData.exampleData1,
-              initSelected: const [
-                ItemModel(
-                  value: null,
-                  itemName: 'David Eubanks',
-                ),
-                ItemModel(value: null, itemName: 'Robert Keller')
+              initSelected: [
+                ...((ExampleData.exampleData1.first as CategoryItem<String>)
+                        .childrens
+                        .first as CategoryItem<String>)
+                    .childrens
+                    .whereType<SelectableInterface<String>>(),
               ],
             ),
-            scrollController: scrollController,
-            pillboxTitleSettings:
-                const PillboxTitleSettings(title: 'Example 1'),
-            titleModalSettings: const TitleModalSettings(title: 'Example 1'),
+            dropdownListData:
+                DropdownListData(scrollController: scrollController),
+            selectStyle: const SelectStyle(
+              pillboxStyle: PillboxStyle(
+                pillboxTitleSettings: PillboxTitleSettings(title: 'Example 1'),
+              ),
+              modalStyle: ModalStyle(
+                titleModalSettings: TitleModalSettings(title: 'Example 1'),
+              ),
+            ),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
