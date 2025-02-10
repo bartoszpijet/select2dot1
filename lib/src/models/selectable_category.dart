@@ -50,14 +50,4 @@ class SelectableCategory<T> extends SelectableInterface<T>
     Iterable<ItemInterface<T>> childrens,
   ) =>
       SelectableCategory._score(this, score, childrens);
-
-  @override
-  int get hashCode => super.hashCode ^ childrens.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is SelectableCategory &&
-          value == other.value &&
-          label == other.label);
 }

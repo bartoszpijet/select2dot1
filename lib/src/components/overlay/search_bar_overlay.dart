@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
@@ -28,7 +29,7 @@ class SearchBarOverlay<T> extends StatefulWidget {
 
 class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
   final FocusNode searchBarFocusNode = FocusNode();
-  final TextEditingController searchBarController = TextEditingController();
+  final TextEditingController _searchBarController = TextEditingController();
   bool isFocus = true;
 
   @override
@@ -41,15 +42,13 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
       searchBarFocusNode.requestFocus();
     }
     searchBarFocusNode.addListener(_focusOverlayController);
-    searchBarController.addListener(_onChangedSearchBarOverlayController);
   }
 
   @override
   void dispose() {
     searchBarFocusNode.removeListener(_focusOverlayController);
-    searchBarController.removeListener(_onChangedSearchBarOverlayController);
     searchBarFocusNode.dispose();
-    searchBarController.dispose();
+    _searchBarController.dispose();
 
     super.dispose();
   }
@@ -63,9 +62,10 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
         context,
         SearchBarOverlayDetails(
           searchController: widget.searchController,
-          searchBarController: searchBarController,
+          searchBarController: _searchBarController,
           searchBarFocusNode: searchBarFocusNode,
           isFocus: isFocus,
+          onChangedSearchBarController: _onChangedSearchBarOverlayController,
           selectStyle: widget.selectStyle,
         ),
       );
@@ -96,11 +96,11 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
               },
               child: Actions(
                 actions: <Type, Action<Intent>>{
-                  ClearIntent: ClearAction(searchBarController),
+                  ClearIntent: ClearAction(_searchBarController),
                 },
                 child: TextField(
                   focusNode: searchBarFocusNode,
-                  controller: searchBarController,
+                  controller: _searchBarController,
                   cursorColor: widget.selectStyle.overlayStyle
                           .searchBarOverlaySettings.textFieldCursorColor ??
                       widget.selectStyle.mainColor,
@@ -109,6 +109,7 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
                   enabled: widget.isSearchable,
                   decoration: _getTextFieldDecoration(),
                   style: _getTextFieldStyle(),
+                  onChanged: _onChangedSearchBarOverlayController,
                 ),
               ),
             ),
@@ -153,7 +154,7 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
                 .textFieldDecorationSuffixIcon
             ? IconButton(
                 icon: const Icon(Icons.clear),
-                onPressed: searchBarController.clear,
+                onPressed: _searchBarController.clear,
                 color: suffixIconColor,
               )
             : null,
@@ -234,24 +235,15 @@ class _SearchBarOverlayState<T> extends State<SearchBarOverlay<T>> {
     }
   }
 
-  String lastSnapshotSearchText = '';
-  void _onChangedSearchBarOverlayController() {
-    String newValue = searchBarController.text;
-    if (newValue.trim() == '') {
-      newValue = '';
-    }
-
-    lastSnapshotSearchText = newValue.toString();
-    unawaited(
-      // Done on purpose.
-      // ignore: prefer-async-await
-      Future.delayed(widget.searchDealey).then((value) {
-        if (lastSnapshotSearchText == newValue) {
-          unawaited(
-            widget.searchController.findSearchDataResults(newValue),
-          );
-        }
-      }),
+  void _onChangedSearchBarOverlayController(String newValue) {
+    EasyDebounce.debounce(
+      'search-select-$hashCode',
+      widget.searchDealey,
+      () {
+        unawaited(
+          widget.searchController.findSearchDataResults(newValue),
+        );
+      },
     );
   }
 }
