@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:select2dot1/src/controllers/search_controller.dart';
 import 'package:select2dot1/src/styles/modal/search_bar_modal_settings.dart';
@@ -42,13 +43,11 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
       searchBarModalFocusNode.requestFocus();
     }
     searchBarModalFocusNode.addListener(_focusModalController);
-    searchBarModalController.addListener(_onChangedSearchBarModalController);
   }
 
   @override
   void dispose() {
     searchBarModalFocusNode.removeListener(_focusModalController);
-    searchBarModalController.removeListener(_onChangedSearchBarModalController);
     searchBarModalFocusNode.dispose();
     searchBarModalController.dispose();
     super.dispose();
@@ -94,6 +93,7 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
         autofocus: widget.searchBarModalSettings.textFieldAutofocus,
         decoration: _getTextFieldDecoration(),
         style: _getTextFieldStyle(),
+        onChanged: _onChangedSearchBarModalController,
       ),
     );
   }
@@ -208,23 +208,15 @@ class _SearchBarModalState<T> extends State<SearchBarModal<T>> {
     }
   }
 
-  String lastSnapshotSearchText = '';
-  void _onChangedSearchBarModalController() {
-    String newValue = searchBarModalController.text;
-    if (newValue.trim() == '') {
-      newValue = '';
-    }
-    lastSnapshotSearchText = newValue.toString();
-    unawaited(
-      // Done on purpose.
-      // ignore: prefer-async-await
-      Future.delayed(widget.searchDealey).then((value) {
-        if (lastSnapshotSearchText == newValue) {
-          unawaited(
-            widget.searchController.findSearchDataResults(newValue),
-          );
-        }
-      }),
+  void _onChangedSearchBarModalController(String newValue) {
+    EasyDebounce.debounce(
+      'search-select-$hashCode',
+      widget.searchDealey,
+      () {
+        unawaited(
+          widget.searchController.findSearchDataResults(newValue),
+        );
+      },
     );
   }
 }

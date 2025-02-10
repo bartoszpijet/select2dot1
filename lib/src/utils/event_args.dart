@@ -422,6 +422,9 @@ class SearchBarOverlayDetails<T> {
   /// This is a boolean representing the focus of the search bar.
   bool isFocus;
 
+  /// This is emmbeded function services when the [SearchControllerSelect2dot1] is changed.
+  final void Function(String newValue) onChangedSearchBarController;
+
   /// This is a [SelectStyle] that will be used to get the global settings.
   final SelectStyle selectStyle;
 
@@ -432,6 +435,7 @@ class SearchBarOverlayDetails<T> {
     required this.searchBarFocusNode,
     required this.searchBarController,
     required this.isFocus,
+    required this.onChangedSearchBarController,
     required this.selectStyle,
   });
 }
@@ -710,7 +714,7 @@ class SearchBarModalDetails<T> {
   final void Function() focusModalController;
 
   /// This is emmbeded function services when the [SearchControllerSelect2dot1] is changed.
-  final void Function() onChangedSearchBarController;
+  final void Function(String newValue) onChangedSearchBarController;
 
   /// This is a [SelectStyle] that will be used to get the global settings.
   final SelectStyle selectStyle;
