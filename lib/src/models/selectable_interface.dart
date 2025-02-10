@@ -37,8 +37,7 @@ abstract class SelectableInterface<T> extends ItemInterface<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SelectableInterface &&
-          runtimeType == other.runtimeType &&
+      other is SelectableInterface<T> &&
           label == other.label &&
           value == other.value &&
           enabled == other.enabled;

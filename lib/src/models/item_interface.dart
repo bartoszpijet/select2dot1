@@ -35,7 +35,5 @@ abstract class ItemInterface<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ItemInterface<T> &&
-          runtimeType == other.runtimeType &&
-          label == other.label;
+      other is ItemInterface<T> && label == other.label;
 }

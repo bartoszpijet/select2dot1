@@ -39,14 +39,4 @@ class CategoryItem<T> extends ItemInterface<T> {
     Iterable<ItemInterface<T>> childrens,
   ) =>
       CategoryItem._score(this, score, childrens);
-
-  @override
-  int get hashCode => super.hashCode ^ childrens.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is CategoryItem<T> &&
-          childrens == other.childrens &&
-          label == other.label);
 }
